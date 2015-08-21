@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xsi:schemaLocation="
+		http://www.springframework.org/schema/beans
+		http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+		http://www.springframework.org/schema/tx
+		http://www.springframework.org/schema/tx/spring-tx-3.1.xsd">
+
+    <tx:annotation-driven transaction-manager="transactionManager"/>
+    
+    <bean id="transactionManager" class="org.springframework.orm.hibernate4.HibernateTransactionManager">
+        <property name="sessionFactory" ref="sessionFactory" />
+    </bean>
+    <bean id="transactionManagerAction" class="org.springframework.orm.hibernate4.HibernateTransactionManager">
+        <property name="sessionFactory" ref="sessionFactoryAction" />
+    </bean>
+    <bean id="transactionManagerIrc" class="org.springframework.orm.hibernate4.HibernateTransactionManager">
+        <property name="sessionFactory" ref="sessionFactoryIrc" />
+    </bean>
+    <bean id="transactionManagerSystemQuery" class="org.springframework.orm.hibernate4.HibernateTransactionManager">
+        <property name="sessionFactory" ref="sessionFactorySystemQuery" />
+    </bean>
+<!--    <bean id="transactionManagerActionSlave" class="org.springframework.orm.hibernate4.HibernateTransactionManager">
+        <property name="sessionFactory" ref="sessionFactoryActionSlave" />
+    </bean>-->
+
+    <bean id="freeMarkerConfigurer"
+          class="org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer">
+        <property name="templateLoaderPaths" value="classpath:freemarker" />
+        <property name="freemarkerSettings">
+            <props>
+                <prop key="default_encoding">UTF-8</prop>
+                <prop key="output_encoding">UTF-8</prop>
+                <prop key="locale">zh_CN</prop>
+                <prop key="date_format">yyyy-MM-dd</prop>
+                <prop key="time_format">HH:mm:ss</prop>
+                <prop key="datetime_format">yyyy-MM-dd HH:mm:ss</prop>
+                <prop key="classic_compatible">true</prop>
+            </props>
+        </property>
+        <property name="freemarkerVariables">
+            <map>
+                <entry key="imageUrl" value-ref="domainMain"/>
+                <entry key="siteUrl" value-ref="domainMain" />
+            </map>
+        </property>
+    </bean>
+
+</beans>

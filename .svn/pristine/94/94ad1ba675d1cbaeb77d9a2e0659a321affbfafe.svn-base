@@ -1,0 +1,79 @@
+package com.job5156.core.srv.per;
+
+
+import com.job5156.core.eao.base.BaseHibernateEao;
+import com.job5156.core.eao.per.PerSearcherEao;
+import com.job5156.core.entity.per.PerSearcher;
+import com.job5156.core.srv.base.BaseSrv;
+
+import org.springframework.stereotype.Service;
+
+import javax.annotation.Resource;
+
+import java.util.List;
+
+/**
+ * <p></p>
+ * Date:2015/6/16 9:22
+ *
+ * @author hjs
+ * @version 1.0
+ */
+@Service
+public class PerSearcherSrv extends BaseSrv<PerSearcher, Integer>{
+
+    @Override
+	protected BaseHibernateEao<PerSearcher, Integer> getBaseHibernateEao() {
+		// TODO Auto-generated method stub
+		return super.getBaseHibernateEao();
+	}
+	@Resource
+    private PerSearcherEao perSearcherEao;
+
+    public List<PerSearcher> findByPerUser(Integer perId) {
+        return perSearcherEao.findByPerUser(perId);
+    }
+    
+    
+    public Integer countByPerUser(Integer perId) {
+        return perSearcherEao.countByPerUser(perId);
+    }
+    
+    /**
+     * 职位订阅器退订
+     * @param id
+     * @return
+     */
+    public PerSearcher unsubscribe(Integer id){
+    	PerSearcher searcher = this.get(id);
+    	searcher.setSubscribe(com.job5156.core.common.MailConstants.MAIL_SUBSCRIBE_NO);
+    	perSearcherEao.update(searcher);
+    	return searcher;
+    }
+    
+    /**
+     * 根据邮箱统计搜索器个数
+     * @param email 邮箱
+     * @return int 个人搜索器个数
+     */
+    public int countByEmail(String email){
+    	return perSearcherEao.countByEmail(email);
+    }
+    
+    /**
+     * 根据邮箱查询搜索器
+     * @param email 邮箱
+     * @return List<PerSearcher> 搜索器列表
+     */
+    public List<PerSearcher> findByEmail(String email){
+    	return perSearcherEao.findByEmail(email);
+    }
+	/* (non-Javadoc)
+	 * @see com.job5156.core.srv.base.BaseSrv#initBaseHibernateEao()
+	 */
+	@Override
+	protected void initBaseHibernateEao() {
+		// TODO Auto-generated method stub
+		this.baseHibernateEao = perSearcherEao;
+	}
+}

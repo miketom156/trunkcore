@@ -1,0 +1,117 @@
+package com.job5156.core.entity.com.analyze;
+
+import com.job5156.core.entity.com.ComPosition;
+import org.hibernate.annotations.*;
+
+import javax.persistence.*;
+import javax.persistence.Entity;
+import java.io.Serializable;
+import java.text.NumberFormat;
+
+/**
+ * @author pzm
+ * @ClassName: PosPublishStatis
+ * @Description: 职位发布统计
+ */
+@Entity
+@DynamicUpdate
+@DynamicInsert
+@SelectBeforeUpdate
+public class PosPublishStatis implements Serializable {
+    private static final long serialVersionUID = 1L;
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Integer id;
+    private Integer posId;                           //职位ID
+    private Integer comId;                           //企业ID
+    private Integer viewCount;                      //浏览量
+    private Integer resumeCount;                    //投递量
+    private String countDate;                       //统计日期
+
+    @Transient
+    private ComPosition comPosition;
+
+/*
+    @NotFound(action = NotFoundAction.IGNORE)
+	@ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "comId", insertable = false, updatable = false)
+	private ComInfo comInfo;                                //关联企业
+
+	@NotFound(action = NotFoundAction.IGNORE)
+	@ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "posId", insertable = false, updatable = false)
+	private ComPosition comPosition;                                //关联企业
+*/
+
+    // ====================== getter && setter  ==============================
+
+    public static long getSerialVersionUID() {
+        return serialVersionUID;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public Integer getPosId() {
+        return posId;
+    }
+
+    public void setPosId(Integer posId) {
+        this.posId = posId;
+    }
+
+    public Integer getComId() {
+        return comId;
+    }
+
+    public void setComId(Integer comId) {
+        this.comId = comId;
+    }
+
+    public Integer getViewCount() {
+        return viewCount;
+    }
+
+    public void setViewCount(Integer viewCount) {
+        this.viewCount = viewCount;
+    }
+
+    public Integer getResumeCount() {
+        return resumeCount;
+    }
+
+    public void setResumeCount(Integer resumeCount) {
+        this.resumeCount = resumeCount;
+    }
+
+    public String getCountDate() {
+        return countDate;
+    }
+
+    public void setCountDate(String countDate) {
+        this.countDate = countDate;
+    }
+
+    public float getDeliverRate() {
+        return viewCount == 0 ? 0 : (float) resumeCount / viewCount;
+    }
+
+    public String getDeliverRatePercent() {
+        return NumberFormat.getPercentInstance().format(getDeliverRate());
+    }
+
+    public ComPosition getComPosition() {
+        return comPosition;
+    }
+
+    public void setComPosition(ComPosition comPosition) {
+        this.comPosition = comPosition;
+    }
+
+}

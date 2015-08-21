@@ -1,0 +1,68 @@
+package com.job5156.core.eao.per;
+
+import com.job5156.core.eao.base.BaseHibernateEao;
+import com.job5156.webapp.model.per.PerSearcher;
+
+import org.hibernate.SessionFactory;
+import org.springframework.stereotype.Repository;
+
+import javax.annotation.Resource;
+
+import java.util.List;
+
+/**
+ * <p></p>
+ * Date:2015/6/15 10:20
+ *
+ * @author hjs
+ * @version 1.0
+ */
+@Repository
+public class PerSearcherEao extends BaseHibernateEao<PerSearcher, Integer> {
+
+    @Resource(name = "sessionFactory")
+    public void setSessionFactory(SessionFactory sessionFactory) {
+        this.sessionFactory = sessionFactory;
+    }
+
+    /**
+     * 根据个人id查找搜索器
+     * @param perUsreId 个人id
+     * @return  个人搜索器
+     */
+    public List<PerSearcher> findByPerUser(Integer perUserId) {
+        String hql = "FROM PerSearcher WHERE perUserId = ?";
+        return list(hql, new Object[]{perUserId});
+    }
+    
+    /**
+     * 根据个人id统计搜索器的个数
+     * @param perUsreId 个人id
+     * @return int 个人搜索器个数
+     */
+    public Integer countByPerUser(Integer perUserId) {
+        String hql = "SELECT COUNT(*) FROM PerSearcher WHERE perUserId = ?";
+        return this.<Number>aggregate(hql, new Object[]{perUserId}).intValue();
+    }
+
+    /**
+     * 根据邮箱统计搜索器个数
+     * @param email 邮箱
+     * @return int 个人搜索器个数
+     */
+    public int countByEmail(String email){
+    	String hql = "SELECT COUNT(*) FROM PerSearcher WHERE email = ?";
+    	return this.<Number>aggregate(hql, email).intValue();
+    }
+    
+    /**
+     * 根据邮箱查询搜索器
+     * @param email 邮箱
+     * @return List<PerSearcher>
+     */
+    public List<PerSearcher> findByEmail(String email){
+    	String hql = "FROM PerSearcher WHERE email = ?";
+    	return list(hql, new Object[]{email});
+    }
+
+}

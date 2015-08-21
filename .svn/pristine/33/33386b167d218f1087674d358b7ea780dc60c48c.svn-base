@@ -1,0 +1,88 @@
+package com.job5156.core.entity.com.analyze;
+
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
+import org.hibernate.annotations.SelectBeforeUpdate;
+
+import javax.persistence.*;
+import java.io.Serializable;
+import java.util.Date;
+
+/**
+ * @author pzm
+ * @ClassName: PosAvgLevelStatis
+ * @Description: 职位平均水平统计
+ */
+@Entity
+@DynamicUpdate
+@DynamicInsert
+@SelectBeforeUpdate
+public class PosAvgLevelStatis implements Serializable {
+    private static final long serialVersionUID = 1L;
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Integer id;
+    private Integer job_code;
+    private Integer avg_degree;
+    private Integer avg_work_year;
+    private Integer avg_view_count_recent;
+    private Integer avg_resume_count_recent;
+    private Date count_date;
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public Integer getJob_code() {
+        return job_code;
+    }
+
+    public void setJob_code(Integer job_code) {
+        this.job_code = job_code;
+    }
+
+    public Integer getAvg_degree() {
+        return avg_degree;
+    }
+
+    public void setAvg_degree(Integer avg_degree) {
+        this.avg_degree = avg_degree;
+    }
+
+    public Integer getAvg_work_year() {
+        return avg_work_year;
+    }
+
+    public void setAvg_work_year(Integer avg_work_year) {
+        this.avg_work_year = avg_work_year;
+    }
+
+    public Integer getAvg_view_count_recent() {
+        return avg_view_count_recent;
+    }
+
+    public void setAvg_view_count_recent(Integer avg_view_count_recent) {
+        this.avg_view_count_recent = avg_view_count_recent;
+    }
+
+    public Integer getAvg_resume_count_recent() {
+        return avg_resume_count_recent;
+    }
+
+    public void setAvg_resume_count_recent(Integer avg_resume_count_recent) {
+        this.avg_resume_count_recent = avg_resume_count_recent;
+    }
+
+    public Date getCount_date() {
+        return count_date;
+    }
+
+    public void setCount_date(Date count_date) {
+        this.count_date = count_date;
+    }
+}

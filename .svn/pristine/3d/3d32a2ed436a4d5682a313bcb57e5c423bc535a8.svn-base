@@ -1,0 +1,139 @@
+package com.job5156.core.srv.per;
+
+import com.google.common.collect.Maps;
+import com.google.gson.Gson;
+import com.job5156.core.common.Constants;
+import com.job5156.core.common.helper.TempHelper;
+import com.job5156.core.common.pagination.Page;
+import com.job5156.core.common.pagination.PageUtil;
+import com.job5156.core.eao.RedisEao;
+import com.job5156.core.eao.com.ComInfoEao;
+import com.job5156.core.eao.com.ComPositionEao;
+import com.job5156.core.eao.per.PerInviteLogEao;
+import com.job5156.core.entity.com.ComInfo;
+import com.job5156.core.entity.com.ComPosition;
+import com.job5156.core.entity.per.job.PerInviteLog;
+import com.job5156.core.srv.base.BaseSrv;
+import org.apache.commons.lang.ObjectUtils;
+import org.apache.commons.lang.StringUtils;
+import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import javax.annotation.Resource;
+import java.util.List;
+import java.util.Map;
+
+@Service
+@Transactional(value = "transactionManagerAction")
+public class PerInviteLogSrv extends BaseSrv<PerInviteLog, Integer> {
+
+    @Resource
+    private PerInviteLogEao perInviteLogEao;
+    private RedisEao redisEao;
+    @Resource
+    private ComInfoEao comInfoEao;
+    @Resource
+    private ComPositionEao comPositionEao;
+
+    @Override
+    protected void initBaseHibernateEao() {
+        this.baseHibernateEao = perInviteLogEao;
+    }
+
+    public Page<PerInviteLog> query(int pn, int pageSize, PerInviteLog command) {
+        return PageUtil.getPage(perInviteLogEao.countQuery(command), pn, perInviteLogEao.query(pn, pageSize, command), pageSize);
+
+    }
+
+    public int findInviteComNumList(Integer userId) {
+        return perInviteLogEao.findComNumByUserId(userId);
+    }
+
+    /**
+     * 通过个人用户id查询某页个人邀请面试记录列表
+     */
+    public List<PerInviteLog> findPerInviteLogList(Integer perUserId, Integer pn, Integer pageSize) {
+        return perInviteLogEao.findPerInviteLogList(perUserId, pn, pageSize);
+    }
+
+    /**
+     * 通过个人用户id查询记录数目
+     */
+    public int countByUserId(Integer perUserId) {
+        return perInviteLogEao.countByUserId(perUserId);
+    }
+
+    /**
+     * For 动态
+     *
+     * @param perUserId
+     * @return
+     */
+    public List<PerInviteLog> findPerInviteLogList(Integer perUserId) {
+        return perInviteLogEao.findPerInviteLogList(perUserId);
+    }
+
+    public Integer savePerInviteLog(PerInviteLog perInviteLog) {
+        //进行此操作的时候，同时清空个人首页动态的Redis缓存以便系统自动生成
+        redisEao.del(Constants.REDIS_KEY_PER_DYNAMIC_INVITE_PREFIX + perInviteLog.getPerUserId());
+        return perInviteLogEao.save(perInviteLog);
+    }
+
+    public int countUnreadByUserId(Integer perUserId) {
+        return perInviteLogEao.countUnreadByUserId(perUserId);
+    }
+
+
+    /**
+     * 更新邀请个人面试的mixinfo方法
+     * @param perInviteLog 邀请个人面试记录实体
+     * <per>
+     * 1. 获取企业信息
+     * 2. 获取职位信息
+     * 3. 保存企业信息与职位信息到个人邀请记录中的mixinfo
+     * </per>
+     */
+    public void fillInviteMixInfo(PerInviteLog perInviteLog){
+        if (perInviteLog != null && StringUtils.isBlank(perInviteLog.getMixInfo())) {
+            Integer posId = perInviteLog.getPosId();
+            Integer comId = perInviteLog.getComId();
+            Map<String, Object> map = Maps.newHashMap();
+            try {
+                ComPosition comPosition = comPositionEao.get(posId);
+                if (StringUtils.isBlank(comPosition.getPosName())) {
+                    perInviteLog = perInviteLogEao.get(perInviteLog.getId());
+                    perInviteLog.setMixInfo("{}");
+                    perInviteLogEao.update(perInviteLog);
+                }else{
+                    map.put("posName", comPosition.getPosName());
+                    map.put("jobLocation", comPosition.getWorkLocation());
+                    map.put("salary", comPosition.getSalary());
+                    map.put("degree", comPosition.getReqDegree());
+                    map.put("workYear", comPosition.getReqWorkYear());
+                    map.put("description", comPosition.getDescription());
+                    map.put("taoLabel", comPosition.getTaoLabel());
+                    map.put("contactPhone", comPosition.getComContactBase().getContactPhone());
+                    map.put("contactPerson", comPosition.getComContactBase().getContactPerson());
+                    map.put("posStatus", comPosition.getPosStatus());
+
+                    ComInfo comInfo = comInfoEao.get(comId);
+                    map.put("comName", comInfo.getComName());
+                    map.put("comIndustry", comInfo.getIndustry());
+                    map.put("comProperty", comInfo.getProperty());
+
+                    String mixInfo = new Gson().toJson(map);
+                    perInviteLog = perInviteLogEao.get(perInviteLog.getId());
+                    perInviteLog.setMixInfo(mixInfo);
+                    perInviteLogEao.update(perInviteLog);
+                }
+            } catch (Exception ex) {
+                //不处理
+                perInviteLog = perInviteLogEao.get(perInviteLog.getId());
+                perInviteLog.setMixInfo("{}");
+                perInviteLogEao.update(perInviteLog);
+            }
+        }
+    }
+}
+

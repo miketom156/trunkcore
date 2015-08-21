@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>JAVA</ID>
+  <OriginalElement />
+  <nodes>
+    <node x="424.0" y="458.5">uml.per.login.PerUserSrv</node>
+    <node x="401.5" y="13.0">uml.per.login.TempHelper</node>
+    <node x="380.5" y="670.0">uml.per.login.PerUserBiz</node>
+    <node x="1185.5" y="458.5">uml.per.login.PerUserEao</node>
+    <node x="851.5" y="81.5">uml.per.login.PerResumeEao</node>
+    <node x="1212.5" y="-27.0">uml.per.login.ResumeCheckHelper</node>
+    <node x="776.5" y="-27.0">uml.per.login.PerResumeCheckHelper</node>
+    <node x="810.5" y="670.0">uml.per.login.RedisSrv</node>
+    <node x="-24.0" y="493.0">uml.per.login.PerLoginHistoryEao</node>
+    <node x="36.0" y="373.0">uml.per.login.IpSeekerHelper</node>
+    <node x="808.0" y="235.5">uml.per.login.RedisEao</node>
+    <node x="1407.5" y="93.0">uml.per.login.PerResumeScoreHelper</node>
+  </nodes>
+  <notes />
+  <edges>
+    <edge source="uml.per.login.PerUserSrv" target="uml.per.login.TempHelper">
+      <point x="0.0" y="-61.5" />
+      <point x="0.0" y="27.0" />
+    </edge>
+    <edge source="uml.per.login.PerUserBiz" target="uml.per.login.PerUserSrv">
+      <point x="0.0" y="-50.0" />
+      <point x="0.0" y="61.5" />
+    </edge>
+    <edge source="uml.per.login.PerUserSrv" target="uml.per.login.PerUserEao">
+      <point x="136.0" y="0.0" />
+      <point x="-134.5" y="0.0" />
+    </edge>
+    <edge source="uml.per.login.PerResumeEao" target="uml.per.login.PerResumeCheckHelper">
+      <point x="0.0" y="-38.5" />
+      <point x="0.0" y="27.0" />
+    </edge>
+    <edge source="uml.per.login.PerUserSrv" target="uml.per.login.PerResumeEao">
+      <point x="40.0" y="-61.5" />
+      <point x="600.0" y="120.0" />
+      <point x="-108.5" y="0.0" />
+    </edge>
+    <edge source="uml.per.login.PerResumeEao" target="uml.per.login.PerResumeScoreHelper">
+      <point x="108.5" y="0.0" />
+      <point x="-112.5" y="0.0" />
+    </edge>
+    <edge source="uml.per.login.PerResumeEao" target="uml.per.login.ResumeCheckHelper">
+      <point x="108.5" y="-20.0" />
+      <point x="1360.0" y="100.0" />
+      <point x="0.0" y="27.0" />
+    </edge>
+    <edge source="uml.per.login.PerUserSrv" target="uml.per.login.PerLoginHistoryEao">
+      <point x="-136.0" y="0.0" />
+      <point x="184.0" y="0.0" />
+    </edge>
+    <edge source="uml.per.login.PerUserSrv" target="uml.per.login.RedisEao">
+      <point x="80.0" y="-61.5" />
+      <point x="640.0" y="320.0" />
+      <point x="-152.0" y="0.0" />
+    </edge>
+    <edge source="uml.per.login.PerLoginHistoryEao" target="uml.per.login.IpSeekerHelper">
+      <point x="0.0" y="-27.0" />
+      <point x="0.0" y="27.0" />
+    </edge>
+    <edge source="uml.per.login.PerResumeEao" target="uml.per.login.RedisEao">
+      <point x="0.0" y="38.5" />
+      <point x="0.0" y="-84.5" />
+    </edge>
+    <edge source="uml.per.login.PerUserBiz" target="uml.per.login.RedisSrv">
+      <point x="179.5" y="0.0" />
+      <point x="-149.5" y="0.0" />
+    </edge>
+  </edges>
+  <settings layout="Hierarchic Group" zoom="1.0" x="829.5" y="472.0" />
+  <SelectedNodes />
+  <Categories>
+    <Category>Methods</Category>
+  </Categories>
+  <SCOPE>All</SCOPE>
+  <VISIBILITY>private</VISIBILITY>
+</Diagram>
+

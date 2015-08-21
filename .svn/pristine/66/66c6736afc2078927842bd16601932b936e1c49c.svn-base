@@ -1,0 +1,157 @@
+package com.job5156.core.srv.search;
+
+import com.google.common.collect.Lists;
+import com.job5156.core.common.helper.DomainHelper;
+import com.job5156.core.common.helper.HighLightHelper;
+import com.job5156.core.common.util.ChineseCodeChangeUtil;
+import com.job5156.core.common.util.EmojiFilterStringUtils;
+import com.job5156.core.entity.searcher.PosBrief;
+import com.job5156.core.bo.form.searcher.SearchPosFilterFormBo;
+import com.job5156.core.bo.form.searcher.SearchPosFormBo;
+import com.job5156.core.bo.form.searcher.SearchPosResultBo;
+import com.job5156.core.common.helper.searcher.SearchDetailHelper;
+import com.job5156.core.common.helper.searcher.SearchHelper;
+import com.job5156.core.common.helper.searcher.SearchParamHelper;
+import com.job5156.core.common.helper.searcher.SearchResultHelper;
+import com.job5156.core.common.util.KeyMaskUtil;
+import com.job5156.core.eao.sys.subsite.job.SysPositionKeywordEao;
+import com.job5156.core.entity.searcher.PosSearchFilter;
+import com.job5156.core.entity.searcher.SearchResult;
+import com.job5156.core.entity.sys.job.SysPositionKeyword;
+import com.job5156.searcher.parameter.PosSearchParam;
+import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang.StringUtils;
+import org.springframework.stereotype.Service;
+
+import javax.annotation.Resource;
+import java.util.List;
+
+/**
+ * <p></p>
+ * Date:2015/6/13 14:49
+ *
+ * @author hjs
+ * @version 1.0
+ */
+@Service
+public class SearchPosSrv {
+
+    @Resource
+    private SearchParamHelper searchParamHelper;
+    @Resource
+    private SysPositionKeywordEao sysPositionKeywordEao;
+    @Resource
+    private SearchHelper searchHelper;
+    @Resource
+    private SearchDetailHelper searchDetailHelper;
+    @Resource
+    private SearchResultHelper searchResultHelper;
+    @Resource
+    private HighLightHelper highLightHelper;
+    @Resource
+    private DomainHelper domainHelper;
+
+    public SearchPosResultBo search(SearchPosFormBo vo, SearchPosFilterFormBo filterVo) {
+
+        PosSearchParam posSearchParam = searchParamHelper.assemblePosParam(vo, filterVo); //根据VO组装真实搜索条件
+        if (StringUtils.isNotBlank(posSearchParam.getKeyword())) {
+            //职位搜索关键字排名（将设置的职位搜索出，但是顺序需要在下面重新抽取）
+            List<SysPositionKeyword> sysPositionKeywordList = sysPositionKeywordEao.listValidByKeyword(posSearchParam.getKeyword(), vo.getLocationList());
+            if (CollectionUtils.isNotEmpty(sysPositionKeywordList)) {
+                List<Integer> posNoList = Lists.newArrayList();
+                for (SysPositionKeyword sysPositionKeyword : sysPositionKeywordList) {
+                    if (sysPositionKeyword != null && sysPositionKeyword.getPosId() != null && sysPositionKeyword.getPosId() > 0) {
+                        posNoList.add(KeyMaskUtil.posIdToNo(sysPositionKeyword.getPosId(), (short) 1));
+                    }
+                }
+                if (CollectionUtils.isNotEmpty(posNoList)) {
+                    posSearchParam.setRankPosIdList(posNoList);
+                }
+            }
+        }
+        return search(posSearchParam, vo.isKeywordHighLightFlag());
+    }
+
+
+    public SearchPosResultBo search(PosSearchParam posSearchParam, boolean highLightKeyword) {
+        SearchResult searchResult = searchHelper.searchPos(posSearchParam); //从EJB搜索器取出搜索结果ids
+        List<PosBrief> list = searchDetailHelper.getPosBriefList(searchResult.getIds()); //从查询库根据ids取出真实的搜索结果内容
+        PosSearchFilter filter = searchResultHelper.assemblePosSearchFilter(searchResult); //从搜索结果组装成过滤器
+
+        SearchPosResultBo searchPosResultVo = new SearchPosResultBo();
+        searchPosResultVo.setSearchResult(searchResult);
+        searchPosResultVo.setList(list);
+        searchPosResultVo.setFilter(filter);
+
+        String keyword = posSearchParam.getKeyword();
+        if (StringUtils.isNotBlank(keyword)) {
+            String[] keywords = keyword.split(",|;");
+
+            //职位搜索关键字排名（将有设置排名的抽出来，重新作为一个list排序到最前面，仅第一页显示）
+            if (CollectionUtils.isNotEmpty(posSearchParam.getRankPosIdList())) {
+                List<PosBrief> rankPosList = searchDetailHelper.getPosBriefList(posSearchParam.getRankPosIdList());
+                List<PosBrief> highLightRankPosList = Lists.newArrayList();
+                if(CollectionUtils.isNotEmpty(rankPosList)) {
+                    for (PosBrief brief : rankPosList) {
+                        for (String kw : keywords) {
+                            if (StringUtils.isNotBlank(kw)) {
+                                brief = highLightHelper.highLightPositon(brief, kw);
+                                String kw_t = ChineseCodeChangeUtil.toTraditional(kw);
+                                if (!StringUtils.equals(kw_t, kw)) {
+                                    brief = highLightHelper.highLightPositon(brief, kw_t);
+                                }
+                            }
+                        }
+                        highLightRankPosList.add(brief);
+                    }
+                }
+                searchPosResultVo.setRankPosList(highLightRankPosList);
+            }
+            //职位搜索关键字排名End
+
+            //关键字高亮
+            if (highLightKeyword && CollectionUtils.isNotEmpty(list)) {
+                List<PosBrief> highLightList = Lists.newArrayList();
+                for (PosBrief brief : list) {
+                    for (String kw : keywords) {
+                        if (StringUtils.isNotBlank(kw)) {
+                            brief = highLightHelper.highLightPositon(brief, kw);
+                            String kw_t = ChineseCodeChangeUtil.toTraditional(kw);
+                            if (!StringUtils.equals(kw_t, kw)) {
+                                brief = highLightHelper.highLightPositon(brief, kw_t);
+                            }
+                        }
+                    }
+                    highLightList.add(brief);
+                }
+                searchPosResultVo.setList(highLightList);
+            }
+
+            for (String kw : keywords) {
+                Integer posType = 0;
+                kw = EmojiFilterStringUtils.cleanEmoji(kw);
+                if(StringUtils.isNotBlank(kw)) {
+                    if (CollectionUtils.isNotEmpty(posSearchParam.getExpectWorkJob())) {
+                        posType = posSearchParam.getExpectWorkJob().get(0); //因为是同步入库，为了保证不影响正常返回效率，目前只取第一个职位类别
+                    }
+                    //将搜索关键字写入数据库，以便后台进行热门关键字分析
+                    //logSearchPosKeywordDao.save(EmojiFilterStringUtils.cleanEmoji(kw), posType);
+                }
+            }
+        }
+
+        //SEO域名跳转
+        if (CollectionUtils.isNotEmpty(list)) {
+            List<PosBrief> seoList = Lists.newArrayList();
+            for (PosBrief brief : list) {
+                brief.setSeoDomain(domainHelper.seoDomainByLocation(brief.getJobLocPc1()));
+                seoList.add(brief);
+            }
+            searchPosResultVo.setList(seoList);
+        }
+
+        return searchPosResultVo;
+    }
+
+
+}

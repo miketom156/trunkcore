@@ -1,0 +1,13 @@
+#Redis Setting
+# -----------------------------------------
+redis.master1.host=192.168.67.181
+redis.master1.port=6379
+redis.master1.pass="job5156RedisMaster181"
+
+redis.master2.host=192.168.67.182
+redis.master2.port=6379
+redis.master2.pass="job5156RedisMaster182"
+
+#redis.slave.host=192.168.8.180
+#redis.slave.port=6379
+#redis.slave.pass=

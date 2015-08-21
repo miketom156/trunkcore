@@ -1,0 +1,5 @@
+# This property file is used to define EJB search ip
+#search.servers=192.168.8.197
+#search.servers=192.168.8.180
+search.servers=192.168.2.141
+search.jdbcs=jdbcTemplateQuery

@@ -1,0 +1,66 @@
+package com.job5156.core.srv.per;
+
+import com.google.common.collect.Lists;
+import com.job5156.core.eao.per.PerSearcherEao;
+import com.job5156.core.entity.per.PerSearcher;
+import org.apache.commons.lang.ObjectUtils;
+import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.math.NumberUtils;
+import org.json.JSONArray;
+import org.json.JSONObject;
+import org.springframework.stereotype.Service;
+
+import javax.annotation.Resource;
+import java.util.List;
+
+/**
+ * <p></p>
+ * Date:2015/6/16 9:22
+ *
+ * @author hjs
+ * @version 1.0
+ */
+@Service
+public class PerSearcherSrv {
+
+    @Resource
+    private PerSearcherEao perSearcherEao;
+
+    public List<PerSearcher> findByPerUser(Integer perId) {
+        return perSearcherEao.findByPerUser(perId);
+    }
+
+
+    /**
+     * 为了兼容简历搜索器旧数据，这里对内容进行一次转化，以满足新的搜索功能
+     * <pre>
+     * List<Integer>locationList->List<Integer> workareaList
+     * Double location->List<Integer> locationList
+     * Integer hometown->List<Integer> hometownList
+     * </pre>
+     * @param content
+     * @return
+     */
+    public String parsePerSearcherContent(String content){
+        if(StringUtils.isNotBlank(content)){
+            JSONObject jsonObject = new JSONObject(content);
+            JSONArray locationArr = jsonObject.isNull("locationList") ? null : jsonObject.getJSONArray("locationList");
+
+            if(locationArr != null && locationArr.length() > 0 && StringUtils.contains(locationArr.toString(), ".")){
+                jsonObject.remove("locationList");
+
+                List<Integer> locationList = Lists.newArrayList();
+                if(locationArr != null && locationArr.length() > 0){
+                    for(int i=0; i<locationArr.length(); i++){
+                        if(NumberUtils.isNumber(ObjectUtils.toString(locationArr.get(i)))){
+                            locationList.add(Double.valueOf(ObjectUtils.toString(locationArr.get(i))).intValue());
+                        }
+                    }
+                }
+                jsonObject.put("locationList", new JSONArray(locationList));
+                return jsonObject.toString();
+            }
+        }
+        return content;
+    }
+}

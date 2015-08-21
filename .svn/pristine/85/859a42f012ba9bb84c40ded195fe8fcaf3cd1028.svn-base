@@ -1,0 +1,73 @@
+package com.job5156.core.srv.per;
+
+import com.google.common.collect.Lists;
+import com.job5156.core.bo.form.per.PerPosApplyBo;
+import com.job5156.core.common.helper.TempHelper;
+import com.job5156.core.common.pagination.Page;
+import com.job5156.core.common.pagination.PageUtil;
+import com.job5156.core.eao.per.PerPosApplyEao;
+import com.job5156.core.entity.per.job.PerPosApply;
+import com.job5156.core.srv.base.BaseSrv;
+import org.apache.commons.lang.StringUtils;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import javax.annotation.Resource;
+import java.util.List;
+
+/**
+ * <p></p>
+ * Date:Administrator 2015-6-24
+ *
+ * @author hjs
+ * @version 1.0
+ */
+@Service
+@Transactional(value="transactionManagerAction")
+public class PerPosApplySrv extends BaseSrv<PerPosApply, Integer> {
+    @Resource
+    private PerPosApplyEao perPosApplyEao;
+    @Resource
+    private TempHelper tempHelper;
+
+    @Override
+    protected void initBaseHibernateEao() {
+        this.baseHibernateEao = perPosApplyEao;
+    }
+
+    /**
+     * 共应聘的职位数目
+     * @param userId
+     * @return
+     */
+    public int findApplyPosNumList(Integer userId){
+        return perPosApplyEao.findPosNumById(userId);
+    }
+
+    /**
+     * 应聘过的职位
+     * @param pn 页码
+     * @param pageSize 每页的数目
+     * @param command PerPosApply
+     * @return Page《PerViewLog》
+     */
+    public Page<PerPosApply> query(int pn, int pageSize, PerPosApply command) {
+        return PageUtil.getPage(perPosApplyEao.countQuery(command), pn, perPosApplyEao.query(pn, pageSize, command), pageSize);
+
+    }
+    /**
+     *应聘过的职位信息添加到PerPosApplyBoList
+     * @param logs
+     * @return
+     */
+    public List<PerPosApplyBo> toApplyVo(List<PerPosApply> logs){
+        List<PerPosApplyBo> perPosApplyVoList =  Lists.newArrayList();
+        for (PerPosApply perPosApply : logs) {
+            tempHelper.fillApplyMixInfo(perPosApply);
+            if(StringUtils.isNotBlank(perPosApply.getMixInfo()) && !StringUtils.equals("{}",perPosApply.getMixInfo())) {
+                perPosApplyVoList.add(new PerPosApplyBo(perPosApply));
+            }
+        }
+        return perPosApplyVoList;
+    }
+}

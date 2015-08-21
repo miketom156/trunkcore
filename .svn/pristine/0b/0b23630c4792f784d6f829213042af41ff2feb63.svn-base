@@ -1,0 +1,524 @@
+package com.job5156.core.biz;
+
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
+import com.job5156.core.bo.BizRetBo;
+import com.job5156.core.bo.form.per.PerPosApplyBo;
+import com.job5156.core.bo.form.per.PerPosFavoriteBo;
+import com.job5156.core.bo.form.per.PerPosFavoriteSrv;
+import com.job5156.core.bo.form.per.PerViewLogBo;
+import com.job5156.core.common.Constants;
+import com.job5156.core.common.helper.searcher.SearchDetailHelper;
+import com.job5156.core.common.pagination.Page;
+import com.job5156.core.common.util.KeyMaskUtil;
+import com.job5156.core.entity.com.ComPosition;
+import com.job5156.core.entity.per.job.PerInviteLog;
+import com.job5156.core.entity.per.job.PerPosApply;
+import com.job5156.core.entity.per.job.PerPosFavorite;
+import com.job5156.core.entity.per.job.PerViewLog;
+import com.job5156.core.srv.com.ComPositionSrv;
+import com.job5156.core.srv.per.PerInviteLogSrv;
+import com.job5156.core.bo.BizRetCode;
+import com.job5156.core.bo.mapping.PerInviteLogBo;
+import com.job5156.core.srv.per.PerPosApplySrv;
+import com.job5156.core.srv.per.PerViewLogSrv;
+import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.math.NumberUtils;
+import org.joda.time.DateTime;
+import org.springframework.stereotype.Component;
+import javax.annotation.Resource;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+/**
+ * <p></p>
+ * Date:2015/5/20 15:53
+ *
+ * @author pzm
+ * @version 1.0
+ */
+@Component
+public class PerJobBiz {
+    @Resource
+    private PerInviteLogSrv perInviteLogSrv;
+    @Resource
+    private SearchDetailHelper searchDetailHelper;
+    @Resource
+    private ComPositionSrv comPositionSrv;
+    @Resource
+    private PerViewLogSrv perViewLogSrv;
+    @Resource
+    private PerPosApplySrv perPosApplySrv;
+    @Resource
+    private PerPosFavoriteSrv perPosFavoriteSrv;
+
+
+    /**
+     * 谁邀请我面试信息
+     * @param perId 用户id
+     * @param pageNo 第几页
+     * @param pageSize 每页显示多少
+     * @param setRead 是否当前页都设置为已读
+     * @return
+     * <pre>Map<String,Object>返回的查询结果，参数如下：
+     *         Integer comNum - 共有多少家招聘企业邀请我面试
+     *         Integer inviteUnreadCount - 未读记录数
+     *         List<{@link com.job5156.core.bo.mapping.PerInviteLogBo}> list - 查询结果集
+     *         Page<{@link PerInviteLog}> page - 分页参数</pre>
+     */
+    public BizRetBo<Map<String,Object>> findInviteCommon(Integer perId, Integer pageNo, Integer pageSize, boolean setRead){
+        // app：检查perId
+        if (perId == null || perId <= 0) {
+            return new BizRetBo<>(BizRetCode.UNLOGIN);
+        }
+
+        Map<String,Object> rsMap = new HashMap<>();
+        //多少家招聘企业邀请我面试
+        rsMap.put("comNum", perInviteLogSrv.findInviteComNumList(perId));
+        rsMap.put("inviteUnreadCount", perInviteLogSrv.countUnreadByUserId(perId));
+        PerInviteLog command = new PerInviteLog();
+        command.setPerUserId(perId);
+        Page<PerInviteLog> page = perInviteLogSrv.query(pageNo, pageSize, command);
+        List<PerInviteLogBo> list = toInviteVo(page.getItems());
+        if(CollectionUtils.isNotEmpty(list)) {
+            for(PerInviteLogBo vo : list) {
+                if(CollectionUtils.isNotEmpty(searchDetailHelper.getPosBriefList(Lists.newArrayList(vo.getPosNo())))){
+                    vo.setPosFlag(1);
+                } else {
+                    vo.setPosFlag(0);
+                }
+                //touch:取得职位状态
+                String posStatusStr = vo.getMixInfoVo().getPosStatusStr();
+                if (StringUtils.isBlank(posStatusStr)) {
+                    ComPosition pos = comPositionSrv.get(vo.getPosId());
+                    if (pos != null) {
+                        vo.getMixInfoVo().setPosStatus(pos.getPosStatus());
+                    }
+                }
+            }
+            //touch:当前页都设置为已读
+            if(setRead) {
+                for (PerInviteLog invite : page.getItems()) {
+                    invite.setReadStatus(1); //当前页都设置为已读
+                    perInviteLogSrv.update(invite);
+                }
+            }
+        }
+        rsMap.put("list", list);
+        rsMap.put("page", page);
+        return new BizRetBo<>(BizRetCode.SUCCESS, rsMap);
+    }
+
+    /**
+     * 邀请个人面试记录的信息添加到perInviteLogBoList
+     * @param logs 邀请个人面试记录列表
+     * @return
+     */
+    private List<PerInviteLogBo> toInviteVo(List<PerInviteLog> logs){
+        List<PerInviteLogBo> perInviteLogBoList =  Lists.newArrayList();
+        for (PerInviteLog perInviteLog : logs) {
+            perInviteLogSrv.fillInviteMixInfo(perInviteLog);
+         /*   if(StringUtils.isNotBlank(perInviteLog.getMixInfo()) && !StringUtils.equals("{}",perInviteLog.getMixInfo())) {
+                perInviteLogVoList.add(new PerInviteLogVo(perInviteLog));
+            }*/
+            perInviteLogBoList.add(new PerInviteLogBo(perInviteLog));
+        }
+        return perInviteLogBoList;
+    }
+
+    /**
+     * 谁邀请我面试信息(触屏版)
+     * @param perId 用户id
+     * @param pageNo 第几页
+     * @param pageSize 每页显示多少
+     * @return
+     */
+    public BizRetBo<Map<String,Object>> findInviteTouch(Integer perId, Integer pageNo, Integer pageSize) {
+        Map<String,Object> rsMap = new HashMap<>();
+        BizRetBo<Map<String,Object>> bizRetBo = new BizRetBo<>();
+        Integer totalCount = perInviteLogSrv.countByUserId(perId);
+        Integer totalPage = totalCount % pageSize == 0 ? totalCount / pageSize : totalCount / pageSize + 1;
+        if (pageNo == null || pageNo <= 1) {
+            pageNo = 1;
+        }
+        rsMap.put("totalCount", totalCount);
+        rsMap.put("inviteUnreadCount", perInviteLogSrv.countUnreadByUserId(perId));
+        rsMap.put("totalPage", totalPage);
+        bizRetBo.setItem(rsMap);
+        if (pageNo > totalPage) {
+            bizRetBo.setRetCode(BizRetCode.PAGE_END);
+            return bizRetBo;
+        }
+        List<PerInviteLog> perInviteLogList = perInviteLogSrv.findPerInviteLogList(perId, pageNo, pageSize);
+        List<Map<String, Object>> items = Lists.newArrayList();
+        if (CollectionUtils.isNotEmpty(perInviteLogList)) {
+            List<PerInviteLogBo> voList = toInviteVo(perInviteLogList);
+            for (PerInviteLogBo vo : voList) {
+                Map<String, Object> temp = Maps.newHashMap();
+                String posStatusStr = vo.getMixInfoVo().getPosStatusStr();
+                if (StringUtils.isBlank(posStatusStr)) { //取得职位状态
+                    ComPosition pos = comPositionSrv.get(vo.getPosId());
+                    if (pos != null) {
+                        posStatusStr = pos.getPosStatusStr();
+                    }
+                }
+                temp.put("inviteDetail", vo.getInviteDetail());
+                temp.put("posNo", vo.getPosNo());
+                temp.put("posName", vo.getMixInfoVo().getPosName());
+                temp.put("posStatusStr",posStatusStr );
+                temp.put("comName", vo.getMixInfoVo().getComName());
+                temp.put("workLocationStr", vo.getMixInfoVo().getJobLocationStr());
+                temp.put("creTime", vo.getCreTime());
+                temp.put("contactPhone", vo.getMixInfoVo().getContactPhone());
+                temp.put("contactPerson", vo.getMixInfoVo().getContactPerson());
+                temp.put("id", vo.getId());
+                items.add(temp);
+            }
+            for (PerInviteLog invite : perInviteLogList) {
+                invite.setReadStatus(1); //当前页都设置为已读
+                perInviteLogSrv.update(invite);
+            }
+        }
+        bizRetBo.setItem(rsMap);
+        return bizRetBo;
+    }
+
+    /**
+     * 谁邀请我面试信息(app版)
+     * @param perId 用户id
+     * @param offset 第几条记录开始查询
+     * @param pageSize 每页显示多少
+     * @return
+     */
+    public BizRetBo<Map<String,Object>> findInviteApp(Integer perId, Integer offset, Integer pageSize) {
+        if (perId == null || perId <= 0) {
+            return new BizRetBo<>(BizRetCode.UNLOGIN);
+        }
+
+        int pageNo;
+        if (offset >= 0) {
+            pageNo = (offset / pageSize) + 1;
+        } else {
+            return new BizRetBo<>(BizRetCode.PARAM_ERROR);
+        }
+
+        List<Map<String, Object>> items = Lists.newArrayList();
+
+        int count = perInviteLogSrv.countByUserId(perId);
+        count = count > 1000 ? 1000 : count;                    //最多返回1000条
+        Map<String,Object> rsMap = new HashMap<>();
+        List<PerInviteLog> list = perInviteLogSrv.findPerInviteLogList(perId, pageNo, pageSize);
+        if (CollectionUtils.isNotEmpty(list)) {
+            List<PerInviteLogBo> voList = toInviteVo(list);
+            for (PerInviteLogBo vo : voList) {
+                Map<String, Object> map = Maps.newHashMap();
+                Integer posNo =  KeyMaskUtil.posIdToNo(vo.getPosId(), (short) 1);
+                map.put("id", vo.getId());
+                map.put("posid", posNo);
+                map.put("posname", vo.getMixInfoVo().getPosName());
+                map.put("area", vo.getMixInfoVo().getJobLocationStr());
+                if(CollectionUtils.isNotEmpty(searchDetailHelper.getPosBriefList(Lists.newArrayList(posNo)))){
+                    vo.setPosFlag(1);
+                    map.put("posstatus", "招聘中");
+                } else {
+                    vo.setPosFlag(0);
+                    map.put("posstatus", "停止招聘");
+                }
+                map.put("comid", vo.getComId());
+                map.put("date", new DateTime(vo.getCreTime()).toString("yyyy-MM-dd"));
+
+                items.add(map);
+            }
+            rsMap.put("count", count);
+            rsMap.put("items", items);
+            return new BizRetBo<>(BizRetCode.SUCCESS,rsMap);
+        } else {
+            return new BizRetBo<>(BizRetCode.PARAM_ERROR);
+        }
+    }
+
+    /**
+     * 谁邀请我面试信息(微信版)
+     * @param perId 用户id
+     * @param pageNo 第几页
+     * @param pageSize 每页显示多少
+     * @return
+     */
+    public BizRetBo<Map<String,Object>> findInviteWechat(Integer perId, Integer pageNo, Integer pageSize) {
+
+        Map<String,Object> rsMap = new HashMap<>();
+        List<Map<String, Object>> items = Lists.newArrayList();
+
+        int count = perInviteLogSrv.countByUserId(perId);
+        count = count > 1000 ? 1000 : count;                    //最多返回1000条
+
+        List<PerInviteLog> list = perInviteLogSrv.findPerInviteLogList(perId, pageNo, Constants.DEFAULT_PAGE_SIZE);
+        if (CollectionUtils.isNotEmpty(list)) {
+            List<PerInviteLogBo> voList = toInviteVo(list);
+            for (PerInviteLogBo vo : voList) {
+                Map<String, Object> temp = Maps.newHashMap();
+                Integer posNo = KeyMaskUtil.posIdToNo(vo.getPosId(),(short) 1);
+                temp.put("posno", posNo);
+                String posname = vo.getMixInfoVo().getPosName();
+                if(CollectionUtils.isEmpty(searchDetailHelper.getPosBriefList(Lists.newArrayList(posNo)))){
+                    posname+="[停止招聘]";
+                }
+                temp.put("posname", posname);
+                temp.put("comname", vo.getMixInfoVo().getComName());
+                temp.put("date", new DateTime(vo.getCreTime()).toString("yyyy-MM-dd"));
+                items.add(temp);
+            }
+        }
+
+        rsMap.put("pageno", pageNo);
+        rsMap.put("pagesize", Constants.DEFAULT_PAGE_SIZE);
+        rsMap.put("totalsize", count);
+        rsMap.put("items", items);
+        return new BizRetBo<>(BizRetCode.SUCCESS,rsMap);
+    }
+
+    /**
+     * 谁邀请我面试信息(网页版)
+     * @param perId 用户id
+     * @param pageNo 第几页
+     * @param pageSize 每页显示多少
+     * @return
+     */
+    public BizRetBo<Map<String,Object>> findInviteWeb(Integer perId, Integer pageNo, Integer pageSize){
+        Map<String,Object> rsMap = new HashMap<>();
+        //多少家招聘企业邀请我面试
+        rsMap.put("comNum", perInviteLogSrv.findInviteComNumList(perId));
+        PerInviteLog command = new PerInviteLog();
+        command.setPerUserId(perId);
+        Page<PerInviteLog> page = perInviteLogSrv.query(pageNo, pageSize, command);
+        List<PerInviteLogBo> list = toInviteVo(page.getItems());
+
+        if(CollectionUtils.isNotEmpty(list)) {
+            for(PerInviteLogBo vo : list) {
+                Integer posNo = KeyMaskUtil.posIdToNo(vo.getPosId(), (short) 1);
+                vo.setPosNo(posNo);
+                if(CollectionUtils.isNotEmpty(searchDetailHelper.getPosBriefList(Lists.newArrayList(posNo)))){
+                    vo.setPosFlag(1);
+                } else {
+                    vo.setPosFlag(0);
+                }
+            }
+        }
+        rsMap.put("list", list);
+        rsMap.put("page", page);
+        return new BizRetBo<>(BizRetCode.SUCCESS, rsMap);
+    }
+
+    /**
+     * 访问“谁看过我的简历”页面
+     * @param perUserId 用户id
+     * @param pageNo 第几页
+     * @param pageSize 每页显示页数
+     * @return
+     */
+   public BizRetBo<Map<String,Object>> viewResume(Integer perUserId, Integer pageNo, Integer pageSize){
+        Map<String,Object> rsMap = new HashMap<>();
+        PerViewLog command = new PerViewLog();
+        List<PerViewLog> log = perViewLogSrv.findViewComNumList(perUserId);
+        if(log != null){
+            rsMap.put("size",log.size());
+        }
+        command.setPerUserId(perUserId);
+        Page<PerViewLog> page = perViewLogSrv.query(pageNo, pageSize, command);
+        List<PerViewLogBo> list = perViewLogSrv.toViewVo(page.getItems());
+        if(CollectionUtils.isNotEmpty(list)) {
+            for(PerViewLogBo vo : list) {
+                if(searchDetailHelper.getComBriefById(vo.getComId()) != null){
+                    vo.setComFlag(1);
+                } else {
+                    vo.setComFlag(0);
+                }
+            }
+        }
+        rsMap.put("list",list);
+        rsMap.put("page",page);
+        return new BizRetBo<>(BizRetCode.SUCCESS, rsMap);
+    }
+
+    /**
+     * 删除简历查看记录
+     */
+    public void delViewRecord(String id){
+        String[] ids = id.split(",");
+        for (String idStr : ids) {
+            //删除单条记录
+            PerViewLog perViewLog = perViewLogSrv.get(NumberUtils.toInt(idStr));
+            perViewLog.setDelStatus(Constants.DEFAULT_DELETE_FLAG);
+            perViewLogSrv.update(perViewLog);
+        }
+    }
+
+    /**
+     * 更新简历查看记录的标记和备注内容
+     * @param markText
+     * @param markLabel
+     * @param id
+     */
+    public void updateViewRemark(String markText,String markLabel,String id){
+        PerViewLog perViewLog = perViewLogSrv.get(NumberUtils.toInt(id));
+        perViewLog.setMark(NumberUtils.toInt(markLabel));
+        perViewLog.setRemark(markText);
+        perViewLog.setEditTime(DateTime.now().toDate());
+        perViewLogSrv.update(perViewLog);
+    }
+
+
+    /**
+     * 删除邀请面试记录
+     */
+    public void delInviteRecord(String id){
+        String[] ids = id.split(",");
+        for (String idStr : ids) {
+            //删除单条记录
+            PerInviteLog perInviteLog = perInviteLogSrv.get(NumberUtils.toInt(idStr));
+            perInviteLog.setDelStatus(Constants.DEFAULT_DELETE_FLAG);
+            perInviteLogSrv.update(perInviteLog);
+        }
+    }
+
+
+    /**
+     * 更新邀请面试记录的标记和备注内容
+     * @param markText
+     * @param markLabel
+     * @param id
+     */
+    public void updateInviteRemark(String markText,String markLabel,String id){
+        PerInviteLog perInviteLog = perInviteLogSrv.get(NumberUtils.toInt(id));
+        perInviteLog.setMark(NumberUtils.toInt(markLabel));
+        perInviteLog.setRemark(markText);
+        perInviteLog.setEditTime(DateTime.now().toDate());
+        perInviteLogSrv.update(perInviteLog);
+    }
+
+    /**
+     * 更新邀请面试记录的查看状态为1
+     */
+    public void setReadStatus(Integer id){
+        PerInviteLog perInviteLog = perInviteLogSrv.get(id);
+        perInviteLog.setReadStatus(1);
+        perInviteLogSrv.update(perInviteLog);
+    }
+
+    /**
+     *  访问“应聘过的职位”页面
+     * @param perUserId 用户id
+     * @param pageNo 第几页
+     * @param pageSize 每页显示页数
+     * @return
+     */
+    public BizRetBo<Map<String,Object>> applyForJob(Integer perUserId, Integer pageNo, Integer pageSize){
+        Map<String,Object> rsMap = new HashMap<>();
+        PerPosApply command = new PerPosApply();
+        rsMap.put("size", perPosApplySrv.findApplyPosNumList(perUserId));
+        command.setPerUserId(perUserId);
+        Page<PerPosApply> page = perPosApplySrv.query(pageNo, pageSize, command);
+        List<PerPosApplyBo> list = perPosApplySrv.toApplyVo(page.getItems());
+        if(CollectionUtils.isNotEmpty(list)) {
+            for(PerPosApplyBo vo : list) {
+                Integer posNo = KeyMaskUtil.posIdToNo(vo.getPosId(),(short) 1);
+                vo.setPosNo(posNo);
+                if(CollectionUtils.isNotEmpty(searchDetailHelper.getPosBriefList(Lists.newArrayList(posNo)))){
+                    vo.setPosFlag(1);
+                } else {
+                    vo.setPosFlag(0);
+                }
+            }
+        }
+        rsMap.put("list", list);
+        rsMap.put("page", page);
+        return new BizRetBo<>(BizRetCode.SUCCESS, rsMap);
+    }
+
+    /**
+     * 删除应聘过的职位记录
+     */
+    public void delApplyForJob(String id){
+        String[] ids = id.split(",");
+        for (String idStr : ids) {
+            //删除单条记录
+            PerPosApply perPosApply = perPosApplySrv.get(NumberUtils.toInt(idStr));
+            perPosApply.setDelStatus(Constants.DEFAULT_DELETE_FLAG);
+            perPosApplySrv.update(perPosApply);
+        }
+    }
+
+    /**
+     * 更新应聘过的职位记录的标记和备注内容
+     * @param markText
+     * @param markLabel
+     * @param id
+     */
+    public void updateApplyRemark(String markText,String markLabel,String id){
+        PerPosApply perPosApply = perPosApplySrv.get(NumberUtils.toInt(id));
+        perPosApply.setMark(NumberUtils.toInt(markLabel));
+        perPosApply.setRemark(markText);
+        perPosApply.setEditTime(DateTime.now().toDate());
+        perPosApplySrv.update(perPosApply);
+    }
+
+
+    /**
+     * 访问“职位收藏夹”页面
+     * @param perUserId 用户id
+     * @param pageNo 第几页
+     * @param pageSize 每页显示页数
+     * @return
+     */
+    public BizRetBo<Map<String,Object>> postFavorites(Integer perUserId, Integer pageNo, Integer pageSize){
+        Map<String,Object> rsMap = new HashMap<>();
+        PerPosFavorite command = new PerPosFavorite();
+        command.setPerUserId(perUserId);
+        Page<PerPosFavorite> page = perPosFavoriteSrv.query(pageNo, pageSize, command);
+        List<PerPosFavoriteBo> list = perPosFavoriteSrv.toFavoriteVo(page.getItems());
+        if(CollectionUtils.isNotEmpty(list)) {
+            for (PerPosFavoriteBo vo : list) {
+                Integer posNo = KeyMaskUtil.posIdToNo(vo.getPosId(), (short) 1);
+                vo.setPosNo(posNo);
+                if (CollectionUtils.isNotEmpty(searchDetailHelper.getPosBriefList(Lists.newArrayList(posNo)))) {
+                    vo.setPosFlag(1);
+                } else {
+                    vo.setPosFlag(0);
+                }
+            }
+        }
+        rsMap.put("list", list);
+        rsMap.put("page", page);
+        rsMap.put("size",list.size());
+        return new BizRetBo<>(BizRetCode.SUCCESS, rsMap);
+    }
+
+    /**
+     * 删除职位收藏记录
+     */
+    public void favoriteDel(String id){
+        String[] ids = id.split(",");
+        for (String idStr : ids) {
+            //删除单条记录
+            PerPosFavorite perPosFavorite = perPosFavoriteSrv.get(NumberUtils.toInt(idStr));
+            perPosFavorite.setDelStatus(Constants.DEFAULT_DELETE_FLAG);
+            perPosFavoriteSrv.update(perPosFavorite);
+        }
+    }
+
+    /**
+     * 更新职位收藏记录的标记和备注内容
+     * @param markText
+     * @param markLabel
+     * @param id
+     */
+    public void favoriteRemark(String markText,String markLabel,String id){
+        PerPosFavorite perPosFavorite = perPosFavoriteSrv.get(NumberUtils.toInt(id));
+        perPosFavorite.setMark(NumberUtils.toInt(markLabel));
+        perPosFavorite.setRemark(markText);
+        perPosFavorite.setEditTime(DateTime.now().toDate());
+        perPosFavoriteSrv.update(perPosFavorite);
+    }
+}

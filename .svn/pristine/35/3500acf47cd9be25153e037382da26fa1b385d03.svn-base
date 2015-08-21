@@ -1,0 +1,71 @@
+package com.job5156.core.eao.sys.subsite.job;
+
+import com.google.common.collect.Lists;
+import com.job5156.core.eao.base.BaseHibernateEao;
+import com.job5156.core.entity.sys.job.SysPositionKeyword;
+import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang.StringUtils;
+import org.hibernate.SessionFactory;
+import org.joda.time.DateTime;
+import org.springframework.stereotype.Repository;
+
+import javax.annotation.Resource;
+import java.util.List;
+
+/**
+ * <p></p>
+ * Date:2015/6/15 15:50
+ *
+ * @author hjs
+ * @version 1.0
+ */
+@Repository
+public class SysPositionKeywordEao extends BaseHibernateEao<SysPositionKeyword, Integer> {
+
+    @Resource(name = "sessionFactory")
+    public void setSessionFactory(SessionFactory sessionFactory) {
+        this.sessionFactory = sessionFactory;
+    }
+
+    /**
+     * 查询当前关键字还有效的职位数量
+     *
+     * @param keyword
+     * @return
+     */
+    public int queryEffectPosNumByKeyword(String keyword, Integer id) {
+        String hql = "SELECT COUNT(*) FROM SysPositionKeyword WHERE keyword = ? AND expireDate >= ?";
+        List<Object> paramList = Lists.newArrayList();
+        paramList.add(keyword);
+        paramList.add(DateTime.now().secondOfDay().withMinimumValue().toDate());
+
+        if (id != null) {
+            hql += " AND id != ?";
+            paramList.add(id);
+        }
+        return this.<Number> aggregate(hql, paramList.toArray()).intValue();
+    }
+
+    public List<SysPositionKeyword> listValidByKeyword(String keyword, List<Integer> locationList) {
+        String hql = "FROM SysPositionKeyword sys WHERE sys.keyword = ? AND sys.expireDate >= ? AND sys.validDate <= ?";
+
+        //按照地区条件搜索出匹配的职位关键字
+        if(CollectionUtils.isNotEmpty(locationList)) {
+            String locationWhere = "";
+            for(Integer location : locationList) {
+                //判断搜索的地区是否为省份或城市，如果为省份或城市则通过省份及城市编码前缀进行检索
+                location = location % 1000000 == 0 ? location / 1000000 : location % 10000 == 0 ? location / 10000 : location;
+                if(StringUtils.isNotBlank(locationWhere)) locationWhere += " or ";
+                //暂时采用职位的工作地区进行检索，后期后台做到可以随意定义职位关键字显示的区域可以使用showLocation
+                locationWhere += "locate(" + location + ", sys.comPosition.workLocation) > 0";
+                //locationWhere += "locate(" + location + ", showLocation) > 0";
+            }
+
+            if(StringUtils.isNotBlank(locationWhere)) {
+                hql += " and (" + locationWhere + ")";
+            }
+        }
+        return list(hql, new Object[]{keyword, DateTime.now().secondOfDay().withMinimumValue().toDate(), DateTime.now().secondOfDay().withMaximumValue().toDate()});
+    }
+
+}

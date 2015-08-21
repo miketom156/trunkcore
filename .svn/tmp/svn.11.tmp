@@ -1,0 +1,33 @@
+/**
+ * 
+ */
+package com.job5156.core.eao.per;
+
+import java.util.List;
+
+import javax.annotation.Resource;
+
+import org.junit.Assert;
+import org.junit.Test;
+
+import com.job5156.core.TestBase;
+import com.job5156.core.entity.per.PerSearcher;
+
+/**
+ * @author lyh
+ * @Description
+ * @date 2015年7月1日
+ */
+public class PerSearcherEaoTest extends TestBase {
+
+	@Resource
+	private PerSearcherEao perSearcherEao;
+
+	@Test
+	public void findByPerUser() {
+		List<PerSearcher> list = perSearcherEao.findByPerUser(this.DEFAULT_PID);
+        System.out.println(list.size());
+		Assert.assertNull(list.size());
+	}
+
+}

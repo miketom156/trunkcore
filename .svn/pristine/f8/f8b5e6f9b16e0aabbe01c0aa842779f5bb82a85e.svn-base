@@ -1,0 +1,517 @@
+package com.job5156.core.eao.com;
+
+import com.google.common.collect.Lists;
+import com.job5156.core.common.CommonEnum;
+import com.job5156.core.common.Constants;
+import com.job5156.core.common.pagination.PageV3;
+import com.job5156.core.eao.RedisEao;
+import com.job5156.core.eao.base.BaseHibernateEao;
+import com.job5156.core.eao.base.PropertyFilter;
+import com.job5156.core.entity.com.ComPosition;
+import com.job5156.core.bo.form.ComPositionBo;
+import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang.ArrayUtils;
+import org.apache.commons.lang.ObjectUtils;
+import org.apache.commons.lang.StringUtils;
+import org.hibernate.SessionFactory;
+import org.joda.time.DateTime;
+import org.springframework.stereotype.Repository;
+
+import javax.annotation.Resource;
+import java.util.Collection;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
+
+import com.job5156.core.eao.base.PropertyFilter.*;
+
+@Repository
+public class ComPositionEao extends BaseHibernateEao<ComPosition, Integer> {
+
+    @Resource
+    RedisEao redisEao;
+
+	@Resource(name = "sessionFactory")
+	public void setSessionFactory(SessionFactory sessionFactory) {
+		this.sessionFactory = sessionFactory;
+	}
+	
+	@Override
+	public void setAllowPropertyMap() {
+		/*allowPropertyList = Maps.newHashMap();
+		allowPropertyList.put("sDate", MatchType.BETWEEN);*/
+	}
+
+	public String getWhereHql(ComPositionBo command) {
+		String where = "";
+		
+		if(command.getSearchStartDate() != null && command.getSearchEndDate() != null)
+			where += " and createDate between ? and ? ";
+		
+		if(command.getDepartmentId() != null && command.getDepartmentId() != 0)
+			where += " and departmentId = ? ";
+		
+		if(command.getPosId() != null && command.getPosId() != 0)
+			where += " and id = ? ";
+		
+		if(!StringUtils.isEmpty(command.getPosName()))
+			where += " and posName like ? ";
+		
+		//因in条件只能在最后出现，固只能在最末尾添加
+		where += " and posStatus in(:params) ";
+		
+		return where;
+	}
+	
+	
+
+	private Object[] getQueryParam(ComPositionBo command, List<Integer> posTypes, List<Object> params) {
+    	if(command.getSearchStartDate() != null && command.getSearchEndDate() != null) {
+    		params.add(command.getSearchStartDate());
+    		params.add(command.getSearchEndDate());
+    	}
+		
+		if(command.getDepartmentId() != null && command.getDepartmentId() != 0)
+			params.add(command.getDepartmentId());
+		
+		if(command.getPosId() != null && command.getPosId() != 0)
+			params.add(command.getPosId());
+		
+		if(!StringUtils.isEmpty(command.getPosName()))
+			params.add("%" + command.getPosName() + "%");
+		
+		//因in条件只能在最后出现，固只能在最末尾添加
+		params.add(posTypes);
+    	
+    	return params.toArray(new Object[params.size()]);
+    }
+	
+	public int countQuery(ComPositionBo command, Integer comId, List<Integer> posTypes, String sortType) {
+		String hql = "SELECT count(*) FROM ComPosition where comId = ? AND delStatus!=-1";
+    	//获取查询条件
+    	String where = getWhereHql(command);
+    	if(StringUtils.isNotBlank(where)) {
+    		hql += where;
+    	}
+    	hql += " ORDER BY " + sortType;
+
+    	//构造参数
+    	List<Object> params = Lists.newArrayList();
+    	params.add(comId);
+        return this.<Number>aggregate(hql, getQueryParam(command, posTypes, params)).intValue();
+    }
+	
+	public List<ComPosition> query(int pn, int pageSize, ComPositionBo command, Integer comId, List<Integer> posTypes, String sortType){
+		String hql = "FROM ComPosition WHERE comId = ? AND delStatus!=-1";
+    	//获取查询条件
+    	String where = getWhereHql(command);
+        if(StringUtils.isNotBlank(where)) {
+    		hql += where;
+    	}
+    	hql += " ORDER BY " + sortType;
+    	//构造参数
+    	List<Object> params = Lists.newArrayList();
+    	params.add(comId);
+		return list(hql, pn, pageSize, getQueryParam(command, posTypes, params));
+	}
+    
+    public List<ComPosition> findPosListById(List<Integer> ids){
+        if(CollectionUtils.isNotEmpty(ids)) {
+            String hql = "FROM ComPosition WHERE id in (:params) order by updateDate asc";
+            return list(hql, new Object[] {ids});
+        } else {
+            return Lists.newArrayList();
+        }
+	}
+
+    public List<ComPosition> findPosListByIdOrderbyUrgent(List<Integer> ids){
+        if(CollectionUtils.isNotEmpty(ids)) {
+            String hql = "FROM ComPosition WHERE id in (:params) order by urgent desc, updateDate desc";
+            return list(hql, new Object[] {ids});
+        } else {
+            return Lists.newArrayList();
+        }
+    }
+
+    public List<ComPosition> findPosListByIdsNoOrder(List<Integer> ids){
+        if(CollectionUtils.isNotEmpty(ids)) {
+            String hql = "FROM ComPosition WHERE id in (:params) ";
+            return list(hql, new Object[] {ids});
+        } else {
+            return Lists.newArrayList();
+        }
+	}
+
+    public List<ComPosition> getPosListByPosStatus(List<Integer> ids, List<Integer> posStatus){
+        if(CollectionUtils.isNotEmpty(ids)) {
+        	List<PropertyFilter> filterList = Lists.newArrayList();
+    		filterList.add(new PropertyFilter("id", MatchType.IN, ids.toArray()));
+    		filterList.add(new PropertyFilter("posStatus", MatchType.IN, posStatus.toArray()));
+    		return find(filterList);
+        } else {
+            return Lists.newArrayList();
+        }
+	}
+
+    public List<ComPosition> getPosListByPosStatus(Integer comId, List<Integer> posStatus){
+        if(CollectionUtils.isNotEmpty(posStatus)) {
+            String hql = "FROM ComPosition WHERE comId = ? and posStatus in(:params) AND delStatus!=-1 ORDER BY id DESC";
+            return list(hql, new Object[] {comId, posStatus});
+        } else {
+            return Lists.newArrayList();
+        }
+    }
+
+    public List<ComPosition> getComIndexPosList(Integer comId,List<Integer> deptList){
+        List<Integer> posStatusList = CommonEnum.PositionStatusGroup.RECRUITING.getValue();
+        if(CollectionUtils.isNotEmpty(posStatusList)) {
+            String hql = " FROM ComPosition WHERE comId = ? and posStatus in(:params) AND delStatus != -1 ";
+            if(CollectionUtils.isNotEmpty(deptList) && !deptList.contains(-1)){//(分)子公司所拥有的部门
+                hql += " AND departmentId in ("+StringUtils.join(deptList,',') +") ";
+            }
+            hql += " ORDER BY resumeUnreadCount DESC, id DESC ";
+            return list(hql, 1, 6, new Object[] {comId, posStatusList});
+        } else {
+            return Lists.newArrayList();
+        }
+	}
+
+    public List<ComPosition> getWaitForFinishMoreThan24Hours() {
+        String hql = " FROM ComPosition WHERE posStatus = ? AND delStatus != -1 AND updateDate <= ?";
+        return list(hql, new Object[]{CommonEnum.PositionStatus.WAIT_FOR_FINISH.getValue(), DateTime.now().minusHours(24).toDate()});
+    }
+
+    /**
+     * 取得正在招聘的职位（截止日期之内,可设置限制数）
+     * @param comId
+     * @param limits
+     * @return
+     */
+    public List<ComPosition> getRecruitingPosList(Integer comId, Integer... limits){
+        Date endDate = DateTime.now().secondOfDay().withMaximumValue().toDate();
+        String hql = "FROM ComPosition WHERE comId = ? AND endDate > ? and posStatus in(:params) AND delStatus!=-1 ";
+        int num = ArrayUtils.isEmpty(limits)?1000:limits[0];
+        return list(hql, 1, num, new Object[] {comId,endDate, CommonEnum.PositionStatusGroup.RECRUITING.getValue()});
+    }
+
+    /**
+     *  取得正在招聘的职位（截止日期之内,可设置限制数）
+     * @param comId
+     * @param limits
+     * @param orderFields 排序列名
+     * @param orderTypes 排序列对应类型(0:asc,1:desc)
+     * @return
+     */
+    public List<ComPosition> getRecruitingPosListOrder(Integer comId, Integer[] limits, String[] orderFields, Integer[] orderTypes){
+        Date endDate = DateTime.now().secondOfDay().withMaximumValue().toDate();
+        String hql = "FROM ComPosition WHERE comId = ? AND endDate > ? and posStatus in(:params) AND delStatus!=-1 ";
+        if(orderFields!=null&&orderTypes!=null&&orderFields.length!=orderTypes.length){
+            throw new IllegalArgumentException("排序列名数组长度需与排序类型数组长度一致。");
+        }
+        if(orderFields!=null&&orderTypes!=null){
+            if(orderFields.length>0&&orderTypes.length>0){
+                hql+= " order by ";
+                  for(Integer i = 0;i< orderFields.length;i++){
+                       hql+= " "+orderFields[i]+" "+(orderTypes[i]==0?" asc ,":" desc,");
+                  }
+                hql = hql.substring(0,hql.length()-1);
+            }
+        }
+        int num = ArrayUtils.isEmpty(limits)?1000:limits[0];
+        return list(hql, 1, num, new Object[] {comId,endDate, CommonEnum.PositionStatusGroup.RECRUITING.getValue()});
+    }
+
+	public ComPosition validatePositionByPosName(Integer comId, Integer currentId, List<Integer> departmentIds, String name) {
+		String hql = "FROM ComPosition WHERE comId = ? and id != ? and posName = ? and comDepartment.id in(:params) and delStatus != -1 and posStatus != -99";
+		List<ComPosition> posList = list(hql, new Object[] {comId, currentId, name, departmentIds});
+		if(CollectionUtils.isNotEmpty(posList)) {
+			return posList.get(0);
+		}
+        return null;
+    }
+	
+	public List<ComPosition> getAllComPositionByComId(Integer comId) {
+		String hql = "FROM ComPosition WHERE comId = ? order by posStatus desc";
+		return list(hql, new Object[] {comId});
+	}
+	
+	public List<ComPosition> getAllComPositionByDeptIds(Integer comId, List<Integer> deptIds) {
+        if(CollectionUtils.isNotEmpty(deptIds)) {
+            String hql = "FROM ComPosition WHERE comId = ? and departmentId in(:params)";
+            return list(hql, new Object[] {comId, deptIds});
+        } else {
+            return Lists.newArrayList();
+        }
+	}
+	
+	public List<ComPosition> getAllComPositionByComIdAndDeptId(Integer comId, Integer deptId) {
+		String hql = "FROM ComPosition WHERE comId = ? and departmentId = ?";
+		return list(hql, new Object[] {comId, deptId});
+	}
+	
+	public long getPositionCountByStatus(Integer comId, Integer status) {
+		String hql = "FROM ComPosition WHERE comId = ? AND posStatus =? AND delStatus!=-1";
+		return countHqlResult(hql, comId, status);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public PageV3<ComPosition> getInviteEffectPosition(PageV3<ComPosition> page, String comName, String posName, Date activeBeginDate,
+			Date activeEndDate, Integer posStatus, Object[] dataRight) {
+		List<Object> params = Lists.newArrayList();
+		StringBuilder buffer = new StringBuilder("SELECT p FROM ComPosition p,SysUser sysUser join p.comInfo.comRightList comRights WHERE p.comInfo.salerId=sysUser.id");
+		
+		if(StringUtils.isNotBlank(comName)) {
+			buffer.append(" and p.comInfo.comName=?");
+			params.add(comName);
+		}
+		
+		if(StringUtils.isNotBlank(posName)) {
+			buffer.append(" and p.posName=?");
+			params.add(posName);
+		}
+		
+		if(activeBeginDate != null && activeEndDate != null) {
+			buffer.append(" and comRights.validDate>=? and comRights.expireDate <=?");
+			params.add(activeBeginDate);
+			params.add(activeEndDate);
+		}
+		
+		if(posStatus != -100) {
+			buffer.append(" and p.posStatus=?");
+			params.add(posStatus);
+		}
+		
+		//组织架构权限
+		if (dataRight[0] != null) {
+			buffer.append(" and p.comInfo.salerId = " + dataRight[0]);
+		} else {
+			List<Integer> departmentIdList = (List<Integer>)dataRight[1];
+			if (CollectionUtils.isNotEmpty(departmentIdList)) {
+				if (departmentIdList.size() > 1) {
+					buffer.append(" and sysUser.deptId IN(" + StringUtils.join(departmentIdList, ",") + ")");
+				} else {
+					buffer.append(" AND sysUser.deptId = " + departmentIdList.get(0));
+				}
+			}
+		}
+		
+		return this.findPage(page, buffer.toString(), params.toArray());
+	}
+
+    public List<ComPosition> getPosListByComId(List<Integer> comIds) {
+        String hql = "FROM ComPosition WHERE comId in (:params) AND posStatus > 0 order by createDate DESC";
+        return list(hql, 1, 100, new Object[] {comIds});
+    }
+    
+    public int updatePosStatusByComId(Integer comId, Integer posStatus){
+    	String hql = "UPDATE ComPosition SET posStatus = ?, updateDate = ? WHERE comId = ?";
+    	return this.execteBulk(hql, posStatus, DateTime.now().toDate(), comId);
+    }
+
+    /**
+     * 将职位状态>=0 （正常招聘及待审核的）的职位设置为职位过期
+     * 判断为过期时间小于昨天（因为当天的话还允许显示）
+     * 提供每天职位过期进程调用
+     * 并且将更新的内容加入Sync以便同步到查询库
+     * @return
+     */
+    public int updatePosStatusToExpire() {
+        String selectHql = "SELECT id FROM ComPosition WHERE posStatus >= 0 AND endDate < ?";
+        List<Integer> ids = list(selectHql, new Object[]{DateTime.now().minusDays(1).secondOfDay().withMaximumValue().toDate()});
+        if(CollectionUtils.isNotEmpty(ids)) {
+            String hql = "UPDATE ComPosition SET posStatus = ?, refreshDate = ? WHERE posStatus >= 0 AND endDate < ?";
+            int count = execteBulk(hql, Constants.POS_STATUS_EXPIRED, DateTime.now().toDate(), DateTime.now().minusDays(1).secondOfDay().withMaximumValue().toDate());
+            for(Integer id : ids) {
+                addToSync(id);
+            }
+            return count;
+        } else {
+            return 0;
+        }
+    }
+
+    /**
+     * 将职位状态>=0 （正常招聘及待审核的）的职位设置为企业过期
+     * 提供每天企业过期进程调用
+     * 并且将更新的内容加入Sync以便同步到查询库
+     * @param comId
+     * @return
+     */
+    public int updatePosStatusToComExpire(Integer comId) {
+        String selectHql = "SELECT id FROM ComPosition WHERE posStatus >= 0 AND comId = ?";
+        List<Integer> ids = list(selectHql, new Object[]{comId});
+        if(CollectionUtils.isNotEmpty(ids)) {
+            String hql = "UPDATE ComPosition SET posStatus = ?, refreshDate = ? WHERE posStatus >= 0 AND comId = ?";
+            int count = execteBulk(hql, Constants.POS_STATUS_COM_EXPIRED, DateTime.now().toDate(), comId);
+            for(Integer id : ids) {
+                addToSync(id);
+            }
+            return count;
+        } else {
+            return 0;
+        }
+    }
+
+    /**
+     * 将特定时间点以后过期的职位，重新加入职位同步进程，以便搜索器和查询库确实将这些过期的职位删除了
+     * @param checkRefreshDate 判定的时间点
+    */
+    public int addExpirePosToQueue(Date checkRefreshDate) {
+        String selectHql = "SELECT id FROM ComPosition WHERE ( posStatus = ? or  posStatus = ? ) AND refreshDate > ?";
+        List<Integer> ids = list(selectHql, new Object[]{
+                Constants.POS_STATUS_EXPIRED, Constants.POS_STATUS_COM_EXPIRED, checkRefreshDate
+        });
+        if(CollectionUtils.isNotEmpty(ids)) {
+            for(Integer id : ids) {
+                addToSync(id);
+            }
+            return CollectionUtils.size(ids);
+        } else {
+            return 0;
+        }
+    }
+
+    public List<Integer> listRecuitingPosByComIdList(List<Integer> comIdList) {
+        if(CollectionUtils.isNotEmpty(comIdList)) {
+            String selectHql = "SELECT id FROM ComPosition WHERE posStatus >= 0 AND comId IN ("+StringUtils.join(comIdList, ",")+")";
+            return list(selectHql);
+        }
+        return null;
+    }
+
+    /**
+     * 企业职位共被浏览次数
+     * @param comId
+     * @param comUserDeptList 部门列表(主账号:-1)
+     * @return
+     */
+    public Integer countPositionTotalView(Integer comId,List<Integer> comUserDeptList) {
+        String hql = "SELECT sum(viewCount) FROM ComPosition WHERE comId = ?";
+        if(CollectionUtils.isNotEmpty(comUserDeptList) && !comUserDeptList.contains(-1)){
+            hql += " AND departmentId IN (" + StringUtils.join(comUserDeptList,',') + ") ";
+        }
+        return this.<Number>aggregate(hql, comId).intValue();
+    }
+
+    @Override
+    public Integer save(ComPosition model) {
+        Integer id = super.save(model);
+        addToSync(id);
+        return id;
+    }
+
+    @Override
+    public void saveOrUpdate(ComPosition model) {
+        model.setRefreshDate(DateTime.now().toDate());
+        model.setUpdateDate(DateTime.now().toDate());
+        super.saveOrUpdate(model);
+        addToSync(model.getId());
+        delSimilarPosKey(model.getId());
+    }
+
+    @Override
+    public void update(ComPosition model) {
+        model.setRefreshDate(DateTime.now().toDate());
+        super.update(model);
+        addToSync(model.getId());
+    }
+
+    public void justUpdate(ComPosition model) {
+        super.update(model);
+    }
+
+    public void addToSync(Integer id){
+        if(id != null && id > 0) {
+            redisEao.zAdd(Constants.REDIS_KEY_SYNC_QUEUE_POSITION, Lists.newArrayList(ObjectUtils.toString(id)));
+        }
+    }
+
+    /**
+     * 删除key，以重新生成新的职位相似列表
+     * @param id
+     */
+    public void delSimilarPosKey(Integer id) {
+        if (id != null && id > 0) {
+            redisEao.del(Constants.REDIS_KEY_POS_SIMILAR_LIST_PREFIX + id);
+        }
+    }
+
+    public List<ComPosition> getComPositionByHql(String hql, int maxResult, Map<String, Collection<?>> map, Object[] params){
+        return listWithIn(hql, 0, maxResult, map, params);
+	}
+
+    public Integer countRecentCreatePosition(Date afterThisTime){
+        String hql = "SELECT count(*) FROM ComPosition WHERE updateDate > ?";
+        return this.<Number>aggregate(hql, afterThisTime).intValue();
+    }
+    public Integer countRecentCreateCom(Date afterThisTime){
+        String hql = "SELECT count(DISTINCT comId) FROM ComPosition WHERE createDate > ?";
+        return this.<Number>aggregate(hql, afterThisTime).intValue();
+    }
+
+    /**
+     * 获取“急聘”的职位总数，用户已经发布的包含非工作时间发布的职位（posStatus >= 0）
+     * @param comId
+     * @return
+     */
+    public Integer countUrgentByUserPosted(Integer comId) {
+        String hql = "select COUNT(*)  FROM ComPosition WHERE comId = ?  and urgent = ? and posStatus >= 0  AND delStatus != -1 ";
+        return this.<Number>aggregate(hql, comId, CommonEnum.urgentFlag.URGENT.getValue()).intValue();
+    }
+    
+    /**
+     * 
+    * 验证是否可以发布急聘职位
+    * @param @param comId
+    * @param @param posId
+    * @param @return    设定文件 
+    * @return boolean    返回类型 
+    * @throws
+     */
+    public boolean validateUrgent(Integer comId, Integer posId) {
+        String hql = "select COUNT(*)  FROM ComPosition WHERE comId = ? and id != ? and urgent = ?  and posStatus >= 0 and delStatus != -1";
+        Integer urgentCount = this.<Number>aggregate(hql, comId, posId, CommonEnum.urgentFlag.URGENT.getValue()).intValue();
+        return urgentCount >= Constants.URGENT_LIMIT ? false : true;
+    }
+    
+    public List<Object> getMemberComPosCount(List<Object> comIds){
+    	 if(CollectionUtils.isNotEmpty(comIds)) {
+    		 String hql = "SELECT COUNT(id),comId  FROM ComPosition WHERE comId IN (:params) GROUP BY comId";
+    		 return list(hql, new Object[] {comIds});
+    	 }else{
+    		 return Lists.newArrayList();
+    	 }
+    }
+
+    /**
+     * 统计企业正在招聘的职位数，求职者可看到的
+     * @param comId
+     * @return
+     */
+    public Integer countRecruitingPosByComId(Integer comId) {
+        String hql = "SELECT COUNT(*)  FROM ComPosition WHERE comId = ?  and posStatus > 0  AND delStatus != -1 ";
+        return this.<Number>aggregate(hql, comId).intValue();
+    }
+
+    /**
+     * 取得正在招聘的职位列表
+     * @param limits
+     * @return
+     */
+    public List<ComPosition> getCurrPosListByLimit(Integer limits) {
+        String hql = " FROM ComPosition WHERE posStatus >= 5 AND delStatus != -1 ORDER BY id DESC ";
+        return list(hql,1,limits,null);
+    }
+
+    /**
+     * 取得淘标签大于4个的正在招聘的职位,不包含面议
+     * @param limits 职位数
+     * @return
+     */
+    public List<ComPosition> getPosListWhenTaoLableMore(Integer limits){
+
+        String hql = " FROM ComPosition WHERE posStatus >= 5 AND delStatus != -1 AND LENGTH(taoLabel)>40 and salary>2  ORDER BY id DESC ";
+        return list(hql,1,limits,null);
+    }
+
+}

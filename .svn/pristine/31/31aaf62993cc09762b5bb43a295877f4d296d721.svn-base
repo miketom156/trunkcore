@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>JAVA</ID>
+  <OriginalElement />
+  <nodes>
+    <node x="385.0" y="184.5">uml.per.login.SysDataRight</node>
+    <node x="0.0" y="544.5">uml.per.login.PerUserLoginRedisBo</node>
+    <node x="391.0" y="64.5">uml.per.login.SysModule</node>
+    <node x="640.0" y="104.5">uml.per.login.PerUser</node>
+    <node x="80.0" y="264.5">uml.per.login.SysUser</node>
+    <node x="382.5" y="544.5">uml.per.login.PerResumeBo</node>
+    <node x="540.5" y="544.5">uml.per.login.CommonEnum</node>
+    <node x="200.5" y="264.5">uml.per.login.SysRole</node>
+    <node x="59.0" y="384.5">uml.per.login.SysDepartment</node>
+    <node x="229.5" y="544.5">uml.per.login.BizRetCode</node>
+    <node x="-3.0" y="624.5">uml.per.login.BizRetBo</node>
+    <node x="189.5" y="64.5">uml.per.login.SysOperate</node>
+    <node x="630.5" y="-15.5">uml.per.login.PerResume</node>
+    <node x="147.5" y="624.5">uml.per.login.LoginInfoBo</node>
+  </nodes>
+  <notes />
+  <edges>
+    <edge source="uml.per.login.PerUser" target="uml.per.login.PerResume">
+      <point x="0.0" y="-15.5" />
+      <point x="0.0" y="15.5" />
+    </edge>
+    <edge source="uml.per.login.SysUser" target="uml.per.login.SysDepartment">
+      <point x="0.0" y="15.5" />
+      <point x="0.0" y="-15.5" />
+    </edge>
+    <edge source="uml.per.login.SysRole" target="uml.per.login.SysUser">
+      <point x="0.0" y="15.5" />
+      <point x="240.0" y="480.0" />
+      <point x="0.0" y="480.0" />
+      <point x="0.0" y="280.0" />
+      <point x="-40.0" y="0.0" />
+    </edge>
+    <edge source="uml.per.login.SysDataRight" target="uml.per.login.SysRole">
+      <point x="-55.0" y="0.0" />
+      <point x="260.0" y="200.0" />
+      <point x="20.0" y="-15.5" />
+    </edge>
+    <edge source="uml.per.login.SysRole" target="uml.per.login.SysOperate">
+      <point x="0.0" y="-15.5" />
+      <point x="0.0" y="15.5" />
+    </edge>
+    <edge source="uml.per.login.SysRole" target="uml.per.login.SysDataRight">
+      <point x="39.5" y="0.0" />
+      <point x="440.0" y="280.0" />
+      <point x="0.0" y="15.5" />
+    </edge>
+    <edge source="uml.per.login.SysUser" target="uml.per.login.SysRole">
+      <point x="40.0" y="0.0" />
+      <point x="-39.5" y="0.0" />
+    </edge>
+    <edge source="uml.per.login.SysModule" target="uml.per.login.SysDataRight">
+      <point x="49.0" y="0.0" />
+      <point x="560.0" y="80.0" />
+      <point x="560.0" y="200.0" />
+      <point x="55.0" y="0.0" />
+    </edge>
+    <edge source="uml.per.login.SysOperate" target="uml.per.login.SysModule">
+      <point x="0.0" y="-15.5" />
+      <point x="240.0" y="0.0" />
+      <point x="440.0" y="0.0" />
+      <point x="0.0" y="-15.5" />
+    </edge>
+    <edge source="uml.per.login.SysModule" target="uml.per.login.SysOperate">
+      <point x="-49.0" y="0.0" />
+      <point x="50.5" y="0.0" />
+    </edge>
+    <edge source="uml.per.login.SysDataRight" target="uml.per.login.SysModule">
+      <point x="0.0" y="-15.5" />
+      <point x="0.0" y="15.5" />
+    </edge>
+  </edges>
+  <settings layout="Hierarchic Group" zoom="1.0" x="437.5" y="401.0" />
+  <SelectedNodes>
+    <node>uml.per.login.SysUser</node>
+  </SelectedNodes>
+  <Categories />
+  <SCOPE>All</SCOPE>
+  <VISIBILITY>private</VISIBILITY>
+</Diagram>
+

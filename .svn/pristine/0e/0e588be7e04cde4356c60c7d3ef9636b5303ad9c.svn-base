@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>JAVA</ID>
+  <OriginalElement />
+  <nodes>
+    <node x="415.0" y="-28.0">uml.per.MailSrv</node>
+    <node x="321.0" y="103.5">uml.per.PerUserBiz</node>
+    <node x="391.0" y="467.5">uml.per.PerUserSrv</node>
+    <node x="7.0" y="187.5">uml.per.RedisSrv</node>
+    <node x="769.0" y="199.5">uml.per.PVPersonRegisterSrv</node>
+    <node x="827.0" y="372.0">uml.per.PVPersonRegisterEao</node>
+    <node x="-39.0" y="-24.0">uml.per.RedisEao</node>
+  </nodes>
+  <notes />
+  <edges>
+    <edge source="uml.per.PerUserBiz" target="uml.per.MailSrv">
+      <point x="0.0" y="-136.5" />
+      <point x="0.0" y="28.0" />
+    </edge>
+    <edge source="uml.per.PerUserBiz" target="uml.per.RedisSrv">
+      <point x="-199.0" y="0.0" />
+      <point x="113.0" y="0.0" />
+    </edge>
+    <edge source="uml.per.PerUserBiz" target="uml.per.PVPersonRegisterSrv">
+      <point x="199.0" y="0.0" />
+      <point x="-191.0" y="0.0" />
+    </edge>
+    <edge source="uml.per.PVPersonRegisterSrv" target="uml.per.PVPersonRegisterEao">
+      <point x="0.0" y="40.5" />
+      <point x="0.0" y="-28.0" />
+    </edge>
+    <edge source="uml.per.PerUserBiz" target="uml.per.PerUserSrv">
+      <point x="0.0" y="136.5" />
+      <point x="0.0" y="-52.5" />
+    </edge>
+    <edge source="uml.per.RedisSrv" target="uml.per.RedisEao">
+      <point x="0.0" y="-52.5" />
+      <point x="0.0" y="64.0" />
+    </edge>
+  </edges>
+  <settings layout="Hierarchic Group" zoom="1.0" x="591.0" y="303.0" />
+  <SelectedNodes />
+  <Categories>
+    <Category>Fields</Category>
+    <Category>Methods</Category>
+  </Categories>
+  <SCOPE>All</SCOPE>
+  <VISIBILITY>private</VISIBILITY>
+</Diagram>
+

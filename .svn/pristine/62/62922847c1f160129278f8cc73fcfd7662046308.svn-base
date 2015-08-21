@@ -1,0 +1,52 @@
+/**
+ * 
+ */
+package com.job5156.core.biz.per;
+
+import java.util.Map;
+
+import javax.annotation.Resource;
+
+import org.junit.Assert;
+import org.junit.Test;
+
+import com.job5156.core.TestBase;
+import com.job5156.core.bo.BizRetBo;
+import com.job5156.core.bo.form.per.PerSearcherBo;
+import com.job5156.core.bo.form.searcher.SearchPosFormBo;
+import com.job5156.core.srv.PerSearcherSrvTest;
+
+/**
+ * @author lyh
+ * @Description
+ * @date 2015年7月1日
+ */
+public class PerSeracherBizTest extends TestBase {
+	@Resource
+	private PerSearcherBiz perSearcherBiz;
+
+	@Test
+	public void testGetAllSearchersByPerUserId() {
+		BizRetBo<Map<String, String>> bizRetBo = perSearcherBiz.getAllSearchersByPerUserId(this.DEFAULT_PID);
+		// Assert.assertEquals("查找用户搜索器", "操作失败",bizRetBo.getMsg());
+		Assert.assertEquals("匹配用户邮件信息", PerSearcherSrvTest.FAIT_EMAILE, bizRetBo.getItem().get("userEmail"));
+	}
+
+	@Test
+	public void testModifyPerSearcher() {
+		PerSearcherBo perSearcherBo = new PerSearcherBo();
+		perSearcherBo.setId(0);
+		perSearcherBo.setName("东莞－中国");
+		perSearcherBo.setSubscribe(1);
+		perSearcherBo.setEmail("miketom137@163.com");
+		perSearcherBo.setUrl("http://www.baidu.com");
+		SearchPosFormBo searchPosFormBo = new SearchPosFormBo();
+		searchPosFormBo.setDegreeFrom(3);
+		perSearcherBo.setSearchPosFormBo(searchPosFormBo);
+		BizRetBo<Map<String, Object>> bizRetBo = perSearcherBiz.modifyPerSearcher(perSearcherBo, this.DEFAULT_PID);
+		// Assert.assertEquals("修改用户搜索器", "操作成功",bizRetBo.getMsg());
+		Assert.assertEquals("用户邮件地址错误", PerSearcherSrvTest.FAIT_EMAILE, bizRetBo.getItem().get("userEmail"));
+
+	}
+
+}

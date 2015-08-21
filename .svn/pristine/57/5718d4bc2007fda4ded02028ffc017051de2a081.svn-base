@@ -1,0 +1,30 @@
+package com.job5156.core.srv.per;
+
+import com.job5156.core.eao.per.PerFollowComEao;
+import com.job5156.core.entity.per.PerFollowCom;
+import org.hibernate.SessionFactory;
+import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import javax.annotation.Resource;
+import java.util.List;
+
+/**
+ * <p></p>
+ * Date:2015/6/16 9:22
+ *
+ * @author hjs
+ * @version 1.0
+ */
+@Service
+@Transactional(value="transactionManager")
+public class PerFollowComSrv {
+
+    @Resource
+    private PerFollowComEao perFollowComEao;
+
+    public List<PerFollowCom> findByPerUserId(Integer perUserId){
+        return perFollowComEao.findByPerUserId(perUserId);
+    }
+}

@@ -1,0 +1,2309 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AnalysisUIOptions">
+    <option name="CUSTOM_SCOPE_NAME" value="Unnamed" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" readonly="true" id="661efa79-47eb-409e-a628-be5ba37b2d39" name="Default" comment="用户注册模块uml建模图">
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/test/java/com/job5156/core/eao/per" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/test/java/com/job5156/core/biz/PerUserBizTest.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/test/java/com/job5156/core/eao/per/PerUserEaoTest.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/test/java/com/job5156/core/srv/PerUserSrvTest.java" />
+      <change type="DELETED" beforePath="D:\chitone\svn\eyas-core\src\main\java\com\job5156\core\srv\LoginSrv.java" afterPath="" />
+      <change type="DELETED" beforePath="D:\chitone\svn\eyas-core\src\test\java\com\job5156\core\biz\PerRegisterTest.java" afterPath="" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/resources/testdata/5156base.sql" afterPath="$PROJECT_DIR$/src/main/resources/testdata/5156base.sql" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/job5156/core/bo/BizRetCode.java" afterPath="$PROJECT_DIR$/src/main/java/com/job5156/core/bo/BizRetCode.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/job5156/core/srv/MailSrv.java" afterPath="$PROJECT_DIR$/src/main/java/com/job5156/core/srv/MailSrv.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/job5156/core/eao/count/PVPersonRegisterEao.java" afterPath="$PROJECT_DIR$/src/main/java/com/job5156/core/eao/count/PVPersonRegisterEao.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/job5156/core/srv/count/PVPersonRegisterSrv.java" afterPath="$PROJECT_DIR$/src/main/java/com/job5156/core/srv/count/PVPersonRegisterSrv.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/test/java/com/job5156/core/biz/PerBizTest.java" afterPath="$PROJECT_DIR$/src/test/java/com/job5156/core/biz/PerBizTest.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/job5156/core/eao/per/PerLoginHistoryEao.java" afterPath="$PROJECT_DIR$/src/main/java/com/job5156/core/eao/per/PerLoginHistoryEao.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/job5156/core/eao/per/PerResumeEao.java" afterPath="$PROJECT_DIR$/src/main/java/com/job5156/core/eao/per/PerResumeEao.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/job5156/core/biz/PerUserBiz.java" afterPath="$PROJECT_DIR$/src/main/java/com/job5156/core/biz/PerUserBiz.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/job5156/core/eao/per/PerUserEao.java" afterPath="$PROJECT_DIR$/src/main/java/com/job5156/core/eao/per/PerUserEao.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/job5156/core/srv/per/PerUserSrv.java" afterPath="$PROJECT_DIR$/src/main/java/com/job5156/core/srv/per/PerUserSrv.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/job5156/core/eao/RedisEao.java" afterPath="$PROJECT_DIR$/src/main/java/com/job5156/core/eao/RedisEao.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/job5156/core/srv/RedisSrv.java" afterPath="$PROJECT_DIR$/src/main/java/com/job5156/core/srv/RedisSrv.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+    </list>
+    <ignored path="eyas_xt.iws" />
+    <ignored path=".idea/workspace.xml" />
+    <option name="TRACKING_ENABLED" value="true" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ChangesViewManager" flattened_view="true" show_ignored="false" />
+  <component name="CreatePatchCommitExecutor">
+    <option name="PATCH_PATH" value="" />
+  </component>
+  <component name="DaemonCodeAnalyzer">
+    <disable_hints />
+  </component>
+  <component name="ExecutionTargetManager" SELECTED_TARGET="default_target" />
+  <component name="FavoritesManager">
+    <favorites_list name="eyas_xt" />
+  </component>
+  <component name="FileEditorManager">
+    <leaf>
+      <file leaf-file-name="PerUserBiz.java" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/main/java/com/job5156/core/biz/PerUserBiz.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.67401576" vertical-offset="845" max-vertical-offset="11286">
+              <caret line="67" column="13" selection-start-line="67" selection-start-column="13" selection-end-line="67" selection-end-column="13" />
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="PerUserSrv.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/com/job5156/core/srv/per/PerUserSrv.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0" vertical-offset="570" max-vertical-offset="2869">
+              <caret line="61" column="6" selection-start-line="0" selection-start-column="0" selection-end-line="162" selection-end-column="0" />
+              <folding>
+                <element signature="e#1294#1295#0" expanded="true" />
+                <element signature="e#1345#1346#0" expanded="true" />
+                <element signature="e#1731#1732#0" expanded="true" />
+                <element signature="e#1782#1783#0" expanded="true" />
+                <element signature="e#2173#2174#0" expanded="true" />
+                <element signature="e#2226#2227#0" expanded="true" />
+                <element signature="e#4566#4567#0" expanded="true" />
+                <element signature="e#4623#4624#0" expanded="true" />
+                <element signature="e#4747#4748#0" expanded="true" />
+                <element signature="e#4810#4811#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="PVPersonRegisterSrv.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/com/job5156/core/srv/count/PVPersonRegisterSrv.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0" vertical-offset="84" max-vertical-offset="684">
+              <caret line="21" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="39" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="RedisEao.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/com/job5156/core/eao/RedisEao.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="13053">
+              <caret line="30" column="3" selection-start-line="30" selection-start-column="3" selection-end-line="30" selection-end-column="3" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="PerUserEao.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/com/job5156/core/eao/per/PerUserEao.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0" vertical-offset="581" max-vertical-offset="3002">
+              <caret line="54" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="167" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="PerResumeEao.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/com/job5156/core/eao/per/PerResumeEao.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0" vertical-offset="2466" max-vertical-offset="2945">
+              <caret line="68" column="37" selection-start-line="68" selection-start-column="37" selection-end-line="68" selection-end-column="37" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="SiteMessageEao.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/com/job5156/core/eao/SiteMessageEao.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0" vertical-offset="12" max-vertical-offset="4712">
+              <caret line="20" column="13" selection-start-line="20" selection-start-column="13" selection-end-line="20" selection-end-column="13" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="PerLoginHistoryEao.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/com/job5156/core/eao/per/PerLoginHistoryEao.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0" vertical-offset="114" max-vertical-offset="1026">
+              <caret line="28" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="59" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="PVPersonRegisterEao.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/com/job5156/core/eao/count/PVPersonRegisterEao.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0" vertical-offset="342" max-vertical-offset="1178">
+              <caret line="40" column="21" selection-start-line="40" selection-start-column="21" selection-end-line="40" selection-end-column="21" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="MailSrv.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/com/job5156/core/srv/MailSrv.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0" vertical-offset="798" max-vertical-offset="2945">
+              <caret line="76" column="7" selection-start-line="76" selection-start-column="7" selection-end-line="76" selection-end-column="7" />
+              <folding>
+                <element signature="e#1455#1484#0" expanded="true" />
+                <element signature="e#4808#4837#0" expanded="true" />
+                <marker date="1433556669434" expanded="true" signature="1894:2061" placeholder="INSERT INTO ..." />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+    </leaf>
+  </component>
+  <component name="FindManager">
+    <FindUsagesManager>
+      <setting name="OPEN_NEW_TAB" value="true" />
+    </FindUsagesManager>
+  </component>
+  <component name="IdeDocumentHistory">
+    <option name="changedFiles">
+      <list>
+        <option value="$PROJECT_DIR$/src/main/resources/testdata/5156base_initdata.sql" />
+        <option value="$PROJECT_DIR$/src/main/resources/testdata/per_user.sql" />
+        <option value="$PROJECT_DIR$/src/main/resources/testdata/pos_brief.sql" />
+        <option value="$PROJECT_DIR$/src/main/resources/testdata/5156query_initdata.sql" />
+        <option value="$PROJECT_DIR$/src/main/resources/testdata/5156countdb_initdata.sql" />
+        <option value="$PROJECT_DIR$/src/test/java/com/job5156/core/TestBase.java" />
+        <option value="$PROJECT_DIR$/src/main/resources/testdata/5156query.sql" />
+        <option value="$PROJECT_DIR$/uml/src/uml/per/BizRetBo.java" />
+        <option value="$PROJECT_DIR$/uml/src/uml/per/AppRegisterFormBo.java" />
+        <option value="$PROJECT_DIR$/uml/src/uml/per/RegisterBo.java" />
+        <option value="$PROJECT_DIR$/uml/src/uml/per/CommonEnum.java" />
+        <option value="$PROJECT_DIR$/uml/src/uml/per/Constants.java" />
+        <option value="$PROJECT_DIR$/uml/src/uml/per/TouchRegisterFormBo.java" />
+        <option value="$PROJECT_DIR$/uml/src/uml/per/WechatRegisterFormBo.java" />
+        <option value="$PROJECT_DIR$/uml/src/uml/per/LoginInfoBo.java" />
+        <option value="$PROJECT_DIR$/uml/src/uml/per/PerBiz.java" />
+        <option value="$PROJECT_DIR$/uml/src/uml/per/PerSrv.java" />
+        <option value="$PROJECT_DIR$/uml/src/uml/per/Per.java" />
+        <option value="$PROJECT_DIR$/uml/src/uml/per/PerUserBizImpl.java" />
+        <option value="$PROJECT_DIR$/uml/src/uml/per/MailSrv.java" />
+        <option value="$PROJECT_DIR$/uml/src/uml/per/MailBo.java" />
+        <option value="$PROJECT_DIR$/uml/src/uml/per/PerRegisterMailBo.java" />
+        <option value="$PROJECT_DIR$/uml/src/uml/per/PvPersonRegister.java" />
+        <option value="$PROJECT_DIR$/uml/src/uml/per/PVPersonRegisterEao.java" />
+        <option value="$PROJECT_DIR$/uml/src/uml/per/PerUserSrv.java" />
+        <option value="$PROJECT_DIR$/uml/src/uml/per/PerUserEao.java" />
+        <option value="$PROJECT_DIR$/uml/src/uml/per/PvPersonRegisterSrv.java" />
+        <option value="$PROJECT_DIR$/uml/src/uml/per/RedisEao.java" />
+        <option value="$PROJECT_DIR$/uml/src/uml/per/RedisSrv.java" />
+        <option value="$PROJECT_DIR$/uml/src/uml/per/PerUserBiz.java" />
+        <option value="$PROJECT_DIR$/uml/src/uml/per/PerUser.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/job5156/core/bo/form/per/RegisterBo.java" />
+        <option value="$PROJECT_DIR$/.idea/workspace.xml" />
+        <option value="$PROJECT_DIR$/src/test/java/com/job5156/core/biz/PerRegisterTest.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/job5156/core/bo/form/per/ThirdBindingRegisterFormBo.java" />
+        <option value="$PROJECT_DIR$/src/test/java/com/job5156/core/biz/PerUserBizTest.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/job5156/core/srv/per/PerUserSrv.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/job5156/core/bo/BizRetCode.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/job5156/core/biz/PerUserBiz.java" />
+        <option value="$PROJECT_DIR$/src/test/java/com/job5156/core/biz/PerBizTest.java" />
+        <option value="$PROJECT_DIR$/src/test/java/com/job5156/core/eao/per/PerUserEaoTest.java" />
+        <option value="$PROJECT_DIR$/src/test/java/com/job5156/core/srv/PerUserSrvTest.java" />
+        <option value="$PROJECT_DIR$/src/main/resources/testdata/5156base.sql" />
+        <option value="$PROJECT_DIR$/src/main/java/com/job5156/core/srv/RedisSrv.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/job5156/core/srv/MailSrv.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/job5156/core/srv/count/PVPersonRegisterSrv.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/job5156/core/eao/RedisEao.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/job5156/core/eao/per/PerUserEao.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/job5156/core/eao/per/PerResumeEao.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/job5156/core/eao/per/PerLoginHistoryEao.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/job5156/core/eao/count/PVPersonRegisterEao.java" />
+      </list>
+    </option>
+  </component>
+  <component name="MavenImportPreferences">
+    <option name="importingSettings">
+      <MavenImportingSettings>
+        <option name="downloadDocsAutomatically" value="true" />
+        <option name="downloadSourcesAutomatically" value="true" />
+        <option name="importAutomatically" value="true" />
+      </MavenImportingSettings>
+    </option>
+    <option name="enabledProfiles">
+      <list>
+        <option value="dev" />
+      </list>
+    </option>
+  </component>
+  <component name="MavenProjectNavigator">
+    <treeState>
+      <PATH>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="" />
+          <option name="myItemType" value="org.jetbrains.idea.maven.navigator.MavenProjectsStructure$RootNode" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="eyas-core" />
+          <option name="myItemType" value="org.jetbrains.idea.maven.navigator.MavenProjectsStructure$ProjectNode" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="Dependencies" />
+          <option name="myItemType" value="org.jetbrains.idea.maven.navigator.MavenProjectsStructure$DependenciesNode" />
+        </PATH_ELEMENT>
+      </PATH>
+      <PATH>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="" />
+          <option name="myItemType" value="org.jetbrains.idea.maven.navigator.MavenProjectsStructure$RootNode" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="eyas-core" />
+          <option name="myItemType" value="org.jetbrains.idea.maven.navigator.MavenProjectsStructure$ProjectNode" />
+        </PATH_ELEMENT>
+      </PATH>
+      <PATH>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="" />
+          <option name="myItemType" value="org.jetbrains.idea.maven.navigator.MavenProjectsStructure$RootNode" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="eyas-core" />
+          <option name="myItemType" value="org.jetbrains.idea.maven.navigator.MavenProjectsStructure$ProjectNode" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="Lifecycle" />
+          <option name="myItemType" value="org.jetbrains.idea.maven.navigator.MavenProjectsStructure$LifecycleNode" />
+        </PATH_ELEMENT>
+      </PATH>
+      <PATH>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="" />
+          <option name="myItemType" value="org.jetbrains.idea.maven.navigator.MavenProjectsStructure$RootNode" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="Profiles" />
+          <option name="myItemType" value="org.jetbrains.idea.maven.navigator.MavenProjectsStructure$ProfilesNode" />
+        </PATH_ELEMENT>
+      </PATH>
+    </treeState>
+  </component>
+  <component name="NamedScopeManager">
+    <scope name="Unnamed" pattern="src:com.job5156.core.biz..*||src:com.job5156.core.dao..*||src:com.job5156.core.dao.base..*||src:com.job5156.core.dao.com..*||src:com.job5156.core.dao.com.talebase..*||src:com.job5156.core.dao.count..*||src:com.job5156.core.dao.per..*||src:com.job5156.core.dao.sys.subsite..*||src:com.job5156.core.service..*||src:com.job5156.core.service.com..*||src:com.job5156.core.service.base..*||src:com.job5156.core.service.count..*||src:com.job5156.core.service.per..*||src:com.job5156.core.service.sys.subsite..*" />
+  </component>
+  <component name="ProjectFrameBounds">
+    <option name="x" value="-9" />
+    <option name="y" value="-9" />
+    <option name="width" value="1938" />
+    <option name="height" value="1050" />
+  </component>
+  <component name="ProjectInspectionProfilesVisibleTreeState">
+    <entry key="Project Default">
+      <profile-state>
+        <expanded-state>
+          <State>
+            <id />
+          </State>
+          <State>
+            <id>Abstraction issues</id>
+          </State>
+          <State>
+            <id>Android Lint</id>
+          </State>
+          <State>
+            <id>DOM issuesJavaScript</id>
+          </State>
+          <State>
+            <id>GeneralJavaScript</id>
+          </State>
+          <State>
+            <id>Google Web Toolkit issues</id>
+          </State>
+          <State>
+            <id>Groovy</id>
+          </State>
+          <State>
+            <id>Imports</id>
+          </State>
+          <State>
+            <id>Internationalization issues</id>
+          </State>
+          <State>
+            <id>Java language level migration aids</id>
+          </State>
+          <State>
+            <id>JavaScript</id>
+          </State>
+          <State>
+            <id>Javadoc issues</id>
+          </State>
+          <State>
+            <id>Naming conventions</id>
+          </State>
+          <State>
+            <id>Probable bugsGroovy</id>
+          </State>
+          <State>
+            <id>Spring Model</id>
+          </State>
+          <State>
+            <id>TestNG</id>
+          </State>
+          <State>
+            <id>XML</id>
+          </State>
+        </expanded-state>
+        <selected-state>
+          <State>
+            <id>UNUSED_IMPORT</id>
+          </State>
+        </selected-state>
+      </profile-state>
+    </entry>
+  </component>
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
+    <OptionsSetting value="true" id="Add" />
+    <OptionsSetting value="true" id="Remove" />
+    <OptionsSetting value="true" id="Checkout" />
+    <OptionsSetting value="true" id="Update" />
+    <OptionsSetting value="true" id="Status" />
+    <OptionsSetting value="true" id="Edit" />
+    <OptionsSetting value="true" id="Undo Check Out" />
+    <OptionsSetting value="true" id="Get Latest Version" />
+    <ConfirmationsSetting value="2" id="Add" />
+    <ConfirmationsSetting value="2" id="Remove" />
+  </component>
+  <component name="ProjectReloadState">
+    <option name="STATE" value="0" />
+  </component>
+  <component name="ProjectView">
+    <navigator currentView="ProjectPane" proportions="" version="1">
+      <flattenPackages />
+      <showMembers />
+      <showModules />
+      <showLibraryContents />
+      <hideEmptyPackages />
+      <abbreviatePackageNames />
+      <autoscrollToSource />
+      <autoscrollFromSource />
+      <sortByType />
+    </navigator>
+    <panes>
+      <pane id="PackagesPane" />
+      <pane id="Scope" />
+      <pane id="ProjectPane">
+        <subPane>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="eyas-core" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="eyas-core" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="eyas-core" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="eyas-core" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="eyas-core" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="test" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="java" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="core" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="eyas-core" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="eyas-core" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="test" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="java" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="core" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="srv" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="eyas-core" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="eyas-core" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="test" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="java" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="core" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="per" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="eyas-core" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="eyas-core" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="test" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="java" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="core" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="biz" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="eyas-core" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="eyas-core" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="main" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="resources" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="eyas-core" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="eyas-core" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="main" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="resources" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="testdata" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="eyas-core" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="eyas-core" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="main" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="eyas-core" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="eyas-core" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="main" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="java" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="core" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="srv" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="eyas-core" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="eyas-core" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="main" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="java" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="core" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="srv" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="subsite" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="eyas-core" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="eyas-core" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="main" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="java" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="core" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="srv" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="per" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="eyas-core" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="eyas-core" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="main" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="java" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="core" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="srv" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="count" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="eyas-core" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="eyas-core" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="main" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="java" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="core" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="eyas-core" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="eyas-core" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="main" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="java" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="core" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="eao" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="eyas-core" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="eyas-core" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="main" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="java" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="core" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="eao" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="per" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="eyas-core" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="eyas-core" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="main" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="java" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="core" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="eao" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="count" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="eyas-core" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="eyas-core" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="main" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="java" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="core" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="biz" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+        </subPane>
+      </pane>
+    </panes>
+  </component>
+  <component name="PropertiesComponent">
+    <property name="GoToClass.includeLibraries" value="false" />
+    <property name="GoToClass.toSaveIncludeLibraries" value="false" />
+    <property name="GoToFile.includeJavaFiles" value="false" />
+    <property name="MemberChooser.sorted" value="false" />
+    <property name="MemberChooser.showClasses" value="true" />
+    <property name="MemberChooser.copyJavadoc" value="false" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="project.structure.last.edited" value="Modules" />
+    <property name="project.structure.proportion" value="0.15" />
+    <property name="project.structure.side.proportion" value="0.4185185" />
+    <property name="options.lastSelected" value="preferences.keymap" />
+    <property name="options.splitter.main.proportions" value="0.3" />
+    <property name="options.splitter.details.proportions" value="0.2" />
+    <property name="options.searchVisible" value="true" />
+    <property name="OverrideImplement.combined" value="true" />
+    <property name="OverrideImplement.overriding.sorted" value="false" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/eyas-core-demo" />
+    <property name="FullScreen" value="false" />
+    <property name="last_directory_selection" value="$PROJECT_DIR$/src/main/java/com/job5156" />
+    <property name="dynamic.classpath" value="false" />
+    <property name="com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary" value="JUnit4" />
+    <property name="com.intellij.testIntegration.createTest.CreateTestDialog.includeInheritedMembers" value="false" />
+    <property name="recentsLimit" value="5" />
+    <property name="LayoutCode.rearrangeEntriesJava" value="false" />
+    <property name="Downloaded.Files.Path.Enabled" value="false" />
+    <property name="Repository.Attach.JavaDocs" value="false" />
+    <property name="Repository.Attach.Sources" value="false" />
+    <property name="restartRequiresConfirmation" value="true" />
+    <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_flatWidth0" value="159" />
+    <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_flatOrder0" value="0" />
+    <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_flatWidth1" value="184" />
+    <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_flatOrder1" value="1" />
+    <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_flatWidth2" value="185" />
+    <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_flatOrder2" value="2" />
+    <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_flatWidth3" value="75" />
+    <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_flatOrder3" value="3" />
+    <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_flatWidth4" value="155" />
+    <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_flatOrder4" value="4" />
+    <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_flatWidth5" value="1073" />
+    <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_flatOrder5" value="5" />
+    <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_treeWidth0" value="143" />
+    <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_treeOrder0" value="0" />
+    <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_treeWidth1" value="170" />
+    <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_treeOrder1" value="1" />
+    <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_treeWidth2" value="171" />
+    <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_treeOrder2" value="2" />
+    <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_treeWidth3" value="143" />
+    <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_treeOrder3" value="3" />
+    <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_treeWidth4" value="143" />
+    <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_treeOrder4" value="4" />
+    <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_treeWidth5" value="1061" />
+    <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_treeOrder5" value="5" />
+  </component>
+  <component name="RecentsManager">
+    <key name="CreateClassDialog.RecentsKey">
+      <recent name="uml.per" />
+      <recent name="com.job5156.vo" />
+    </key>
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\chitone\svn\eyas-core\uml\src\uml\per" />
+      <recent name="D:\chitone\svn\eyas-core\src\main\resources\testdata" />
+      <recent name="D:\chitone\svn\eyas-core\src\main\java\com\job5156\core\model\searcher" />
+      <recent name="D:\chitone\svn\eyas-core\src\main\resources" />
+      <recent name="D:\chitone\svn\eyas-core\src\main\java\com\job5156\core\model" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="D:\智通工作台\svn\eyas_core\service\src\main\java" />
+      <recent name="D:\智通工作台\svn\eyas_core\service\src" />
+    </key>
+    <key name="CreateTestDialog.Recents.Supers">
+      <recent name="" />
+    </key>
+    <key name="ExtractSuperBase.RECENT_KEYS">
+      <recent name="com.job5156.core.dao" />
+      <recent name="com.job5156.core.service" />
+      <recent name="com.job5156.core.service.impl.sys.subsite" />
+      <recent name="com.job5156.core.service.impl" />
+    </key>
+    <key name="MoveClassesOrPackagesDialog.RECENTS_KEY">
+      <recent name="com.job5156.core.biz" />
+      <recent name="com.job5156.core" />
+      <recent name="com.job5156.core.biz.impl" />
+      <recent name="com.job5156.core.service.com" />
+      <recent name="com.job5156.core.service.sys.subsite" />
+    </key>
+    <key name="CreateTestDialog.RecentsKey">
+      <recent name="com.job5156.core.biz.impl" />
+    </key>
+    <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="com.job5156.core.srv" />
+      <recent name="com.job5156.core.eao.per" />
+      <recent name="com.job5156.core.biz" />
+      <recent name="uml.per" />
+      <recent name="com.job5156.core.biz.impl" />
+    </key>
+  </component>
+  <component name="RunManager" selected="JUnit.com.job5156.core in eyas-core">
+    <configuration default="false" name="PerBizTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea">
+        <pattern>
+          <option name="PATTERN" value="com.job5156.core.biz.impl.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <module name="eyas-core" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <option name="PACKAGE_NAME" value="com.job5156.core.biz" />
+      <option name="MAIN_CLASS_NAME" value="com.job5156.core.biz.PerBizTest" />
+      <option name="METHOD_NAME" />
+      <option name="TEST_OBJECT" value="class" />
+      <option name="VM_PARAMETERS" value="-ea" />
+      <option name="PARAMETERS" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="ENV_VARIABLES" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <option name="TEST_SEARCH_SCOPE">
+        <value defaultName="moduleWithDependencies" />
+      </option>
+      <envs />
+      <patterns />
+      <RunnerSettings RunnerId="Debug">
+        <option name="DEBUG_PORT" value="" />
+        <option name="TRANSPORT" value="0" />
+        <option name="LOCAL" value="true" />
+      </RunnerSettings>
+      <RunnerSettings RunnerId="JRebel Debug">
+        <option name="DEBUG_PORT" value="" />
+        <option name="TRANSPORT" value="0" />
+        <option name="LOCAL" value="true" />
+      </RunnerSettings>
+      <RunnerSettings RunnerId="Run" />
+      <ConfigurationWrapper RunnerId="Debug" />
+      <ConfigurationWrapper RunnerId="Run" />
+      <method />
+    </configuration>
+    <configuration default="false" name="PerRegisterTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea">
+        <pattern>
+          <option name="PATTERN" value="com.job5156.core.biz.impl.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <module name="eyas-core" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <option name="PACKAGE_NAME" value="com.job5156.core.biz" />
+      <option name="MAIN_CLASS_NAME" value="com.job5156.core.biz.PerRegisterTest" />
+      <option name="METHOD_NAME" />
+      <option name="TEST_OBJECT" value="class" />
+      <option name="VM_PARAMETERS" value="-ea" />
+      <option name="PARAMETERS" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="ENV_VARIABLES" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <option name="TEST_SEARCH_SCOPE">
+        <value defaultName="moduleWithDependencies" />
+      </option>
+      <envs />
+      <patterns />
+      <RunnerSettings RunnerId="Run" />
+      <ConfigurationWrapper RunnerId="Run" />
+      <method />
+    </configuration>
+    <configuration default="false" name="com.job5156.core.biz in eyas-core" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea">
+        <pattern>
+          <option name="PATTERN" value="com.job5156.core.biz.impl.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <module name="eyas-core" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" value="" />
+      <option name="PACKAGE_NAME" value="com.job5156.core.biz" />
+      <option name="MAIN_CLASS_NAME" value="" />
+      <option name="METHOD_NAME" value="" />
+      <option name="TEST_OBJECT" value="package" />
+      <option name="VM_PARAMETERS" value="-ea" />
+      <option name="PARAMETERS" value="" />
+      <option name="WORKING_DIRECTORY" value="file://$PROJECT_DIR$" />
+      <option name="ENV_VARIABLES" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <option name="TEST_SEARCH_SCOPE">
+        <value defaultName="moduleWithDependencies" />
+      </option>
+      <envs />
+      <patterns />
+      <RunnerSettings RunnerId="JRebel Debug">
+        <option name="DEBUG_PORT" value="" />
+        <option name="TRANSPORT" value="0" />
+        <option name="LOCAL" value="true" />
+      </RunnerSettings>
+      <RunnerSettings RunnerId="Run" />
+      <ConfigurationWrapper RunnerId="Run" />
+      <method />
+    </configuration>
+    <configuration default="false" name="TestBase.testSetup" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea">
+        <pattern>
+          <option name="PATTERN" value="com.job5156.core.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <module name="eyas-core" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <option name="PACKAGE_NAME" value="com.job5156.core" />
+      <option name="MAIN_CLASS_NAME" value="com.job5156.core.TestBase" />
+      <option name="METHOD_NAME" value="testSetup" />
+      <option name="TEST_OBJECT" value="method" />
+      <option name="VM_PARAMETERS" value="-ea" />
+      <option name="PARAMETERS" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="ENV_VARIABLES" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <option name="TEST_SEARCH_SCOPE">
+        <value defaultName="moduleWithDependencies" />
+      </option>
+      <envs />
+      <patterns />
+      <RunnerSettings RunnerId="Run" />
+      <ConfigurationWrapper RunnerId="Run" />
+      <method />
+    </configuration>
+    <configuration default="false" name="com.job5156.core in eyas-core" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea">
+        <pattern>
+          <option name="PATTERN" value="com.job5156.core.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <module name="eyas-core" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <option name="PACKAGE_NAME" value="com.job5156.core" />
+      <option name="MAIN_CLASS_NAME" />
+      <option name="METHOD_NAME" />
+      <option name="TEST_OBJECT" value="package" />
+      <option name="VM_PARAMETERS" value="-ea" />
+      <option name="PARAMETERS" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="ENV_VARIABLES" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <option name="TEST_SEARCH_SCOPE">
+        <value defaultName="moduleWithDependencies" />
+      </option>
+      <envs />
+      <patterns />
+      <RunnerSettings RunnerId="Run" />
+      <ConfigurationWrapper RunnerId="Run" />
+      <method />
+    </configuration>
+    <configuration default="true" type="Remote" factoryName="Remote">
+      <option name="USE_SOCKET_TRANSPORT" value="true" />
+      <option name="SERVER_MODE" value="false" />
+      <option name="SHMEM_ADDRESS" value="javadebug" />
+      <option name="HOST" value="localhost" />
+      <option name="PORT" value="5005" />
+      <method />
+    </configuration>
+    <configuration default="true" type="JUnit" factoryName="JUnit">
+      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
+      <module name="" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <option name="PACKAGE_NAME" />
+      <option name="MAIN_CLASS_NAME" />
+      <option name="METHOD_NAME" />
+      <option name="TEST_OBJECT" value="class" />
+      <option name="VM_PARAMETERS" value="-ea" />
+      <option name="PARAMETERS" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="ENV_VARIABLES" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <option name="TEST_SEARCH_SCOPE">
+        <value defaultName="moduleWithDependencies" />
+      </option>
+      <envs />
+      <patterns />
+      <method />
+    </configuration>
+    <configuration default="true" type="AndroidRunConfigurationType" factoryName="Android Application">
+      <module name="" />
+      <option name="ACTIVITY_CLASS" value="" />
+      <option name="MODE" value="default_activity" />
+      <option name="DEPLOY" value="true" />
+      <option name="ARTIFACT_NAME" value="" />
+      <option name="TARGET_SELECTION_MODE" value="EMULATOR" />
+      <option name="USE_LAST_SELECTED_DEVICE" value="false" />
+      <option name="PREFERRED_AVD" value="" />
+      <option name="USE_COMMAND_LINE" value="true" />
+      <option name="COMMAND_LINE" value="" />
+      <option name="WIPE_USER_DATA" value="false" />
+      <option name="DISABLE_BOOT_ANIMATION" value="false" />
+      <option name="NETWORK_SPEED" value="full" />
+      <option name="NETWORK_LATENCY" value="none" />
+      <option name="CLEAR_LOGCAT" value="false" />
+      <option name="SHOW_LOGCAT_AUTOMATICALLY" value="true" />
+      <option name="FILTER_LOGCAT_AUTOMATICALLY" value="true" />
+      <method />
+    </configuration>
+    <configuration default="true" type="#org.jetbrains.idea.devkit.run.PluginConfigurationType" factoryName="Plugin">
+      <module name="" />
+      <option name="VM_PARAMETERS" value="-Xmx512m -Xms256m -XX:MaxPermSize=250m -ea" />
+      <option name="PROGRAM_PARAMETERS" />
+      <method />
+    </configuration>
+    <configuration default="true" type="GrailsRunConfigurationType" factoryName="Grails">
+      <module name="" />
+      <setting name="vmparams" value="" />
+      <setting name="cmdLine" value="run-app" />
+      <setting name="depsClasspath" value="false" />
+      <setting name="passParentEnv" value="true" />
+      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
+      <setting name="launchBrowser" value="false" />
+      <method />
+    </configuration>
+    <configuration default="true" type="MavenRunConfiguration" factoryName="Maven">
+      <MavenSettings>
+        <option name="myGeneralSettings" />
+        <option name="myRunnerSettings" />
+        <option name="myRunnerParameters">
+          <MavenRunnerParameters>
+            <option name="profiles">
+              <set />
+            </option>
+            <option name="goals">
+              <list />
+            </option>
+            <option name="profilesMap">
+              <map />
+            </option>
+            <option name="resolveToWorkspace" value="false" />
+            <option name="workingDirPath" value="" />
+          </MavenRunnerParameters>
+        </option>
+      </MavenSettings>
+      <method />
+    </configuration>
+    <configuration default="true" type="TestNG" factoryName="TestNG">
+      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
+      <module name="" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <option name="SUITE_NAME" />
+      <option name="PACKAGE_NAME" />
+      <option name="MAIN_CLASS_NAME" />
+      <option name="METHOD_NAME" />
+      <option name="GROUP_NAME" />
+      <option name="TEST_OBJECT" value="CLASS" />
+      <option name="VM_PARAMETERS" value="-ea" />
+      <option name="PARAMETERS" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="OUTPUT_DIRECTORY" />
+      <option name="ANNOTATION_TYPE" />
+      <option name="ENV_VARIABLES" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <option name="TEST_SEARCH_SCOPE">
+        <value defaultName="moduleWithDependencies" />
+      </option>
+      <option name="USE_DEFAULT_REPORTERS" value="false" />
+      <option name="PROPERTIES_FILE" />
+      <envs />
+      <properties />
+      <listeners />
+      <method />
+    </configuration>
+    <configuration default="true" type="Application" factoryName="Application">
+      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
+      <option name="MAIN_CLASS_NAME" />
+      <option name="VM_PARAMETERS" />
+      <option name="PROGRAM_PARAMETERS" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <option name="ENABLE_SWING_INSPECTOR" value="false" />
+      <option name="ENV_VARIABLES" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <module name="" />
+      <envs />
+      <method />
+    </configuration>
+    <configuration default="true" type="FlexUnitRunConfigurationType" factoryName="FlexUnit" appDescriptorForEmulator="Android" class_name="" emulatorAdlOptions="" method_name="" package_name="" scope="Class">
+      <option name="BCName" value="" />
+      <option name="launcherParameters">
+        <LauncherParameters>
+          <option name="browser" value="a7bb68e0-33c0-4d6f-a81a-aac1fdb870c8" />
+          <option name="launcherType" value="OSDefault" />
+          <option name="newPlayerInstance" value="false" />
+          <option name="playerPath" value="FlashPlayerDebugger.exe" />
+        </LauncherParameters>
+      </option>
+      <option name="moduleName" value="" />
+      <option name="trusted" value="true" />
+      <method />
+    </configuration>
+    <configuration default="true" type="AndroidTestRunConfigurationType" factoryName="Android Tests">
+      <module name="" />
+      <option name="TESTING_TYPE" value="0" />
+      <option name="INSTRUMENTATION_RUNNER_CLASS" value="" />
+      <option name="METHOD_NAME" value="" />
+      <option name="CLASS_NAME" value="" />
+      <option name="PACKAGE_NAME" value="" />
+      <option name="TARGET_SELECTION_MODE" value="EMULATOR" />
+      <option name="USE_LAST_SELECTED_DEVICE" value="false" />
+      <option name="PREFERRED_AVD" value="" />
+      <option name="USE_COMMAND_LINE" value="true" />
+      <option name="COMMAND_LINE" value="" />
+      <option name="WIPE_USER_DATA" value="false" />
+      <option name="DISABLE_BOOT_ANIMATION" value="false" />
+      <option name="NETWORK_SPEED" value="full" />
+      <option name="NETWORK_LATENCY" value="none" />
+      <option name="CLEAR_LOGCAT" value="false" />
+      <option name="SHOW_LOGCAT_AUTOMATICALLY" value="true" />
+      <option name="FILTER_LOGCAT_AUTOMATICALLY" value="true" />
+      <method />
+    </configuration>
+    <configuration default="true" type="FlashRunConfigurationType" factoryName="Flash App">
+      <option name="BCName" value="" />
+      <option name="IOSSimulatorSdkPath" value="" />
+      <option name="adlOptions" value="" />
+      <option name="airProgramParameters" value="" />
+      <option name="appDescriptorForEmulator" value="Android" />
+      <option name="debugTransport" value="USB" />
+      <option name="debuggerSdkRaw" value="BC SDK" />
+      <option name="emulator" value="NexusOne" />
+      <option name="emulatorAdlOptions" value="" />
+      <option name="fastPackaging" value="true" />
+      <option name="fullScreenHeight" value="0" />
+      <option name="fullScreenWidth" value="0" />
+      <option name="launchUrl" value="false" />
+      <option name="launcherParameters">
+        <LauncherParameters>
+          <option name="browser" value="a7bb68e0-33c0-4d6f-a81a-aac1fdb870c8" />
+          <option name="launcherType" value="OSDefault" />
+          <option name="newPlayerInstance" value="false" />
+          <option name="playerPath" value="FlashPlayerDebugger.exe" />
+        </LauncherParameters>
+      </option>
+      <option name="mobileRunTarget" value="Emulator" />
+      <option name="moduleName" value="" />
+      <option name="overriddenMainClass" value="" />
+      <option name="overriddenOutputFileName" value="" />
+      <option name="overrideMainClass" value="false" />
+      <option name="runTrusted" value="true" />
+      <option name="screenDpi" value="0" />
+      <option name="screenHeight" value="0" />
+      <option name="screenWidth" value="0" />
+      <option name="url" value="http://" />
+      <option name="usbDebugPort" value="7936" />
+      <method />
+    </configuration>
+    <configuration default="true" type="JavascriptDebugType" factoryName="JavaScript Debug">
+      <method />
+    </configuration>
+    <configuration default="true" type="Applet" factoryName="Applet">
+      <module name="" />
+      <option name="MAIN_CLASS_NAME" />
+      <option name="HTML_FILE_NAME" />
+      <option name="HTML_USED" value="false" />
+      <option name="WIDTH" value="400" />
+      <option name="HEIGHT" value="300" />
+      <option name="POLICY_FILE" value="$APPLICATION_HOME_DIR$/bin/appletviewer.policy" />
+      <option name="VM_PARAMETERS" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <method />
+    </configuration>
+    <configuration default="true" type="CucumberJavaRunConfigurationType" factoryName="Cucumber java">
+      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
+      <option name="myFilePath" />
+      <option name="GLUE" />
+      <option name="myNameFilter" />
+      <option name="myGeneratedName" />
+      <option name="MAIN_CLASS_NAME" />
+      <option name="VM_PARAMETERS" />
+      <option name="PROGRAM_PARAMETERS" />
+      <option name="WORKING_DIRECTORY" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <option name="ENABLE_SWING_INSPECTOR" value="false" />
+      <option name="ENV_VARIABLES" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <module name="" />
+      <envs />
+      <method />
+    </configuration>
+    <list size="5">
+      <item index="0" class="java.lang.String" itemvalue="JUnit.PerBizTest" />
+      <item index="1" class="java.lang.String" itemvalue="JUnit.PerRegisterTest" />
+      <item index="2" class="java.lang.String" itemvalue="JUnit.com.job5156.core.biz in eyas-core" />
+      <item index="3" class="java.lang.String" itemvalue="JUnit.TestBase.testSetup" />
+      <item index="4" class="java.lang.String" itemvalue="JUnit.com.job5156.core in eyas-core" />
+    </list>
+    <recent_temporary>
+      <list size="5">
+        <item index="0" class="java.lang.String" itemvalue="JUnit.com.job5156.core in eyas-core" />
+        <item index="1" class="java.lang.String" itemvalue="JUnit.com.job5156.core.biz in eyas-core" />
+        <item index="2" class="java.lang.String" itemvalue="JUnit.TestBase.testSetup" />
+        <item index="3" class="java.lang.String" itemvalue="JUnit.PerBizTest" />
+        <item index="4" class="java.lang.String" itemvalue="JUnit.PerRegisterTest" />
+      </list>
+    </recent_temporary>
+    <configuration name="&lt;template&gt;" type="WebApp" default="true" selected="false">
+      <Host>localhost</Host>
+      <Port>5050</Port>
+    </configuration>
+  </component>
+  <component name="ShelveChangesManager" show_recycled="false" />
+  <component name="SvnConfiguration" cleanupOnStartRun="true">
+    <configuration>C:\Users\cy\AppData\Roaming\Subversion</configuration>
+    <supportedVersion>125</supportedVersion>
+  </component>
+  <component name="SvnFileUrlMappingImpl">
+    <option name="myMappingRoots">
+      <list>
+        <SvnCopyRootSimple>
+          <option name="myVcsRoot" value="D:\chitone\svn\eyas-core" />
+          <option name="myCopyRoot" value="D:\chitone\svn\eyas-core" />
+        </SvnCopyRootSimple>
+        <SvnCopyRootSimple>
+          <option name="myVcsRoot" value="D:\chitone\svn\eyas-core\.idea" />
+          <option name="myCopyRoot" value="D:\chitone\svn\eyas-core\.idea" />
+        </SvnCopyRootSimple>
+      </list>
+    </option>
+    <option name="myMoreRealMappingRoots">
+      <list>
+        <SvnCopyRootSimple>
+          <option name="myVcsRoot" value="D:\chitone\svn\eyas-core" />
+          <option name="myCopyRoot" value="D:\chitone\svn\eyas-core" />
+        </SvnCopyRootSimple>
+      </list>
+    </option>
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="661efa79-47eb-409e-a628-be5ba37b2d39" name="Default" comment="" />
+      <created>1428454502643</created>
+      <updated>1428454502643</updated>
+      <workItem from="1428454508681" duration="24961000" />
+      <workItem from="1428994796477" duration="2645000" />
+      <workItem from="1429086825961" duration="3551000" />
+      <workItem from="1429143994056" duration="40000" />
+      <workItem from="1429144130389" duration="1582000" />
+      <workItem from="1429146252732" duration="3851000" />
+      <workItem from="1429151406860" duration="169000" />
+      <workItem from="1429152590150" duration="95000" />
+      <workItem from="1429598225583" duration="677000" />
+      <workItem from="1429599258384" duration="6723000" />
+      <workItem from="1429662459728" duration="4957000" />
+      <workItem from="1430728415743" duration="1693000" />
+      <workItem from="1430794884766" duration="6495000" />
+      <workItem from="1430814989463" duration="3245000" />
+      <workItem from="1430872899935" duration="16839000" />
+      <workItem from="1430957951874" duration="7891000" />
+      <workItem from="1430966831888" duration="1329000" />
+      <workItem from="1430968164313" duration="7782000" />
+      <workItem from="1430982563043" duration="1759000" />
+      <workItem from="1430984365311" duration="4720000" />
+      <workItem from="1431043813666" duration="21079000" />
+      <workItem from="1431130543911" duration="11579000" />
+      <workItem from="1431323791636" duration="14109000" />
+      <workItem from="1431391109637" duration="22363000" />
+      <workItem from="1431485673277" duration="17275000" />
+      <workItem from="1431589852933" duration="4579000" />
+      <workItem from="1431651051514" duration="12605000" />
+      <workItem from="1431670393446" duration="11116000" />
+      <workItem from="1431736220479" duration="12489000" />
+      <workItem from="1431910568172" duration="10047000" />
+      <workItem from="1431994202716" duration="19932000" />
+      <workItem from="1432082497633" duration="1764000" />
+      <workItem from="1432084352181" duration="14076000" />
+      <workItem from="1432107424747" duration="6521000" />
+      <workItem from="1432169224746" duration="24174000" />
+      <workItem from="1432258281504" duration="20770000" />
+      <workItem from="1432340305710" duration="14293000" />
+      <workItem from="1432516476722" duration="2438000" />
+      <workItem from="1432520133737" duration="16387000" />
+      <workItem from="1432603292883" duration="12395000" />
+      <workItem from="1432631287528" duration="932000" />
+      <workItem from="1432691230964" duration="12225000" />
+      <workItem from="1432772187558" duration="7202000" />
+      <workItem from="1432858776362" duration="9206000" />
+      <workItem from="1432948663976" duration="9438000" />
+      <workItem from="1433403001705" duration="7866000" />
+      <workItem from="1433463522736" duration="16653000" />
+      <workItem from="1433488944572" duration="2640000" />
+      <workItem from="1433492862273" duration="348000" />
+      <workItem from="1433550269375" duration="9000" />
+      <workItem from="1433555833269" duration="1252000" />
+    </task>
+    <task id="LOCAL-00001" summary="build jar包">
+      <created>1429669599251</created>
+      <updated>1429669599251</updated>
+    </task>
+    <task id="LOCAL-00002" summary="应聘模块">
+      <created>1431496535682</created>
+      <updated>1431496535682</updated>
+    </task>
+    <task id="LOCAL-00003" summary="应聘模块">
+      <created>1431496687692</created>
+      <updated>1431496687692</updated>
+    </task>
+    <task id="LOCAL-00004" summary="应聘模块">
+      <created>1431496824237</created>
+      <updated>1431496824237</updated>
+    </task>
+    <task id="LOCAL-00005" summary="应聘模块">
+      <created>1431497075561</created>
+      <updated>1431497075561</updated>
+    </task>
+    <task id="LOCAL-00006" summary="应聘模块">
+      <created>1431497119218</created>
+      <updated>1431497119218</updated>
+    </task>
+    <task id="LOCAL-00007" summary="应聘模块">
+      <created>1431497146669</created>
+      <updated>1431497146669</updated>
+    </task>
+    <task id="LOCAL-00008" summary="应聘模块">
+      <created>1431497401142</created>
+      <updated>1431497401142</updated>
+    </task>
+    <task id="LOCAL-00009" summary="改变service层目录结构">
+      <created>1431499028837</created>
+      <updated>1431499028837</updated>
+    </task>
+    <task id="LOCAL-00010" summary="重写transactionmanager与sessioncontext以实现夸库">
+      <created>1431652652270</created>
+      <updated>1431652652270</updated>
+    </task>
+    <task id="LOCAL-00011" summary="【biz层】公用返回对象">
+      <created>1431660794126</created>
+      <updated>1431660794126</updated>
+    </task>
+    <task id="LOCAL-00012" summary="【service】精简抽象类">
+      <created>1431674108235</created>
+      <updated>1431674108235</updated>
+    </task>
+    <task id="LOCAL-00013" summary="【service】整理应聘service 增加redisservice">
+      <created>1431676289414</created>
+      <updated>1431676289414</updated>
+    </task>
+    <task id="LOCAL-00014" summary="【service】整理service，把不引用的东西去掉">
+      <created>1431677636229</created>
+      <updated>1431677636229</updated>
+    </task>
+    <task id="LOCAL-00015" summary="【biz】注册模块">
+      <created>1432014987308</created>
+      <updated>1432014987308</updated>
+    </task>
+    <task id="LOCAL-00016" summary="【biz】测试用例">
+      <created>1432192702995</created>
+      <updated>1432192702995</updated>
+    </task>
+    <task id="LOCAL-00017" summary="【biz】测试用例">
+      <created>1432544080823</created>
+      <updated>1432544080823</updated>
+    </task>
+    <task id="LOCAL-00018" summary="【biz】doc的整理以及参数更名">
+      <created>1432604486306</created>
+      <updated>1432604486306</updated>
+    </task>
+    <task id="LOCAL-00019" summary="【biz】去掉接口">
+      <created>1432697443889</created>
+      <updated>1432697443889</updated>
+    </task>
+    <task id="LOCAL-00020" summary="【biz】包目录变动">
+      <created>1432955449884</created>
+      <updated>1432955449884</updated>
+    </task>
+    <task id="LOCAL-00021" summary="用户模块uml建模图">
+      <created>1433407059467</created>
+      <updated>1433407059467</updated>
+    </task>
+    <task id="LOCAL-00022" summary="用户模块uml建模图">
+      <created>1433407177124</created>
+      <updated>1433407177124</updated>
+    </task>
+    <task id="LOCAL-00023" summary="用户注册模块uml建模图">
+      <created>1433475220694</created>
+      <updated>1433475220694</updated>
+    </task>
+    <task id="LOCAL-00024" summary="用户注册模块uml建模图">
+      <created>1433475314263</created>
+      <updated>1433475314263</updated>
+    </task>
+    <task id="LOCAL-00025" summary="用户注册模块样板">
+      <created>1433488258021</created>
+      <updated>1433488258021</updated>
+    </task>
+    <option name="localTasksCounter" value="26" />
+    <servers />
+  </component>
+  <component name="TimeTrackingManager">
+    <option name="totallyTimeSpent" value="438766000" />
+  </component>
+  <component name="ToolWindowManager">
+    <frame x="-9" y="-9" width="1938" height="1050" extended-state="0" />
+    <editor active="false" />
+    <layout>
+      <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="IDEtalk" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32954547" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
+      <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
+      <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.2705443" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
+      <window_info id="JRebel Executor" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
+      <window_info id="Designer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.16168623" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.39318183" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.39318183" sideWeight="0.5" order="16" side_tool="false" content_ui="tabs" />
+      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32613635" sideWeight="0.5" order="15" side_tool="false" content_ui="tabs" />
+      <window_info id="Palette&#9;" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.2159091" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.1659091" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
+      <window_info id="Spring" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32954547" sideWeight="0.5" order="12" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="13" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.2614728" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Bean Validation" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32924107" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
+      <window_info id="JRebel" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="4" side_tool="true" content_ui="tabs" />
+      <window_info id="IDEtalk Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="14" side_tool="false" content_ui="tabs" />
+      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.41302028" sideWeight="0.5" order="3" side_tool="true" content_ui="tabs" />
+      <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
+      <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Dependency Viewer" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24545455" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
+      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
+      <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.23522727" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+    </layout>
+    <layout-to-restore>
+      <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
+      <window_info id="IDEtalk" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32954547" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
+      <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
+      <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.2705443" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
+      <window_info id="JRebel Executor" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
+      <window_info id="Dependency Viewer" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24545455" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
+      <window_info id="Designer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
+      <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.16168623" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.39318183" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.39318183" sideWeight="0.5" order="16" side_tool="false" content_ui="tabs" />
+      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.32613635" sideWeight="0.5" order="15" side_tool="false" content_ui="tabs" />
+      <window_info id="Palette&#9;" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.13068181" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.1659091" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
+      <window_info id="Spring" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32954547" sideWeight="0.5" order="12" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="13" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.20490928" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Bean Validation" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32924107" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
+      <window_info id="JRebel" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="4" side_tool="true" content_ui="tabs" />
+      <window_info id="IDEtalk Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="14" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.14545454" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.41302028" sideWeight="0.5" order="3" side_tool="true" content_ui="tabs" />
+    </layout-to-restore>
+  </component>
+  <component name="Vcs.Log.UiProperties">
+    <option name="RECENTLY_FILTERED_USER_GROUPS">
+      <collection />
+    </option>
+    <option name="RECENTLY_FILTERED_BRANCH_GROUPS">
+      <collection />
+    </option>
+  </component>
+  <component name="VcsContentAnnotationSettings">
+    <option name="myLimit" value="2678400000" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <option name="CHECK_CODE_SMELLS_BEFORE_PROJECT_COMMIT" value="false" />
+    <option name="CHECK_NEW_TODO" value="false" />
+    <option name="myTodoPanelSettings">
+      <TodoPanelSettings />
+    </option>
+    <MESSAGE value="build jar包" />
+    <MESSAGE value="应聘模块" />
+    <MESSAGE value="改变service层目录结构" />
+    <MESSAGE value="重写transactionmanager与sessioncontext以实现夸库" />
+    <MESSAGE value="【biz层】公用返回对象" />
+    <MESSAGE value="【service】精简抽象类" />
+    <MESSAGE value="【service】整理应聘service 增加redisservice" />
+    <MESSAGE value="【service】整理service，把不引用的东西去掉" />
+    <MESSAGE value="【biz】注册模块" />
+    <MESSAGE value="【biz】测试用例" />
+    <MESSAGE value="【biz】doc的整理以及参数更名" />
+    <MESSAGE value="【biz】去掉接口" />
+    <MESSAGE value="【biz】包目录变动" />
+    <MESSAGE value="测试数据文件结构调整" />
+    <MESSAGE value="用户模块uml建模图" />
+    <MESSAGE value="用户注册模块uml建模图" />
+    <MESSAGE value="用户注册模块样板" />
+    <option name="LAST_COMMIT_MESSAGE" value="用户注册模块样板" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>jar://$MAVEN_REPOSITORY$/org/springframework/spring-orm/3.2.2.RELEASE/spring-orm-3.2.2.RELEASE-sources.jar!/org/springframework/orm/hibernate4/HibernateTransactionManager.java</url>
+          <line>500</line>
+          <properties />
+          <option name="timeStamp" value="46" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/job5156/core/service/MailService.java</url>
+          <line>70</line>
+          <properties />
+          <option name="timeStamp" value="62" />
+        </line-breakpoint>
+      </breakpoints>
+      <option name="time" value="79" />
+    </breakpoint-manager>
+  </component>
+  <component name="antWorkspaceConfiguration">
+    <option name="IS_AUTOSCROLL_TO_SOURCE" value="false" />
+    <option name="FILTER_TARGETS" value="false" />
+  </component>
+  <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/job5156/core/biz/PerUserBiz.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="11134">
+          <caret line="73" column="16" selection-start-line="73" selection-start-column="16" selection-end-line="73" selection-end-column="16" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/job5156/core/bo/redis/PerUserLoginRedisBo.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="437" max-vertical-offset="817">
+          <caret line="23" column="5" selection-start-line="23" selection-start-column="5" selection-end-line="23" selection-end-column="5" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/job5156/core/common/helper/TempHelper.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="10412" max-vertical-offset="14307">
+          <caret line="548" column="46" selection-start-line="548" selection-start-column="46" selection-end-line="548" selection-end-column="46" />
+          <folding>
+            <marker date="1433402976722" expanded="true" signature="-1:-1" placeholder="SELECT * FRO..com_info..." />
+            <marker date="1433402976722" expanded="true" signature="-1:-1" placeholder="SELECT * FRO..com_position..." />
+            <marker date="1433402976722" expanded="true" signature="-1:-1" placeholder="UPDATE per_p..." />
+            <marker date="1433402976722" expanded="true" signature="-1:-1" placeholder="UPDATE per_p..." />
+            <marker date="1433402976722" expanded="true" signature="-1:-1" placeholder="UPDATE per_p..." />
+            <marker date="1433402976722" expanded="true" signature="-1:-1" placeholder="SELECT * FRO..com_info..." />
+            <marker date="1433402976722" expanded="true" signature="-1:-1" placeholder="SELECT * FRO..com_position..." />
+            <marker date="1433402976722" expanded="true" signature="-1:-1" placeholder="UPDATE per_i..." />
+            <marker date="1433402976722" expanded="true" signature="-1:-1" placeholder="UPDATE per_i..." />
+            <marker date="1433402976722" expanded="true" signature="-1:-1" placeholder="UPDATE per_i..." />
+            <marker date="1433402976722" expanded="true" signature="-1:-1" placeholder="SELECT * FRO..com_info..." />
+            <marker date="1433402976722" expanded="true" signature="-1:-1" placeholder="SELECT * FRO..com_position..." />
+            <marker date="1433402976722" expanded="true" signature="-1:-1" placeholder="UPDATE per_p..." />
+            <marker date="1433402976722" expanded="true" signature="-1:-1" placeholder="UPDATE per_p..." />
+            <marker date="1433402976722" expanded="true" signature="-1:-1" placeholder="UPDATE per_p..." />
+            <marker date="1433402976722" expanded="true" signature="-1:-1" placeholder="SELECT * FRO..com_info..." />
+            <marker date="1433402976722" expanded="true" signature="-1:-1" placeholder="UPDATE per_v..." />
+            <marker date="1433402976722" expanded="true" signature="-1:-1" placeholder="UPDATE per_v..." />
+            <marker date="1433402976722" expanded="true" signature="-1:-1" placeholder="UPDATE per_v..." />
+            <marker date="1433402976722" expanded="true" signature="-1:-1" placeholder="update missi..." />
+            <marker date="1433402976722" expanded="true" signature="-1:-1" placeholder="UPDATE com_r..." />
+            <marker date="1433402976722" expanded="true" signature="-1:-1" placeholder="UPDATE com_r..." />
+            <marker date="1433402976722" expanded="true" signature="-1:-1" placeholder="UPDATE com_s..." />
+            <marker date="1433402976722" expanded="true" signature="-1:-1" placeholder="UPDATE com_b..." />
+            <marker date="1433402976722" expanded="true" signature="-1:-1" placeholder="UPDATE com_b..." />
+            <marker date="1433402976722" expanded="true" signature="-1:-1" placeholder="SELECT * FRO..per_user..." />
+            <marker date="1433402976722" expanded="true" signature="-1:-1" placeholder="UPDATE irc_r..." />
+            <marker date="1433402976722" expanded="true" signature="-1:-1" placeholder="SELECT * FRO..per_user..." />
+            <marker date="1433402976722" expanded="true" signature="-1:-1" placeholder="UPDATE com_r..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/job5156/core/eao/per/PerResumeEao.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="798" max-vertical-offset="3325">
+          <caret line="42" column="0" selection-start-line="42" selection-start-column="0" selection-end-line="42" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/job5156/core/srv/per/PerUserSrv.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="286" max-vertical-offset="1083">
+          <caret line="37" column="17" selection-start-line="37" selection-start-column="17" selection-end-line="37" selection-end-column="17" />
+          <folding>
+            <element signature="e#1294#1295#0" expanded="true" />
+            <element signature="e#1345#1346#0" expanded="true" />
+            <element signature="e#1731#1732#0" expanded="true" />
+            <element signature="e#1782#1783#0" expanded="true" />
+            <element signature="e#2173#2174#0" expanded="true" />
+            <element signature="e#2226#2227#0" expanded="true" />
+            <element signature="e#4566#4567#0" expanded="true" />
+            <element signature="e#4623#4624#0" expanded="true" />
+            <element signature="e#4747#4748#0" expanded="true" />
+            <element signature="e#4810#4811#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/job5156/core/common/helper/PerResumeScoreHelper.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="532" max-vertical-offset="7391">
+          <caret line="28" column="58" selection-start-line="28" selection-start-column="58" selection-end-line="28" selection-end-column="58" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/job5156/core/eao/per/PerLoginHistoryEao.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="513" max-vertical-offset="988">
+          <caret line="27" column="52" selection-start-line="27" selection-start-column="52" selection-end-line="27" selection-end-column="52" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/job5156/core/common/helper/IpSeekerHelper.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="1026" max-vertical-offset="13091">
+          <caret line="54" column="44" selection-start-line="54" selection-start-column="44" selection-end-line="54" selection-end-column="44" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/job5156/core/srv/per/PerInviteLogSrv.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="342" max-vertical-offset="1539">
+          <caret line="18" column="13" selection-start-line="18" selection-start-column="13" selection-end-line="18" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/job5156/core/bo/mail/MailBo.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1463">
+          <caret line="7" column="22" selection-start-line="7" selection-start-column="22" selection-end-line="7" selection-end-column="22" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/job5156/core/bo/mail/PerRegisterMailBo.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="798">
+          <caret line="27" column="0" selection-start-line="27" selection-start-column="0" selection-end-line="27" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/job5156/core/entity/count/PvPersonRegister.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1520">
+          <caret line="12" column="13" selection-start-line="12" selection-start-column="13" selection-end-line="12" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/.idea/workspace.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="39235">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/job5156/core/bo/form/per/PerRegisterFormBo.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="741">
+          <caret line="13" column="13" selection-start-line="13" selection-start-column="13" selection-end-line="13" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/job5156/core/bo/form/per/RegisterBo.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1767">
+          <caret line="12" column="7" selection-start-line="12" selection-start-column="7" selection-end-line="12" selection-end-column="7" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/job5156/core/bo/form/per/ThirdBindingRegisterFormBo.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="494">
+          <caret line="12" column="30" selection-start-line="12" selection-start-column="30" selection-end-line="12" selection-end-column="30" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/job5156/core/eao/base/IBaseEao.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="817">
+          <caret line="4" column="17" selection-start-line="4" selection-start-column="17" selection-end-line="4" selection-end-column="17" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/job5156/core/eao/base/BaseHibernateEao.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="91" max-vertical-offset="23161">
+          <caret line="39" column="118" selection-start-line="39" selection-start-column="118" selection-end-line="39" selection-end-column="118" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/job5156/core/srv/base/BaseSrv.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.25071633" vertical-offset="129" max-vertical-offset="1102">
+          <caret line="21" column="0" selection-start-line="21" selection-start-column="0" selection-end-line="21" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/job5156/core/bo/mapping/EshopPositionBo.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="855">
+          <caret line="25" column="37" selection-start-line="25" selection-start-column="37" selection-end-line="25" selection-end-column="37" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/job5156/core/bo/mapping/SysHotRecruitPositionBo.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="665">
+          <caret line="28" column="21" selection-start-line="28" selection-start-column="21" selection-end-line="28" selection-end-column="21" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/job5156/core/bo/mapping/PerResumeBo.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="16150">
+          <caret line="46" column="56" selection-start-line="46" selection-start-column="56" selection-end-line="46" selection-end-column="56" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/job5156/core/common/helper/FreeMarkerHelper.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1178">
+          <caret line="30" column="4" selection-start-line="30" selection-start-column="4" selection-end-line="30" selection-end-column="4" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/job5156/core/bo/UploadSettingInfoBo.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1007">
+          <caret line="19" column="27" selection-start-line="19" selection-start-column="27" selection-end-line="19" selection-end-column="27" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/job5156/core/bo/mapping/PerUserBo.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="8322">
+          <caret line="41" column="47" selection-start-line="41" selection-start-column="47" selection-end-line="41" selection-end-column="47" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/job5156/core/bo/sys/SysResumeOperatorHistoryBo.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="589">
+          <caret line="25" column="24" selection-start-line="25" selection-start-column="24" selection-end-line="25" selection-end-column="24" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/job5156/core/common/util/BaiDuApiUtil.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="4047">
+          <caret line="34" column="0" selection-start-line="34" selection-start-column="0" selection-end-line="34" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/job5156/core/common/helper/frame/ServerInformation.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="2090">
+          <caret line="25" column="7" selection-start-line="25" selection-start-column="7" selection-end-line="25" selection-end-column="7" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/job5156/core/bo/LoginInfoBo.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="570">
+          <caret line="39" column="1" selection-start-line="39" selection-start-column="1" selection-end-line="39" selection-end-column="1" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/job5156/core/bo/redis/PerUserLoginRedisBo.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="589">
+          <caret line="23" column="5" selection-start-line="23" selection-start-column="5" selection-end-line="23" selection-end-column="5" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/job5156/core/common/helper/TempHelper.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="9282" max-vertical-offset="13566">
+          <caret line="548" column="46" selection-start-line="548" selection-start-column="46" selection-end-line="548" selection-end-column="46" />
+          <folding>
+            <marker date="1433402976722" expanded="true" signature="-1:-1" placeholder="SELECT * FRO..com_info..." />
+            <marker date="1433402976722" expanded="true" signature="-1:-1" placeholder="SELECT * FRO..com_position..." />
+            <marker date="1433402976722" expanded="true" signature="-1:-1" placeholder="UPDATE per_p..." />
+            <marker date="1433402976722" expanded="true" signature="-1:-1" placeholder="UPDATE per_p..." />
+            <marker date="1433402976722" expanded="true" signature="-1:-1" placeholder="UPDATE per_p..." />
+            <marker date="1433402976722" expanded="true" signature="-1:-1" placeholder="SELECT * FRO..com_info..." />
+            <marker date="1433402976722" expanded="true" signature="-1:-1" placeholder="SELECT * FRO..com_position..." />
+            <marker date="1433402976722" expanded="true" signature="-1:-1" placeholder="UPDATE per_i..." />
+            <marker date="1433402976722" expanded="true" signature="-1:-1" placeholder="UPDATE per_i..." />
+            <marker date="1433402976722" expanded="true" signature="-1:-1" placeholder="UPDATE per_i..." />
+            <marker date="1433402976722" expanded="true" signature="-1:-1" placeholder="SELECT * FRO..com_info..." />
+            <marker date="1433402976722" expanded="true" signature="-1:-1" placeholder="SELECT * FRO..com_position..." />
+            <marker date="1433402976722" expanded="true" signature="-1:-1" placeholder="UPDATE per_p..." />
+            <marker date="1433402976722" expanded="true" signature="-1:-1" placeholder="UPDATE per_p..." />
+            <marker date="1433402976722" expanded="true" signature="-1:-1" placeholder="UPDATE per_p..." />
+            <marker date="1433402976722" expanded="true" signature="-1:-1" placeholder="SELECT * FRO..com_info..." />
+            <marker date="1433402976722" expanded="true" signature="-1:-1" placeholder="UPDATE per_v..." />
+            <marker date="1433402976722" expanded="true" signature="-1:-1" placeholder="UPDATE per_v..." />
+            <marker date="1433402976722" expanded="true" signature="-1:-1" placeholder="UPDATE per_v..." />
+            <marker date="1433402976722" expanded="true" signature="-1:-1" placeholder="update missi..." />
+            <marker date="1433402976722" expanded="true" signature="-1:-1" placeholder="UPDATE com_r..." />
+            <marker date="1433402976722" expanded="true" signature="-1:-1" placeholder="UPDATE com_r..." />
+            <marker date="1433402976722" expanded="true" signature="-1:-1" placeholder="UPDATE com_s..." />
+            <marker date="1433402976722" expanded="true" signature="-1:-1" placeholder="UPDATE com_b..." />
+            <marker date="1433402976722" expanded="true" signature="-1:-1" placeholder="UPDATE com_b..." />
+            <marker date="1433402976722" expanded="true" signature="-1:-1" placeholder="SELECT * FRO..per_user..." />
+            <marker date="1433402976722" expanded="true" signature="-1:-1" placeholder="UPDATE irc_r..." />
+            <marker date="1433402976722" expanded="true" signature="-1:-1" placeholder="SELECT * FRO..per_user..." />
+            <marker date="1433402976722" expanded="true" signature="-1:-1" placeholder="UPDATE com_r..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/job5156/core/common/helper/PerResumeScoreHelper.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="7049">
+          <caret line="28" column="58" selection-start-line="28" selection-start-column="58" selection-end-line="28" selection-end-column="58" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/job5156/core/common/helper/IpSeekerHelper.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="390" max-vertical-offset="12635">
+          <caret line="54" column="44" selection-start-line="54" selection-start-column="44" selection-end-line="54" selection-end-column="44" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/job5156/core/srv/per/PerInviteLogSrv.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1159">
+          <caret line="18" column="13" selection-start-line="18" selection-start-column="13" selection-end-line="18" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/test/java/com/job5156/core/biz/PerUserBizTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="399" max-vertical-offset="8303">
+          <caret line="64" column="20" selection-start-line="64" selection-start-column="20" selection-end-line="64" selection-end-column="20" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/job5156/core/bo/BizRetCode.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="3781">
+          <caret line="25" column="37" selection-start-line="25" selection-start-column="37" selection-end-line="25" selection-end-column="37" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/test/java/com/job5156/core/biz/PerBizTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="146" max-vertical-offset="684">
+          <caret line="95" column="9" selection-start-line="95" selection-start-column="9" selection-end-line="95" selection-end-column="9" />
+          <folding>
+            <element signature="docComment;class#PerBizTest#0" expanded="false" />
+            <element signature="method#testApply#0;class#PerBizTest#0" expanded="false" />
+            <element signature="method#testLogin#0;class#PerBizTest#0" expanded="false" />
+            <element signature="method#testLoginPassword#0;class#PerBizTest#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/test/java/com/job5156/core/eao/per/PerUserEaoTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="30" max-vertical-offset="1140">
+          <caret line="15" column="13" selection-start-line="15" selection-start-column="13" selection-end-line="15" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/test/java/com/job5156/core/srv/PerUserSrvTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="30" max-vertical-offset="1178">
+          <caret line="19" column="13" selection-start-line="19" selection-start-column="13" selection-end-line="19" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/resources/testdata/5156base.sql">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-13.22" vertical-offset="49233" max-vertical-offset="50008">
+          <caret line="2626" column="0" selection-start-line="2626" selection-start-column="0" selection-end-line="2626" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/job5156/core/srv/RedisSrv.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="6859">
+          <caret line="21" column="3" selection-start-line="21" selection-start-column="3" selection-end-line="21" selection-end-column="3" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/job5156/core/srv/MailSrv.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="798" max-vertical-offset="2945">
+          <caret line="76" column="7" selection-start-line="76" selection-start-column="7" selection-end-line="76" selection-end-column="7" />
+          <folding>
+            <element signature="e#1455#1484#0" expanded="true" />
+            <element signature="e#4808#4837#0" expanded="true" />
+            <marker date="1433556669434" expanded="true" signature="1894:2061" placeholder="INSERT INTO ..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/job5156/core/srv/per/PerUserSrv.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="570" max-vertical-offset="2869">
+          <caret line="61" column="6" selection-start-line="0" selection-start-column="0" selection-end-line="162" selection-end-column="0" />
+          <folding>
+            <element signature="e#1294#1295#0" expanded="true" />
+            <element signature="e#1345#1346#0" expanded="true" />
+            <element signature="e#1731#1732#0" expanded="true" />
+            <element signature="e#1782#1783#0" expanded="true" />
+            <element signature="e#2173#2174#0" expanded="true" />
+            <element signature="e#2226#2227#0" expanded="true" />
+            <element signature="e#4566#4567#0" expanded="true" />
+            <element signature="e#4623#4624#0" expanded="true" />
+            <element signature="e#4747#4748#0" expanded="true" />
+            <element signature="e#4810#4811#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/job5156/core/srv/count/PVPersonRegisterSrv.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="84" max-vertical-offset="684">
+          <caret line="21" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="39" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/job5156/core/eao/SiteMessageEao.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="12" max-vertical-offset="4712">
+          <caret line="20" column="13" selection-start-line="20" selection-start-column="13" selection-end-line="20" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/job5156/core/eao/RedisEao.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="13053">
+          <caret line="30" column="3" selection-start-line="30" selection-start-column="3" selection-end-line="30" selection-end-column="3" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/job5156/core/eao/per/PerUserEao.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="581" max-vertical-offset="3002">
+          <caret line="54" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="167" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/job5156/core/eao/per/PerResumeEao.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="2466" max-vertical-offset="2945">
+          <caret line="68" column="37" selection-start-line="68" selection-start-column="37" selection-end-line="68" selection-end-column="37" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/job5156/core/eao/per/PerLoginHistoryEao.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="114" max-vertical-offset="1026">
+          <caret line="28" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="59" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/job5156/core/eao/count/PVPersonRegisterEao.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="342" max-vertical-offset="1178">
+          <caret line="40" column="21" selection-start-line="40" selection-start-column="21" selection-end-line="40" selection-end-column="21" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/job5156/core/biz/PerUserBiz.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.67401576" vertical-offset="845" max-vertical-offset="11286">
+          <caret line="67" column="13" selection-start-line="67" selection-start-column="13" selection-end-line="67" selection-end-column="13" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+  </component>
+  <component name="masterDetails">
+    <states>
+      <state key="ArtifactsStructureConfigurable.UI">
+        <settings>
+          <artifact-editor />
+          <last-edited>eyas-core:jar</last-edited>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+      <state key="FacetStructureConfigurable.UI">
+        <settings>
+          <last-edited>Spring (eyas-core)|Spring</last-edited>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.4185185" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+      <state key="GlobalLibrariesConfigurable.UI">
+        <settings>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+      <state key="JdkListConfigurable.UI">
+        <settings>
+          <last-edited>1.7</last-edited>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+      <state key="ModuleStructureConfigurable.UI">
+        <settings>
+          <last-edited>eyas-core</last-edited>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.4185185" />
+                <option value="0.6" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+      <state key="ProjectJDKs.UI">
+        <settings>
+          <last-edited>1.7</last-edited>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+      <state key="ProjectLibrariesConfigurable.UI">
+        <settings>
+          <last-edited>Maven: com.ibatis:ibatis2-common:2.1.7.597</last-edited>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.4185185" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+      <state key="ScopeChooserConfigurable.UI">
+        <settings>
+          <last-edited>Unnamed</last-edited>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+          <order>
+            <scope name="Unnamed" />
+          </order>
+        </settings>
+      </state>
+    </states>
+  </component>
+</project>
+

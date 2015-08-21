@@ -1,0 +1,45 @@
+package com.job5156.core.eao.per;
+
+import com.job5156.core.eao.base.BaseHibernateEao;
+import com.job5156.webapp.model.per.PerUserConnect;
+
+import org.hibernate.SessionFactory;
+import org.springframework.stereotype.Repository;
+
+import javax.annotation.Resource;
+
+import java.util.List;
+
+@Repository
+public class PerUserConnectEao extends BaseHibernateEao<PerUserConnect, Integer> {
+
+    @Resource(name="sessionFactory")
+    public void setSessionFactory(SessionFactory sessionFactory) {
+        this.sessionFactory = sessionFactory;
+    }
+
+    public List<PerUserConnect> find(String openId, String type) {
+        String hql = "FROM PerUserConnect WHERE openId = ? AND type = ?";
+        return this.find(hql,openId,type);
+    }
+
+    public List<PerUserConnect> findByUserIdAndType(Integer perId, String type) {
+        String hql = "FROM PerUserConnect WHERE perUserId = ? AND type = ?";
+        return this.find(hql,perId,type);
+    }
+
+
+    public List<PerUserConnect> listByPerUser(Integer perId) {
+        String hql = "FROM PerUserConnect WHERE perUserId = ?";
+        return list(hql, new Object[] {perId});
+    }
+    
+    public List<String> findOpenIdByComUserId(Integer comUserId, String type) {
+        String hql = "SELECT openId FROM PerUserConnect WHERE type = ? AND comUserId = ?";
+        return super.find(hql,type,comUserId);
+    } 
+    public List<PerUserConnect> findComUser(String openId, String type) {
+        String hql = "FROM PerUserConnect WHERE openId = ? AND type = ? AND comUserId > 0";
+        return this.find(hql,openId,type);
+    }
+}

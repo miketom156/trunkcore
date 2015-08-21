@@ -1,0 +1,38 @@
+package com.job5156.core.common.helper.searcher;
+
+import com.job5156.searcher.ejb.Searcher;
+import org.apache.commons.collections.CollectionUtils;
+import org.springframework.stereotype.Component;
+
+import java.util.List;
+
+/**
+ * <p>
+ * 职位搜索器组件
+ * </p>
+ *
+ * @author leo
+ *
+ */
+@Component
+public class PosSearcherHelper {
+
+    //职位轮询指针
+    private volatile Integer pollingPointer = 1;
+
+    /**
+     * 以轮询方式获取职位搜索器
+     * @return
+     */
+    public Searcher getPollingPosSearcher(List<Searcher> posSearcherList){
+        if(CollectionUtils.isNotEmpty(posSearcherList) && posSearcherList.size() > 0) {
+            synchronized(this){
+                if(this.pollingPointer > posSearcherList.size()){
+                    this.pollingPointer = 1;
+                }
+                return posSearcherList.get(this.pollingPointer++ - 1);
+            }
+        }
+        return null;
+    }
+}

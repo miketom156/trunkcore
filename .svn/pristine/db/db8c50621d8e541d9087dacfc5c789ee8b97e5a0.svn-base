@@ -1,0 +1,255 @@
+package com.job5156.core.eao;
+
+import com.job5156.core.common.Constants;
+import com.job5156.core.common.MsgConstants;
+import com.job5156.core.eao.base.BaseHibernateEao;
+import com.job5156.core.entity.SiteMessage;
+import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang.StringUtils;
+import org.hibernate.SessionFactory;
+import org.springframework.stereotype.Repository;
+
+import javax.annotation.Resource;
+import java.util.Date;
+import java.util.List;
+
+/**
+ * @Description: 站内消息DAO类
+ * 
+ */
+@Repository
+public class SiteMessageEao extends BaseHibernateEao<SiteMessage, Integer> {
+
+    @Resource(name = "sessionFactoryAction")
+    public void setSessionFactory(SessionFactory sessionFactory) {
+        this.sessionFactory = sessionFactory;
+    }
+
+    /**
+     * 企业简历管理-每条记录对应的动态消息
+     * @param comId
+     * @param perUserId
+     * @param posId
+     * @return
+     */
+    public List<SiteMessage> finList(Integer comId, Integer perUserId, Integer posId){
+    	String hql = " FROM SiteMessage WHERE comId = ? AND perUserId = ? AND posId = ? AND comDelFlag != -1 ORDER BY createDate DESC ";
+    	return list(hql, new Object[]{comId, perUserId, posId});
+    }
+    /**
+     * 统计未读消息
+     *
+     * @param comId
+     * @return
+     */
+    public List<Object[]> listUnreadCountByCate(Integer comId) {
+        String hql = "SELECT count(*) FROM SiteMessage WHERE comId = ? AND readFlag = 0 AND comDelFlag != -1 GROUP BY category";
+        return list(hql, new Object[] { comId });
+    }
+
+    /**
+     * 返回同组的消息
+     *
+     * @param GroupId
+     * @return
+     */
+    public List<SiteMessage> getMessageByGroupId(long GroupId) {
+        String hql = "FROM SiteMessage Where GroupId = ?";
+        return list(hql, new Object[] { GroupId });
+    }
+
+    public List<SiteMessage> getMessageListByPosId(Integer posId) {
+        String hql = "FROM SiteMessage Where posId = ? AND perDelFlag != -1 AND comDelFlag != -1 AND publicFlag = 1 ORDER BY groupId DESC";
+        return list(hql, new Object[] { posId });
+    }
+
+    public List<SiteMessage> getSiteMessageList(Integer comId){
+    	String hql = "FROM SiteMessage Where comId = ? AND perDelFlag != -1 AND comDelFlag != -1 AND publicFlag = 1 ORDER BY groupId DESC";
+    	return list(hql, new Object[] { comId});
+    }
+
+    /**
+     * 根据企业ID获取公开的，企业回复的消息列表（后续以此获取对应的问题）
+     * @param comId
+     * @return
+     */
+    public List<SiteMessage> getPublicAnswerListByComId(Integer comId) {
+        String hql = "FROM SiteMessage Where comId = ? " +
+                " AND replyId > 0 " +
+                " AND perDelFlag != -1 " +
+                " AND comDelFlag != -1 " +
+                " AND publicFlag = 1 " +
+                " ORDER BY groupId DESC";
+        return list(hql, new Object[]{comId});
+    }
+
+    public List<SiteMessage> findComIndexMessageList(Integer comId, List<Integer> posIdList) {
+        String hql = "FROM SiteMessage WHERE comeFrom in ('PER','SYS') " +
+                " AND perDelFlag != -1 " +
+                " AND comDelFlag != -1 " +
+                " AND draftFlag = 0 " +
+                " AND comId = ? " ;
+        //子账号或分公司按自己发布的职位列出消息
+        if (CollectionUtils.isNotEmpty(posIdList) && !posIdList.contains(-1)) {
+            hql += " AND (posId is null or posId in (" + StringUtils.join(posIdList, ',') + ")) ";
+        }
+        hql +=" ORDER BY createDate DESC ";
+        return list(hql, 1, 100, new Object[]{comId});
+    }
+
+    public List<SiteMessage> findPerIndexMessageList(Integer perId) {
+        String hql = "FROM SiteMessage WHERE comeFrom in ('COM','SYS') " +
+                " AND perDelFlag != -1 " +
+                " AND comDelFlag != -1 " +
+                " AND draftFlag = 0 " +
+                " AND perUserId = ? " +
+                " ORDER BY createDate DESC ";
+        return list(hql, 1, 100, new Object[]{perId});
+    }
+
+    public List<SiteMessage> findPerIndexMessageListByPage(Integer perId,Integer pn,Integer pageSize) {
+        String hql = "FROM SiteMessage WHERE comeFrom in ('COM','SYS') " +
+                " AND perDelFlag != -1 " +
+                " AND comDelFlag != -1 " +
+                " AND draftFlag = 0 " +
+                " AND perUserId = ? " +
+                " ORDER BY createDate DESC ";
+        return list(hql, pn, pageSize, new Object[]{perId});
+    }
+
+    public Integer countPerIndexMessage(Integer perId) {
+        String hql = "select count(*) FROM SiteMessage WHERE comeFrom in ('COM','SYS') " +
+                " AND perDelFlag != -1 " +
+                " AND comDelFlag != -1 " +
+                " AND draftFlag = 0 " +
+                " AND perUserId = ? ";
+        Long total = aggregate(hql,perId);
+        return total.intValue();
+    }
+    public Integer countPerIndexMessageAfter2015(Integer perId) {
+        String hql = "select count(*) FROM SiteMessage WHERE comeFrom in ('COM','SYS') " +
+                " AND perDelFlag != -1 " +
+                " AND comDelFlag != -1 " +
+                " AND draftFlag = 0 " +
+                " AND perUserId = ? " +
+                " AND createDate>='2015-1-1' ";
+        Long total = aggregate(hql,perId);
+        return total.intValue();
+    }
+
+    public Integer countPerIndexUnreadMessage(Integer perId) {
+        String hql = "select count(*) FROM SiteMessage WHERE comeFrom in ('COM','SYS') " +
+                " AND perDelFlag != -1 " +
+                " AND comDelFlag != -1 " +
+                " AND draftFlag = 0 " +
+                " AND readFlag = 0 " +
+                " AND perUserId = ? ";
+        Long total = aggregate(hql,perId);
+        return total.intValue();
+    }
+    public Integer countPerIndexUnreadMessageAfter2015(Integer perId) {
+        String hql = "select count(*) FROM SiteMessage WHERE comeFrom in ('COM','SYS') " +
+                " AND perDelFlag != -1 " +
+                " AND comDelFlag != -1 " +
+                " AND draftFlag = 0 " +
+                " AND readFlag = 0 " +
+                " AND perUserId = ? " +
+                " AND createDate>='2015-1-1' ";
+        Long total = aggregate(hql,perId);
+        return total.intValue();
+    }
+
+    public Integer countUnreadPerIndexMessage(Integer perId) {
+        String hql = "select count(*) FROM SiteMessage WHERE comeFrom in ('COM','SYS') " +
+                " AND perDelFlag != -1 " +
+                " AND comDelFlag != -1 " +
+                " AND draftFlag = 0 " +
+                " AND perUserId = ? " +
+                " AND readFlag = 0 ";
+        Long total = aggregate(hql,perId);
+        return total.intValue();
+    }
+
+
+
+    public List<SiteMessage> findPerIndexMessageListBySys(Integer perId) {
+        String hql = "FROM SiteMessage WHERE comeFrom ='SYS' " +
+                " AND perDelFlag != -1 " +
+                " AND comDelFlag != -1 " +
+                " AND draftFlag = 0 " +
+                " AND perUserId = ? " +
+                " ORDER BY createDate DESC ";
+        return list(hql, 1, 100, new Object[]{perId});
+    }
+
+    public List<SiteMessage> findPerIndexFairMsgList(Integer perId) {
+        String hql = "FROM SiteMessage WHERE comeFrom = '" + Constants.SITE_MESSAGE_SENDER_COM + "'" +
+                " AND perDelFlag != -1 " +
+                " AND comDelFlag != -1 " +
+                " AND draftFlag = 0 " +
+                " AND perUserId = ? " +
+                " AND category = ? " +
+                " ORDER BY createDate DESC ";
+        return list(hql, 1, 100, new Object[]{perId, MsgConstants.PER_DYNAMIC_CATEGORY_JOBFAIR});
+    }
+
+    public int countAfterDate(Integer perUserId, Date date) {
+        String hql = "SELECT count(*) FROM SiteMessage WHERE comeFrom in ('COM','SYS') " +
+                " AND perDelFlag != -1 " +
+                " AND comDelFlag != -1 " +
+                " AND draftFlag = 0 " +
+                " AND perUserId = ? " +
+                " AND createDate > ? ";
+        return this.<Number>aggregate(hql, perUserId, date).intValue();
+    }
+
+    public int countAfterDateForCom(Integer comId, Date date) {
+        String hql = "SELECT count(*) FROM SiteMessage WHERE comeFrom in ('PER') " +
+                " AND perDelFlag != -1 " +
+                " AND comDelFlag != -1 " +
+                " AND draftFlag = 0 " +
+                " AND comId = ? " +
+                " AND createDate > ? ";
+        return this.<Number>aggregate(hql, comId, date).intValue();
+    }
+
+    /**
+     * 个人对企业的咨询消息
+     * @param perUserId
+     * @return
+     */
+    public List<SiteMessage> findPerAskIsReplyed(Integer perUserId){
+        String hql = "FROM SiteMessage WHERE comeFrom = 'PER' "+
+                " AND perDelFlag != -1 " +
+                " AND comDelFlag != -1 " +
+                " AND perUserId = ? " +
+                " AND category = ? " +
+                " AND replyId > 0 " +
+                " ORDER BY createDate DESC ";
+        return list(hql, 1, 40, new Object[]{perUserId,MsgConstants.PER_DYNAMIC_CATEGORY_INTERACTION});
+
+    }
+
+    /**
+     * 企业对个人应聘职位的回复 【待考虑】【婉拒】
+     * @param perId
+     * @return
+     */
+    public List<SiteMessage> findPerIndexMessageNotInterview(Integer perId) {
+        String hql = "FROM SiteMessage WHERE comeFrom ='COM' " +
+                " AND perDelFlag != -1 " +
+                " AND comDelFlag != -1 " +
+                " AND draftFlag = 0 " +
+                " AND perUserId = ? " +
+                " AND category = ? " +
+                " AND type != ? " +
+                " AND type != ? " +
+                " ORDER BY createDate DESC ";
+        return list(hql, 1, 20, new Object[]{perId,
+                MsgConstants.PER_DYNAMIC_CATEGORY_INVITE,
+                MsgConstants.PER_DYNAMIC_TYPE_COM_INTERVIEW_OFFICE,
+                MsgConstants.PER_DYNAMIC_TYPE_COM_INTERVIEW_VIDEO
+        });
+    }
+
+}

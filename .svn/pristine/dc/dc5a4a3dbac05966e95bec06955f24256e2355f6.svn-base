@@ -1,0 +1,127 @@
+package com.job5156.core.biz;
+
+import com.job5156.core.TestBase;
+import com.job5156.core.bo.BizRetBo;
+import com.job5156.core.bo.BizRetCode;
+import com.job5156.core.bo.PosBriefSimpleBo;
+import com.job5156.core.bo.form.per.PerIndexInfoBo;
+import com.job5156.core.bo.mapping.PerInviteLogBo;
+import com.job5156.core.common.helper.PosRecommendHelper;
+import org.junit.Assert;
+import org.junit.Test;
+
+import javax.annotation.Resource;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+
+/**
+ * <p></p>
+ * Date:2015/6/12 14:49
+ *
+ * @author hjs
+ * @version 1.0
+ */
+public class PerIndexBizTest extends TestBase {
+    @Resource
+    private PerIndexBiz perIndexBiz;
+    @Resource
+    private PosRecommendHelper posRecommendHelper;
+
+    //个人中心首页动态 - 邀请面试
+    @Test
+    public void testInfoInvite() {
+        BizRetBo<PerIndexInfoBo> bizRetBo = perIndexBiz.infoInvite(DEFAULT_PID);
+        if (bizRetBo.getRetCode().equals(BizRetCode.SUCCESS)) {
+            Collection<PerIndexInfoBo> infoBoList = bizRetBo.getItems();
+            List<PerIndexInfoBo> list = new ArrayList<>();
+            list.addAll(infoBoList);
+            String content = "<a href='/corp/160795' target='_blank'><strong>东莞普世饰品有限公司</strong></a>邀请您面试职位<a href='/jobs/276421799' target='_blank'>珠宝设计</a>[广东东莞|面议|大专|1年]";
+            //测试点：判断返回的内容是否正确
+            Assert.assertEquals("content", content, list.get(0).getContent());
+        }
+    }
+
+
+    //个人中心首页动态 - 推荐职位
+    @Test
+        public void testInfoRecommend() {
+        BizRetBo<PerIndexInfoBo> bizRetBo = perIndexBiz.infoRecommend(DEFAULT_PID,null,3);
+        if (bizRetBo.getRetCode().equals(BizRetCode.SUCCESS)) {
+            Collection<PerIndexInfoBo> infoBoList = bizRetBo.getItems();
+            List<PerIndexInfoBo> list = new ArrayList<>();
+            list.addAll(infoBoList);
+            String content = "智通人才网根据您的求职意向向您推荐职位：<a href='/jobs/275485700' target='_blank'><strong>首饰开发设计</strong></a>[东莞|面议] - 钟文表业首饰";
+            Assert.assertEquals("content",content,list.get(0).getContent());
+        }
+    }
+
+
+    //个人中心首页动态 - 消息com.gilt
+    @Test
+    public void testInfoMessage() {
+        BizRetBo<PerIndexInfoBo> bizRetBo = perIndexBiz.infoMessage(DEFAULT_PID);
+        if (bizRetBo.getRetCode().equals(BizRetCode.SUCCESS)) {
+            Collection<PerIndexInfoBo> infoBoList = bizRetBo.getItems();
+            List<PerIndexInfoBo> list = new ArrayList<>();
+            list.addAll(infoBoList);
+            String content = "智通人才网给您发来消息：尊敬的用户陈义春，您好：<br/>&nbsp;&nbsp; 感谢您注册智通人才网，您的简历资料已经通过我们的审核。祝您早日找到满意的工作-job5156.com";
+            //测试点：判断返回的内容是否正确
+            Assert.assertEquals("content：", content, list.get(0).getContent());
+        }
+    }
+
+    //个人中心首页动态 - 招聘会
+    @Test
+    public void testInfoFair() {
+        BizRetBo<PerIndexInfoBo> bizRetBo = perIndexBiz.infoFair(DEFAULT_PID);
+        if (bizRetBo.getRetCode().equals(BizRetCode.SUCCESS)) {
+            Collection<PerIndexInfoBo> infoBoList = bizRetBo.getItems();
+            List<PerIndexInfoBo> list = new ArrayList<>();
+            list.addAll(infoBoList);
+        }
+    }
+
+    //个人中心首页动态 - 关注企业
+    @Test
+    public void testInfoCompany() {
+        BizRetBo<PerIndexInfoBo> bizRetBo = perIndexBiz.infoCompany(DEFAULT_PID);
+        if (bizRetBo.getRetCode().equals(BizRetCode.SUCCESS)) {
+            Collection<PerIndexInfoBo> infoBoList = bizRetBo.getItems();
+            //测试返回结果是否正确
+            List<PerIndexInfoBo> list = new ArrayList<>();
+            list.addAll(infoBoList);
+            String content = "<a href='/corp/160795' target='_blank'><strong>东莞普世饰品有限公司</strong></a>发布了职位<a href='/jobs/276484181' target='_blank'>绿化园林工</a>";
+            //测试点：判断返回的内容是否正确
+            Assert.assertEquals("content：", content, list.get(0).getContent());
+        }
+    }
+
+    @Test
+    public void testGuestYouLikePosList() {
+        String site = "index";
+        String keyword = null;
+        String redisKey = posRecommendHelper.generateRedisKey(site);
+        Integer itemSize = 1;
+        Integer posId = 7931899;
+        BizRetBo<PosBriefSimpleBo> bizRetBo = perIndexBiz.guestYouLikePosList(DEFAULT_PID, keyword, site, redisKey, itemSize);
+        if (bizRetBo.getRetCode().equals(BizRetCode.SUCCESS)) {
+            Collection<PosBriefSimpleBo> infoBoList = bizRetBo.getItems();
+            boolean hasThePos = false;
+            for (PosBriefSimpleBo bo : infoBoList) {
+                if (bo.getPosId().equals(posId)) {
+                    //测试点：返回的bo属性是否正确
+                    Assert.assertEquals("posName", "工艺品设计师", bo.getPosName());
+                    hasThePos = true;
+                }
+            }
+            if (!hasThePos) {
+                Assert.fail("no the pos:" + posId);
+            }
+        } else {
+            //测试点：应聘是否成功
+            Assert.fail("guestyoulikeposlist fail:" + bizRetBo.getRetCodeVal());
+        }
+    }
+
+}

@@ -1,0 +1,6 @@
+social.weibo.id=1247019566
+social.weibo.secret=543fe98b6a37e625450fb04295a2e2d9
+social.weibo.redirect=http://www.job5156.com/connect/weibo/callback
+social.qq.connect.id=100313766
+social.qq.connect.secret=d83ac80477455041dab7ec9a38342a0e
+social.qq.connect.redirect=http://www.job5156.com/connect/qq/callback

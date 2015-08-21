@@ -1,0 +1,70 @@
+/**
+ * 
+ */
+package com.job5156.core.srv;
+
+import java.util.List;
+
+import javax.annotation.Resource;
+
+import org.junit.Assert;
+import org.junit.Test;
+
+import com.job5156.core.TestBase;
+import com.job5156.webapp.model.per.PerSearcher;
+import com.job5156.core.srv.per.PerSearcherSrv;
+
+/**
+ * @author lyh
+ * @Description
+ * @date 2015年7月1日
+ */
+public class PerSearcherSrvTest extends TestBase {
+	@Resource
+	private PerSearcherSrv perSearcherSrv;
+	public static final String EMAILE = "carrieshine@126.com";
+	public static final String FAIT_EMAILE = "carriese@126.com";
+	public static final Integer PER_SEARCH_ID = 69;
+
+	@Test
+	public void testFindByPerUser() {
+		List<PerSearcher> list = perSearcherSrv.findByPerUser(this.DEFAULT_PID);
+		//查找用户搜索器的的用户是否正确
+		for(PerSearcher per:list){
+			Assert.assertEquals("搜索器的用户", this.DEFAULT_PID,per.getPerUserId());
+		}
+		
+		Assert.assertEquals("用户搜索器统计", 10, list.size());
+	}
+
+	@Test
+	public void testCountByEmail() {
+		int num = perSearcherSrv.countByEmail(EMAILE);
+		//email统计搜索器
+		Assert.assertNotEquals("统计用户出错！", 3, num);
+		Assert.assertEquals("统计用户！", 10, num);
+	}
+
+	@Test
+	public void testfindByEmail() {
+		List<PerSearcher> list = perSearcherSrv.findByEmail(EMAILE);
+		//搜索器的email
+		for(PerSearcher per:list){
+			Assert.assertEquals("搜索器的用户的email",EMAILE,per.getEmail());
+		}
+		Assert.assertEquals("统计用户！", 10, list.size());
+	}
+
+	@Test
+	public void testCountByPerUser() {
+		int num = perSearcherSrv.countByPerUser(this.DEFAULT_PID);
+		Assert.assertEquals("统计用户出错！", 10, num);
+	}
+
+	@Test
+	public void testUnsubscribe() {
+		PerSearcher perSearcher = perSearcherSrv.unsubscribe(PER_SEARCH_ID);
+		Assert.assertNotEquals("搜索订阅出错！", perSearcher.getSubscribe().intValue(), 3);
+		Assert.assertEquals("取消订阅成功！", perSearcher.getSubscribe().intValue(), 0);
+	}
+}

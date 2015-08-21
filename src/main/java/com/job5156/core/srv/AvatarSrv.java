@@ -1,0 +1,51 @@
+package com.job5156.core.srv;
+
+import com.job5156.core.common.Constants;
+import com.job5156.core.common.helper.UploadHelper;
+import com.job5156.core.eao.com.ComInfoEao;
+import com.job5156.webapp.model.com.ComInfo;
+import org.apache.commons.lang.StringUtils;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import javax.annotation.Resource;
+
+/**
+ * <p></p>
+ * Date:2015/6/12 10:00
+ *
+ * @author hjs
+ * @version 1.0
+ */
+@Service
+@Transactional(value="transactionManager")
+public class AvatarSrv {
+    @Resource
+    private ComInfoEao comInfoEao;
+    @Resource
+    private UploadHelper uploadHelper;
+
+    public String getComAvatar(Integer comId) {
+        String avatarUrl = "/static/img/comLogoBlank2.gif";
+        if(comId != null && comId > 0) {
+            ComInfo comInfo = comInfoEao.get(comId);
+            if(comInfo != null && StringUtils.isNotBlank(comInfo.getLogoName()) && StringUtils.isNotBlank(comInfo.getLogoPath())) {
+                avatarUrl = uploadHelper.getUrl(Constants.UPLOAD_TYPE_COM_LOGO, comInfo.getLogoPath(), comInfo.getLogoName());
+            }
+        }
+        return avatarUrl;
+    }
+
+
+
+    public String getSysAvatar(Integer sysId) {
+        String avatarUrl = "/static/img/sysLogoBlank.gif";
+        if(sysId != null && sysId > 0) {
+//            ComInfo comInfo = comInfoDao.get(comId);
+//            if(comInfo != null && StringUtils.isNotBlank(comInfo.getLogoName()) && StringUtils.isNotBlank(comInfo.getLogoPath())) {
+//                avatarUrl = uploadComponent.getUrl(Constants.UPLOAD_TYPE_COM_LOGO, comInfo.getLogoPath(), comInfo.getLogoName());
+//            }
+        }
+        return avatarUrl;
+    }
+}

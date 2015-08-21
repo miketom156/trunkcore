@@ -1,0 +1,121 @@
+package com.job5156.core.biz;
+
+import com.job5156.core.TestBase;
+import com.job5156.core.bo.BizRetBo;
+import com.job5156.core.bo.LoginInfoBo;
+import com.job5156.core.common.util.KeyMaskUtil;
+import com.job5156.core.eao.com.ComReceiveEao;
+import com.job5156.core.eao.per.PerLoginHistoryEao;
+import com.job5156.core.eao.per.PerPosApplyEao;
+import com.job5156.core.eao.per.PerUserEao;
+import com.job5156.core.entity.com.ComReceive;
+import com.job5156.core.entity.per.PerUser;
+import com.job5156.core.srv.com.ComPositionSrv;
+import com.job5156.core.srv.per.PerApplySrv;
+import com.job5156.core.bo.BizRetCode;
+import org.junit.Assert;
+import org.junit.Test;
+
+import javax.annotation.Resource;
+
+/**
+ * <p></p>
+ * Date:2015/5/22 16:25
+ *
+ * @author pzm
+ * @version 1.0
+ */
+public class PerBizTest extends TestBase {
+    @Resource
+    private PerUserBiz perUserBiz;
+    @Resource
+    private PerPosApplyEao perPosApplyEao;
+    @Resource
+    private PerUserEao perUserEao;
+    @Resource
+    private PerLoginHistoryEao perLoginHistoryEao;
+    @Resource
+    private PerApplySrv perApplySrv;
+    @Resource
+    private ComReceiveEao comReceiveEao;
+    @Resource
+    private ComPositionSrv comPositionSrv;
+
+    @Test
+    public void testApply() {
+        Integer posId = 7798797, perId = DEFAULT_PID, resumeId = 4220268;
+        Integer comId = comPositionSrv.get(posId).getComId();
+        BizRetBo ret = perUserBiz.apply(KeyMaskUtil.posIdToNo(posId, (short) 0), perId, resumeId, false);
+        if (ret.getRetCode() == BizRetCode.SUCCESS) {
+            //测试点：是否有应聘记录
+            Assert.assertNotNull("perPosApply", perApplySrv.findByPosIdAndPerUserId(posId, perId));
+            //测试点：是否有企业收到简历记录
+            ComReceive comReceive = comReceiveEao.findByComIdAndResumeId(comId, resumeId);
+            Assert.assertNotNull("comReceive", comReceive);
+            //测试点：应聘次数为1
+            Assert.assertEquals("comReceive:applyNumer", new Integer(1), comReceive.getApplyNumer());
+        } else {
+            //测试点：应聘是否成功
+            Assert.fail("apply fail:" + ret.getRetCodeVal());
+        }
+
+        //测试点：二次应聘（需要客户确认）
+        BizRetBo ret2 = perUserBiz.apply(KeyMaskUtil.posIdToNo(posId, (short) 0), perId, resumeId, false);
+        Assert.assertEquals("hasComfirmSecondApply", BizRetCode.SECOND_APPLY, ret2.getRetCode());
+
+        //测试点：二次应聘（客户已确认）
+        perUserBiz.apply(KeyMaskUtil.posIdToNo(posId, (short) 0), perId, resumeId, true);
+        Assert.assertEquals("secondApply:perPosApply:count", 2, perPosApplyEao.<Number>aggregate("select count(*) FROM PerPosApply WHERE posId=? and perUserId = ?", posId, perId).intValue());
+        clearSessionCache();
+        ComReceive comReceive = comReceiveEao.findByComIdAndResumeId(comId, resumeId);
+        Assert.assertEquals("secondApply:comReceive:applyNumer", 2, comReceive.getApplyNumer().intValue());
+    }
+
+    @Test
+    public void testLogin() {
+        Integer perId = DEFAULT_PID;
+        String ip="181.1.22.15";
+        PerUser perUser = perUserEao.get(perId);
+        BizRetBo<LoginInfoBo> ret = perUserBiz.login(perUser.getId(),ip);
+        if (ret.getRetCode() == BizRetCode.SUCCESS) {
+            //测试点：登录信息是否正确
+            LoginInfoBo loginInfoBo = ret.getItem();
+            Assert.assertNotNull("cookie", loginInfoBo.getCookie());
+            Assert.assertEquals("email", perUser.getEmail(), loginInfoBo.getEmail());
+            Assert.assertEquals("userName", perUser.getUserName(), loginInfoBo.getName());
+            Assert.assertEquals("id",perUser.getId(), loginInfoBo.getId());
+
+            //测试点：登录历史记录
+            Assert.assertEquals("perLoginHistory:count", 1, perLoginHistoryEao.<Number>aggregate("select count(*) FROM PerLoginHistory WHERE perUserId=?", perId).intValue());
+        } else {
+            //测试点：应聘是否成功
+            Assert.fail("login fail:" + ret.getRetCodeVal());
+        }
+    }
+
+    @Test
+    public void testLoginPassword() {
+        String ip="181.1.22.15",account="917226008@qq.com",password="123456";
+        PerUser perUser = perUserEao.findByAccount(account).get(0);
+        BizRetBo<LoginInfoBo> ret = perUserBiz.login(account,password,ip);
+        if (ret.getRetCode() == BizRetCode.SUCCESS) {
+            //测试点：登录信息是否正确
+            LoginInfoBo loginInfoBo = ret.getItem();
+            Assert.assertNotNull("cookie", loginInfoBo.getCookie());
+            Assert.assertEquals("email", perUser.getEmail(), loginInfoBo.getEmail());
+            Assert.assertEquals("userName", perUser.getUserName(), loginInfoBo.getName());
+            Assert.assertEquals("id",perUser.getId(), loginInfoBo.getId());
+
+            //测试点：登录历史记录
+            Assert.assertEquals("perLoginHistory:count", 1, perLoginHistoryEao.<Number>aggregate("select count(*) FROM PerLoginHistory WHERE perUserId=?", perUser.getId()).intValue());
+        } else {
+            //测试点：应聘是否成功
+            Assert.fail("login fail:" + ret.getRetCodeVal());
+        }
+
+        //测试点：密码错误
+        password +="x";
+        ret = perUserBiz.login(account,password,ip);
+        Assert.assertEquals("password",BizRetCode.LOGIN_USER_OR_PASSWORD_FAIL,ret.getRetCode());
+    }
+}

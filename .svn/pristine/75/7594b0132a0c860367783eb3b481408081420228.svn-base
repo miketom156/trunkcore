@@ -1,0 +1,210 @@
+/**
+ * 
+ */
+package com.job5156.core.biz.per;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.annotation.Resource;
+
+import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang.StringUtils;
+import org.springframework.stereotype.Component;
+
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
+import com.job5156.core.bo.BizRetBo;
+import com.job5156.core.bo.BizRetCode;
+import com.job5156.core.bo.form.per.PerSearcherBo;
+import com.job5156.core.common.helper.searcher.PerSearcherHelper;
+import com.job5156.core.entity.per.PerSearcher;
+import com.job5156.core.entity.per.PerUser;
+import com.job5156.core.entity.sys.system.SysOperate;
+import com.job5156.core.srv.per.PerSearcherSrv;
+import com.job5156.core.srv.per.PerUserSrv;
+
+/**
+ * @author lyh
+ * @Description
+ * @date 2015年7月1日
+ */
+@Component
+public class PerSearcherBiz {
+	@Resource
+	private PerSearcherSrv perSearcherSrv;
+	@Resource
+	private PerUserSrv perUserSrv;
+	@Resource
+	private PerSearcherHelper perSearcherHelper;
+
+	/**
+	 * @Description: 根据用户查找搜索器
+	 * @param @param perUserId 用户id
+	 * @param @return
+	 * @return BizRetBo<Map<String,String>>
+	 * @throws
+	 */
+	public BizRetBo<Map<String, String>> getAllSearchersByPerUserId(Integer perUserId) {
+		BizRetBo<Map<String, String>> bizRetBo = null;
+		Map<String, String> returnMsg = new HashMap<String, String>();
+		// 将求职者的所有搜索器罗列出来
+		List<PerSearcher> perSearcherList = perSearcherSrv.findByPerUser(perUserId);
+		PerUser perUser = perUserSrv.get(perUserId);
+		if (CollectionUtils.isEmpty(perSearcherList)) {
+			// 就算是空也初始化一个空列表，保证前端读取内容的时候不会出错
+			perSearcherList = Lists.newArrayList();
+		}
+		List<Map<String, Object>> list = Lists.newArrayList();
+		for (PerSearcher perSearcher : perSearcherList) {
+			String content = perSearcherHelper.parsePerSearcherContent(perSearcher.getContent());
+			Map<String, Object> vo = new Gson().fromJson(content, new TypeToken<Map<String, Object>>() {
+			}.getType());
+			vo.put("id", perSearcher.getId());
+			vo.put("name", perSearcher.getName());
+			vo.put("subscribe", perSearcher.getSubscribe());
+			vo.put("email", perSearcher.getEmail());
+			vo.put("url", perSearcher.getUrl());
+			// 为解决部分数据无salaryUnPublic（该属性后面增加的，而之前保存的是JSON格式，导致之前的部分数据无该属性）属性导致的脚本错误问题
+			if (!vo.containsKey("salaryUnPublic")) {
+				vo.put("salaryUnPublic", true);
+			}
+
+			// 为解决部分数据无keywordOr属性导致的脚本错误问题
+			if (!vo.containsKey("keywordOr")) {
+				vo.put("keywordOr", null);
+			}
+			list.add(vo);
+		}
+		String searcherListJson = new GsonBuilder().serializeNulls().create().toJson(list);
+		String returnUrl = "/search/pos/per_pos_searcher";
+		bizRetBo = new BizRetBo<>(BizRetCode.SUCCESS, returnUrl);
+		returnMsg.put("searcherListJson", searcherListJson);
+		returnMsg.put("userEmail", perUser.getEmail());
+		bizRetBo.setItem(returnMsg);
+		return bizRetBo;
+	}
+
+	/**
+	 * @Description: 根据用户更新搜索器
+	 * @param perUserId
+	 *            用户id
+	 * @param perSearcherBo
+	 *            搜索器的业务类
+	 * @throws
+	 */
+	public BizRetBo<PerSearcher> updateSubscribe(PerSearcherBo perSearcherBo, Integer perUserId) {
+		PerSearcher perSearcher = perSearcherSrv.get(perSearcherBo.getId());
+		if (perSearcher == null || !perUserId.equals(perSearcher.getPerUserId())) {
+			// 报错，搜索器找不到或这用户不匹配
+			return new BizRetBo<PerSearcher>(BizRetCode.PER_SEARCHER_UPDATE_ERROR);
+		} else {
+			// 更新
+			// 这里将会更新用户实际输入的一些内容
+			perSearcher.setSubscribe(perSearcher.getSubscribe());
+			perSearcher.setEmail(perSearcher.getEmail());
+			perSearcherSrv.update(perSearcher);
+			return new BizRetBo<PerSearcher>(BizRetCode.SUCCESS);
+		}
+	}
+
+	public BizRetBo<Map<String, Object>> modifyPerSearcher(PerSearcherBo perSearcherBo, Integer perUserId) {
+		String content = new GsonBuilder().serializeNulls().create().toJson(perSearcherBo.getSearchPosFormBo());
+		Integer countSearcherNum = perSearcherSrv.countByPerUser(perUserId);
+		Map<String, Object> returnMsg = Maps.newHashMap();
+		Integer id = perSearcherBo.getId();
+		BizRetBo<Map<String, Object>> bizRetBo = new BizRetBo<Map<String, Object>>();
+		if (id > 0 || perUserId <= 0) { // 当ID不为0的时候，首先判断这个搜索器ID是否属于当前用户的，否则报错
+			PerSearcher perSearcher = perSearcherSrv.get(perSearcherBo.getId());
+			if (perSearcher == null || !perUserId.equals(perSearcher.getPerUserId())) {
+				// 报错，搜索器找不到或这用户不匹配
+				bizRetBo.setRetCode(BizRetCode.PER_SEARCHER_UPDATE_ERROR);
+			} else {
+				// 更新
+				// 这里将会更新用户实际输入的一些内容
+				perSearcher.setName(perSearcherBo.getName());
+				perSearcher.setContent(content);
+				perSearcher.setSubscribe(perSearcherBo.getSubscribe());
+				perSearcher.setEmail(perSearcherBo.getEmail());
+				perSearcher.setUrl(StringUtils.abbreviate(perSearcherBo.getUrl(), 500));
+				perSearcherSrv.update(perSearcher);
+				bizRetBo.setRetCode(BizRetCode.SUCCESS);
+				returnMsg.put("countSearcherNum", String.valueOf(countSearcherNum));
+				// 下面这段vo是为了自动更新到页面上的修改内容而添加的
+				Map<String, Object> returnVo = new Gson().fromJson(perSearcher.getContent(), new TypeToken<Map<String, Object>>() {
+				}.getType());
+				returnVo.put("id", perSearcher.getId());
+				returnVo.put("name", perSearcher.getName());
+				returnVo.put("subscribe", perSearcher.getSubscribe());
+				returnVo.put("email", perSearcher.getEmail());
+				returnVo.put("url", perSearcher.getUrl());
+				returnMsg.put("searcherList", returnVo);
+			}
+		} else { // 当ID为0的时候，是新增搜索器
+			if (countSearcherNum >= 10) {
+				// 当超过10个的时候给用户提醒
+				bizRetBo.setRetCode(BizRetCode.FAIL);
+				returnMsg.put("message", "最多只能设置10个搜索器，请<a href='http://s.job5156.com/per/searcher'>设置搜索器</a>");
+			} else {
+				// 新增
+				PerSearcher addPerSearcher = new PerSearcher();
+				addPerSearcher.setPerUserId(perUserId);
+				addPerSearcher.setName(perSearcherBo.getName());
+				addPerSearcher.setContent(content);
+				addPerSearcher.setSubscribe(perSearcherBo.getSubscribe());
+				addPerSearcher.setEmail(perSearcherBo.getEmail());
+				addPerSearcher.setUrl(StringUtils.abbreviate(perSearcherBo.getUrl(), 500));
+				// 这里将会插入用户实际输入的一些内容
+				Integer retId=perSearcherSrv.save(addPerSearcher);
+				if(retId!=null&&retId>0){
+			    bizRetBo.setRetCode(BizRetCode.SUCCESS);
+				returnMsg.put("countSearcherNum", countSearcherNum);
+				// 下面这段vo是为了自动更新到页面上的修改内容而添加的
+				Map<String, Object> returnVo = new Gson().fromJson(addPerSearcher.getContent(), new TypeToken<Map<String, Object>>() {
+				}.getType());
+				returnVo.put("id", retId);
+				returnVo.put("name", addPerSearcher.getName());
+				returnVo.put("subscribe", addPerSearcher.getSubscribe());
+				returnVo.put("email", addPerSearcher.getEmail());
+				returnVo.put("url", addPerSearcher.getUrl());
+				returnMsg.put("searcherList", returnVo);
+				}else{
+					 bizRetBo.setRetCode(BizRetCode.FAIL);
+				}
+				
+			}
+			PerUser perUser = perUserSrv.get(perUserId);
+			returnMsg.put("userEmail", perUser.getEmail());
+			
+		}
+		bizRetBo.setItem(returnMsg);
+		return bizRetBo;
+	}
+
+	public BizRetBo<Map<String, Object>> deletePerSearcher(Integer id, Integer perUserId) {
+		BizRetBo<Map<String, Object>> bizRetBo = new BizRetBo<>();
+		Map<String, Object> returnMsg = Maps.newHashMap();
+		if (id > 0 && perUserId > 0) { // 当ID不为0的时候，首先判断这个搜索器ID是否属于当前用户的，否则报错
+			PerSearcher perSearcher = perSearcherSrv.get(id);
+			if (perSearcher == null || !perUserId.equals(perSearcher.getPerUserId())) {
+				// 报错，搜索器找不到或这用户不匹配
+				bizRetBo.setRetCode(BizRetCode.PER_SEARCHER_UPDATE_ERROR);
+			} else {
+				// 删除搜索器
+				perSearcherSrv.deleteObject(perSearcher);
+				bizRetBo.setRetCode(BizRetCode.SUCCESS);
+				Integer countSearcherNum = perSearcherSrv.countByPerUser(perUserId);
+				returnMsg.put("countSearcherNum", countSearcherNum);
+				bizRetBo.setItem(returnMsg);
+			}
+		} else {
+			bizRetBo.setRetCode(BizRetCode.PER_SEARCHER_UPDATE_ERROR);
+		}
+		return bizRetBo;
+	}
+}
+

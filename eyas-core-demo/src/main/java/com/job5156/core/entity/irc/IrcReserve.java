@@ -1,0 +1,216 @@
+package com.job5156.core.entity.irc;
+
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
+import org.hibernate.annotations.SelectBeforeUpdate;
+
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import java.io.Serializable;
+import java.util.Date;
+
+@Entity
+@DynamicUpdate
+@DynamicInsert
+@SelectBeforeUpdate
+public class IrcReserve implements Serializable {
+
+    private static final long serialVersionUID = 1L;
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Integer           resId;                 // 主键
+    private Integer           comId;                 // 企业id
+    private Integer           userId;                // 个人用户id
+    private Integer           jobId;                 // 职位id
+    private Integer           prodId;                // 招聘会id
+    private Date              resTime;               // 邀请时间
+    private Date              inviteReplyTime;       // 回复时间
+    private Integer           resStatus;             // 预约状态[1=个人预约; 2=企业邀请; 3=个人刷卡进场]
+    private Integer           inviteStatus;          // 1未回复2接受(预约或邀请)3谢绝(预约或邀请)
+    private Integer           inviteDelete;
+
+    private String            comName;              // 企业名称
+    private String            jfName;               // 招聘会名称
+    private String            posName;              // 预约职位
+    private String            userName;             // 个人姓名
+    private String            schoolName;           // 毕业学校
+    private String            speciality;           // 专业
+    private Integer           gender;               // 性别
+    private Integer           age;                  // 年龄
+    private Integer           degree;               // 学历
+    private Integer           jobyearType;          // 工作年限类型
+    
+    private transient String seoDomain = ""; //这个字段只在读取的时候进行设置，不加入数据库
+
+    public Integer getResId() {
+        return resId;
+    }
+
+    public void setResId(Integer resId) {
+        this.resId = resId;
+    }
+
+    public Integer getComId() {
+        return comId;
+    }
+
+    public void setComId(Integer comId) {
+        this.comId = comId;
+    }
+
+    public Integer getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Integer userId) {
+        this.userId = userId;
+    }
+
+    public Integer getJobId() {
+        return jobId;
+    }
+
+    public void setJobId(Integer jobId) {
+        this.jobId = jobId;
+    }
+
+    public Integer getProdId() {
+        return prodId;
+    }
+
+    public void setProdId(Integer prodId) {
+        this.prodId = prodId;
+    }
+
+    public Date getResTime() {
+        return resTime;
+    }
+
+    public void setResTime(Date resTime) {
+        this.resTime = resTime;
+    }
+
+    public Date getInviteReplyTime() {
+        return inviteReplyTime;
+    }
+
+    public void setInviteReplyTime(Date inviteReplyTime) {
+        this.inviteReplyTime = inviteReplyTime;
+    }
+
+    public Integer getResStatus() {
+        return resStatus;
+    }
+
+    public void setResStatus(Integer resStatus) {
+        this.resStatus = resStatus;
+    }
+
+    public Integer getInviteStatus() {
+        return inviteStatus;
+    }
+
+    public void setInviteStatus(Integer inviteStatus) {
+        this.inviteStatus = inviteStatus;
+    }
+
+    public Integer getInviteDelete() {
+        return inviteDelete;
+    }
+
+    public void setInviteDelete(Integer inviteDelete) {
+        this.inviteDelete = inviteDelete;
+    }
+
+    public String getComName() {
+        return comName;
+    }
+
+    public void setComName(String comName) {
+        this.comName = comName;
+    }
+
+    public String getJfName() {
+        return jfName;
+    }
+
+    public void setJfName(String jfName) {
+        this.jfName = jfName;
+    }
+
+    public String getPosName() {
+        return posName;
+    }
+
+    public void setPosName(String posName) {
+        this.posName = posName;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    public String getSchoolName() {
+        return schoolName;
+    }
+
+    public void setSchoolName(String schoolName) {
+        this.schoolName = schoolName;
+    }
+
+    public String getSpeciality() {
+        return speciality;
+    }
+
+    public void setSpeciality(String speciality) {
+        this.speciality = speciality;
+    }
+
+    public Integer getGender() {
+        return gender;
+    }
+
+    public void setGender(Integer gender) {
+        this.gender = gender;
+    }
+
+    public Integer getAge() {
+        return age;
+    }
+
+    public void setAge(Integer age) {
+        this.age = age;
+    }
+
+    public Integer getDegree() {
+        return degree;
+    }
+
+    public void setDegree(Integer degree) {
+        this.degree = degree;
+    }
+
+    public Integer getJobyearType() {
+        return jobyearType;
+    }
+
+    public void setJobyearType(Integer jobyearType) {
+        this.jobyearType = jobyearType;
+    }
+    public String getSeoDomain() {
+		return seoDomain;
+	}
+
+	public void setSeoDomain(String seoDomain) {
+		this.seoDomain = seoDomain;
+	}
+    
+
+}

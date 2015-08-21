@@ -1,0 +1,66 @@
+package com.job5156.core.bo.form.per;
+
+import com.google.common.collect.Lists;
+import com.job5156.core.common.helper.TempHelper;
+import com.job5156.core.common.pagination.Page;
+import com.job5156.core.common.pagination.PageUtil;
+import com.job5156.core.eao.per.PerPosFavoriteEao;
+import com.job5156.core.entity.per.job.PerPosFavorite;
+import com.job5156.core.srv.base.BaseSrv;
+import org.apache.commons.lang.StringUtils;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import javax.annotation.Resource;
+import java.util.List;
+
+/**
+ * <p></p>
+ * Date:Administrator 2015-6-24
+ *
+ * @author hjs
+ * @version 1.0
+ */
+@Service
+@Transactional(value="transactionManagerAction")
+public class PerPosFavoriteSrv extends BaseSrv<PerPosFavorite, Integer> {
+    @Resource
+    private PerPosFavoriteEao perPosFavoriteEao;
+    @Resource
+    private TempHelper tempHelper;
+
+    @Override
+    protected void initBaseHibernateEao() {
+        this.baseHibernateEao = perPosFavoriteEao;
+    }
+
+    /**
+     * 职位收藏夹
+     * @param pn 页码
+     * @param pageSize 每页的数目
+     * @param command PerPosFavorite
+     * @return Page《PerViewLog》
+     */
+    public Page<PerPosFavorite> query(int pn, int pageSize, PerPosFavorite command) {
+        return PageUtil.getPage(perPosFavoriteEao.countQuery(command), pn, perPosFavoriteEao.query(pn, pageSize, command), pageSize);
+    }
+
+    /**
+     *职位收藏夹信息添加到PerPosFavoriteBoList
+     * @param logs
+     * @return
+     */
+    public List<PerPosFavoriteBo> toFavoriteVo(List<PerPosFavorite> logs){
+        List<PerPosFavoriteBo> perInviteLogVoList = Lists.newArrayList();
+        for (PerPosFavorite perPosFavorite : logs) {
+            tempHelper.fillFavMixInfo(perPosFavorite);
+            if(StringUtils.isNotBlank(perPosFavorite.getMixInfo()) && !StringUtils.equals("{}",perPosFavorite.getMixInfo())) {
+                perInviteLogVoList.add(new PerPosFavoriteBo(perPosFavorite));
+            }
+        }
+        return perInviteLogVoList;
+    }
+
+
+
+}

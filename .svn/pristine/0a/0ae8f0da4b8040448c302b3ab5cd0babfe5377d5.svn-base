@@ -1,0 +1,58 @@
+package com.job5156.core.eao.sys.subsite;
+
+import com.job5156.core.eao.base.BaseHibernateEao;
+import com.job5156.core.entity.sys.subsite.SysWebSite;
+import org.hibernate.SessionFactory;
+import org.springframework.stereotype.Repository;
+
+import javax.annotation.Resource;
+import java.util.List;
+
+/**
+ * 后台分站点DAO层
+ * 
+ * @author leo
+ * 
+ */
+@Repository
+public class SysWebSiteEao extends BaseHibernateEao<SysWebSite, Integer> {
+
+	@Resource(name = "sessionFactory")
+	public void setSessionFactory(SessionFactory sessionFactory) {
+		this.sessionFactory = sessionFactory;
+	}
+
+	/**
+	 * 根据站点类型查询有效站点列表
+	 * 
+	 * @param siteType
+	 * @return
+	 */
+	public List<SysWebSite> queryEffectSiteListByType(Integer siteType) {
+		String hql = "FROM SysWebSite WHERE openFlag = 1 AND siteType = ?";
+		return find(hql, siteType);
+	}
+
+	/**
+	 * 根据站点类型列表查询有效站点列表
+	 * 
+	 * @param siteTypeList
+	 * @return
+	 */
+	public List<SysWebSite> queryEffectSiteListByTypeList(
+			List<Integer> siteTypeList) {
+		String hql = "FROM SysWebSite WHERE openFlag = 1 AND siteType IN(:siteTypeList)";
+		return createQuery(hql).setParameterList("siteTypeList", siteTypeList).list();
+	}
+
+	/**
+	 * 根据站点ID列表查询有效站点信息
+	 * 
+	 * @param idList
+	 * @return
+	 */
+	public List<SysWebSite> queryEffectSiteListByIdList(List<Integer> idList) {
+		String hql = "FROM SysWebSite WHERE openFlag = 1 AND id IN(:idList)";
+		return createQuery(hql).setParameterList("idList", idList).list();
+	}
+}

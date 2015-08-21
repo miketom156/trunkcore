@@ -1,0 +1,178 @@
+package com.job5156.core.common.helper.searcher;
+
+import com.google.gson.Gson;
+import com.job5156.core.common.searcher.entity.singleton.SingletonPosSearcher;
+import com.job5156.core.common.searcher.entity.singleton.SingletonResumeSearcher;
+import com.job5156.core.entity.searcher.SearchResult;
+import com.job5156.searcher.ejb.Searcher;
+import com.job5156.searcher.parameter.PosSearchParam;
+import com.job5156.searcher.parameter.ResumeSearchParam;
+import org.apache.commons.collections.CollectionUtils;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
+
+import javax.annotation.Resource;
+import java.rmi.RemoteException;
+import java.util.List;
+import java.util.Random;
+
+/**
+ * <p></p>
+ * Date:2015/6/15 10:20
+ *
+ * @author hjs
+ * @version 1.0
+ */
+@Component
+public class SearchHelper {
+
+    private Gson gson = new Gson();
+
+    /**
+     * EJB 搜索服务器的配置，自动从properties文件中读取，以逗号分隔
+     */
+    @Value("#{'${search.servers}'.split(',')}")
+    private List<String> searchServers;
+
+    @Resource
+    private  PosSearcherHelper posSearcherHelper;
+
+    @Resource
+    private ResSearcherHelper resSearcherHelper;
+
+    public List<String> getSearchServers() {
+        return searchServers;
+    }
+
+    /**
+     * 搜索职位
+     * 增加3次容错机制
+     * 当出现搜索服务器远程调用异常的时候，清空全局的搜索器列表，重新初始化，以此来监测服务器的心跳指数
+     * 当3次都出错的时候，不再重试，直接返回null
+     * @param param 职位搜索条件组成的 param 对象
+     * @return 搜索结果 SearchResult，包含（总数、每个结果的ID、分类统计等信息）
+     */
+    public SearchResult searchPos(PosSearchParam param) {
+        SearchResult searchResult = null;
+
+        Searcher posSearcher = this.getPollingPosSearcher();
+        if(posSearcher != null) {
+            String searchResultStr = "";
+            try {
+                searchResultStr = posSearcher.search(gson.toJson(param));
+            } catch (RemoteException e) {
+                System.err.println(e.getMessage());
+                e.printStackTrace();
+            }
+            searchResult = gson.fromJson(searchResultStr, SearchResult.class);
+        }
+        return searchResult;
+    }
+
+    /**
+     * 搜索简历
+     * 增加3次容错机制
+     * 当出现搜索服务器远程调用异常的时候，清空全局的搜索器列表，重新初始化，以此来监测服务器的心跳指数
+     * 当3次都出错的时候，不再重试，直接返回null
+     * @param param 简历搜索条件组成的 param 对象
+     * @return 搜索结果 SearchResult，包含（总数、每个结果的ID、分类统计等信息）
+     */
+    public SearchResult searchResume(ResumeSearchParam param) {
+        SearchResult searchResult = null;
+
+        Searcher resumeSearcher = this.getPollingResSearcher();
+        if(resumeSearcher != null) {
+            String searchResultStr = "";
+            try {
+                searchResultStr = resumeSearcher.search(gson.toJson(param));
+            } catch (RemoteException e) {
+                System.err.println(e.getMessage());
+                e.printStackTrace();
+            }
+            searchResult = gson.fromJson(searchResultStr, SearchResult.class);
+        }
+        return searchResult;
+    }
+
+    /**
+     * 以轮询的方式获取职位搜索器
+     * @return
+     */
+    private Searcher getPollingPosSearcher(){
+        SingletonPosSearcher singletonPosSearcher = SingletonPosSearcher.getInstance(searchServers);
+        List<Searcher> posSearcherList = singletonPosSearcher.getPosSearcherList();
+        return posSearcherHelper.getPollingPosSearcher(posSearcherList);
+    }
+
+    /**
+     * 以轮询的方式获取简历搜索器
+     * @return
+     */
+    private Searcher getPollingResSearcher(){
+        SingletonResumeSearcher singletonResumeSearcher = SingletonResumeSearcher.getInstance(searchServers);
+        List<Searcher> resSearcherList = singletonResumeSearcher.getResumeSearcherList();
+        return resSearcherHelper.getPollingResSearcher(resSearcherList);
+    }
+
+
+
+    /**
+     * 获取随机的职位搜索器
+     * 由于配置中支持指定多个 EJB 搜索服务器，所以为了尽可能平均搜索服务器的负载均衡
+     * 采用随机的策略来使用搜索器
+     * 目前会对全局变量声明的搜索器列表在此功能进行随机排序
+     * 然后抽取第一个搜索器
+     * @return 职位搜索器
+     */
+    @SuppressWarnings("unused")
+    private Searcher getRandomPosSearcher(){
+        SingletonPosSearcher singletonPosSearcher = SingletonPosSearcher.getInstance(searchServers);
+        List<Searcher> posSearcherList = singletonPosSearcher.getPosSearcherList();
+        Integer posSearcherListSize = CollectionUtils.size(posSearcherList);
+        if(CollectionUtils.isNotEmpty(posSearcherList)) {
+            if(posSearcherListSize == 1) {
+                return posSearcherList.get(0);
+            } else if(posSearcherListSize > 1) {
+                int r = new Random().nextInt();
+                if (r < 0) {
+                    r = -r;
+                }
+                return posSearcherList.get(r % posSearcherListSize); //随机获取搜索器，平均搜索服务器的负载
+            } else {
+                return null;
+            }
+        } else {
+            return null;
+        }
+    }
+
+    /**
+     * 获取随机的简历搜索器
+     * 由于配置中支持指定多个 EJB 搜索服务器，所以为了尽可能平均搜索服务器的负载均衡
+     * 采用随机的策略来使用搜索器
+     * 目前会对全局变量声明的搜索器列表在此功能进行随机排序
+     * 然后抽取第一个搜索器
+     * @return 简历搜索器
+     */
+    @SuppressWarnings("unused")
+    private Searcher getRandomResumeSearcher(){
+        SingletonResumeSearcher singletonResumeSearcher = SingletonResumeSearcher.getInstance(searchServers);
+        List<Searcher> resumeSearcherList = singletonResumeSearcher.getResumeSearcherList();
+        Integer resumeSearcherListSize = CollectionUtils.size(resumeSearcherList);
+        if(CollectionUtils.isNotEmpty(resumeSearcherList)) {
+            if(resumeSearcherListSize == 1) {
+                return resumeSearcherList.get(0);
+            } else if(resumeSearcherListSize > 1) {
+                int r = new Random().nextInt();
+                if (r < 0) {
+                    r = -r;
+                }
+                return resumeSearcherList.get(r % resumeSearcherListSize); //随机获取搜索器，平均搜索服务器的负载
+            } else {
+                return null;
+            }
+        } else {
+            return null;
+        }
+    }
+}

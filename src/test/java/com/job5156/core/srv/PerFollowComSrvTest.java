@@ -1,0 +1,30 @@
+package com.job5156.core.srv;
+
+import com.job5156.core.TestBase;
+import com.job5156.webapp.model.per.PerFollowCom;
+import com.job5156.core.srv.per.PerFollowComSrv;
+import org.junit.Assert;
+import org.junit.Test;
+
+import javax.annotation.Resource;
+import java.util.List;
+
+/**
+ * <p></p>
+ * Date:2015/6/18 17:28
+ *
+ * @author hjs
+ * @version 1.0
+ */
+public class PerFollowComSrvTest extends TestBase{
+    @Resource
+    private PerFollowComSrv perFollowComSrv;
+
+    @Test
+    public void testFindByPerUserId(){
+        List<PerFollowCom> perFollowComList = perFollowComSrv.findByPerUserId(DEFAULT_PID);
+        //测试点：返回公司基本资料id是否正确
+        Assert.assertEquals("职位id",new Integer(160795),perFollowComList.get(0).getComId());
+    }
+
+}

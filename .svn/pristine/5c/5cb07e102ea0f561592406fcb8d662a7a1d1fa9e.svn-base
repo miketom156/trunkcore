@@ -1,0 +1,335 @@
+package com.job5156.core.srv.per;
+
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+import com.job5156.core.bo.form.ComReceiveAssistBo;
+import com.job5156.core.bo.mapping.PerResumeBo;
+import com.job5156.core.common.CommonEnum;
+import com.job5156.core.common.Constants;
+import com.job5156.core.common.util.JsonValidator;
+import com.job5156.core.eao.com.ComPositionEao;
+import com.job5156.core.eao.com.ComReceiveEao;
+import com.job5156.core.eao.per.PerPosApplyEao;
+import com.job5156.core.eao.per.PerRegisterEao;
+import com.job5156.core.eao.RedisEao;
+import com.job5156.webapp.model.com.ComPosition;
+import com.job5156.webapp.model.com.ComReceive;
+import com.job5156.webapp.model.per.PerResume;
+import com.job5156.webapp.model.per.job.PerPosApply;
+import com.job5156.core.srv.base.BaseSrv;
+import com.job5156.core.bo.mapping.PerResumeBo.IntentInfoVo;
+import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang.ObjectUtils;
+import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.math.NumberUtils;
+import org.joda.time.DateTime;
+import org.joda.time.Years;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import javax.annotation.Resource;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
+
+@Service
+@Transactional(value = "transactionManagerAction")
+public class PerApplySrv extends BaseSrv<PerPosApply, Integer> {
+
+    @Resource
+    private ComReceiveEao comReceiveEao;
+    @Resource
+    private PerPosApplyEao perPosApplyEao;
+    @Resource
+    private ComPositionEao comPositionEao;
+    @Resource
+    private RedisEao redisEao;
+    @Resource
+    private PerRegisterEao perRegisterEao;
+
+
+    /**
+     * 查询当天应聘次数防止重复提交
+     *
+     * @param comId
+     * @param resumeId
+     * @param posId
+     * @return
+     */
+    public int countTodayApplyTimes(Integer comId, Integer resumeId, Integer posId) {
+        return comReceiveEao.countTodayApplyTimes(comId, resumeId, posId);
+    }
+
+    /**
+     * 应聘职位
+     * @param perResume 应聘简历实体
+     * @param comPosition 职位实体
+     * <pre>
+     * 核心业务流程：
+     * 1.保存应聘记录PerPosApply
+     * 2.保存企业收到简历记录ComReceive，如果已存在，则更新应聘次数+1
+     * 3.更新职位ComPosition的【收到简历数】+1，【未读简历数】+1
+     * </pre>
+     */
+    public void applySave(PerResume perResume, ComPosition comPosition) {
+
+        //写入个人应聘记录表
+        PerPosApply perPosApply = new PerPosApply();
+
+        perPosApply.setComId(comPosition.getComId());
+        perPosApply.setPosId(comPosition.getId());
+        perPosApply.setPerUserId(perResume.getAccountId());
+        perPosApply.setResumeId(perResume.getId());
+        perPosApply.setResumeName(perResume.getResumeName());
+
+//        perPosApply.setReplyStatus();
+//        perPosApply.setMark();
+//        perPosApply.setRemark();
+        perPosApply.setCreTime(DateTime.now().toDate());
+        perPosApply.setEditTime(DateTime.now().toDate());
+        perPosApply.setDelStatus(0);
+        perPosApply.setApplyNum(NumberUtils.toInt(perPosApply.getApplyNum() + "", 0) + 1);
+
+        Map<String, Object> resumeRegister = perRegisterEao.findResumeRegisterByPerId(perResume.getAccountId());
+        if (resumeRegister != null) {
+            perPosApply.setFromSourceUrl(ObjectUtils.toString(resumeRegister.get("fromUrl"), null));
+            perPosApply.setSpreadItemTn(ObjectUtils.toString(resumeRegister.get("register"), null));
+        }
+
+        if (perResume.getResumeType() == CommonEnum.ResumeType.CARD.getValue()) { //设置应聘时的简历类别为名片
+            perPosApply.setResumeType(CommonEnum.ResumeType.CARD.getValue());
+        }
+
+        perPosApplyEao.save(perPosApply);
+
+        //写入企业收到简历表
+        // ComReceive comReceive = comReceiveDao.findComReceiveByNew(comPosition.getComId(), comPosition.getId(), perResume.getAccountId()) ;
+        //按同一个人同一份简历，应聘同一职位来判断 FIX : #2061
+        ComReceive comReceive = comReceiveEao.findComReceiveByResumeId(comPosition.getComId(), comPosition.getId(), perResume.getId());
+
+        if (comReceive == null) {
+            comReceive = new ComReceive();
+            comReceive.setComId(comPosition.getComId());
+            comReceive.setPosId(comPosition.getId());
+            comReceive.setPerUserId(perResume.getAccountId());
+            comReceive.setResumeId(perResume.getId());
+            comReceive.setBuyFlag(1);
+            comReceive.setApplyNumer(1);
+            comReceive.setCreateDate(DateTime.now().toDate());//创建时间[应聘时间]
+            comReceive.setUpdateDate(DateTime.now().toDate());//更新时间
+        } else {
+            comReceive.setApplyNumer((comReceive.getApplyNumer() == null ? 1 : comReceive.getApplyNumer()) + 1);
+            comReceive.setUpdateDate(DateTime.now().toDate());//更新时间
+        }
+
+        if (JsonValidator.validJsonToVo(perResume.getIntentInfo(), new TypeToken<IntentInfoVo>() {
+        })) {
+            IntentInfoVo intentVo = new Gson().fromJson(perResume.getIntentInfo(), IntentInfoVo.class);
+            if (intentVo != null && StringUtils.isNotBlank(intentVo.getKeywords())) {
+                comReceive.setKeywords(intentVo.getKeywords());
+            } else {
+                comReceive.setKeywords("");
+            }
+        }
+
+        comReceive.setPosName(comPosition.getPosName());
+        comReceive.setUserName(perResume.getPerUser().getUserName());
+
+        comReceive.setReadFlag(0);
+        comReceive.setDelStatus(0);//-1已删除
+
+        comReceive.setEmail(perResume.getPerUser().getEmail());//邮箱
+        comReceive.setGender(perResume.getPerUser().getGender());//性别
+
+        DateTime bDate = new DateTime(perResume.getPerUser().getBirthday());
+        bDate = bDate.monthOfYear().setCopy(1).dayOfMonth().setCopy(1);
+        DateTime nDate = DateTime.now();
+        nDate = nDate.monthOfYear().setCopy(1).dayOfMonth().setCopy(2);
+        comReceive.setAge(Years.yearsBetween(bDate, nDate).getYears());//年龄
+
+        String eduStr = perResume.getEducationInfo();
+        if (StringUtils.isBlank(eduStr)) {
+            comReceive.setDegree(0);//学历
+            comReceive.setSchoolName("");//学校名称
+            comReceive.setSpeciality("");//专业
+        } else {
+            Integer highDegree = 0;
+            String schoolName = "";
+            String speciality = "";
+            List<PerResumeBo.EducationInfoVo> eduVoList = new Gson().fromJson(eduStr, new TypeToken<List<PerResumeBo.EducationInfoVo>>() {
+            }.getType());
+            for (PerResumeBo.EducationInfoVo eduVo : eduVoList) {
+                if (eduVo.getDegree() != null && eduVo.getDegree() > highDegree) {
+                    highDegree = eduVo.getDegree();
+                    schoolName = eduVo.getSchoolName();
+                    speciality = eduVo.getSpeciality();
+                }
+            }
+            comReceive.setDegree(highDegree);//学历
+            comReceive.setSchoolName(schoolName);//学校名称
+            comReceive.setSpeciality(speciality);//专业
+        }
+        ComReceiveAssistBo comReceiveAssistBo = new ComReceiveAssistBo();
+        if (perResume.getPerUser() != null) {
+            comReceive.setLocation(perResume.getPerUser().getLocation());//现所在地区
+            comReceive.setJobyearType(perResume.getPerUser().getJobyearType() == null ? 0 : perResume.getPerUser().getJobyearType());//工作年限类型
+            comReceiveAssistBo.setMobile(ObjectUtils.toString(perResume.getPerUser().getMobile()));//联系电话[手机号]
+            comReceiveAssistBo.setJobyearType(perResume.getPerUser().getJobyearType() == null ? 0 : perResume.getPerUser().getJobyearType());//工作年限类型
+        }
+
+        String intentStr = perResume.getIntentInfo();
+        if (StringUtils.isBlank(intentStr)) {
+            comReceive.setJobLocation("");//希望工作地区
+        } else {
+            PerResumeBo.IntentInfoVo intentVo = new Gson().fromJson(intentStr, new TypeToken<PerResumeBo.IntentInfoVo>() {
+            }.getType());
+            if (intentVo != null && StringUtils.isNotBlank(intentVo.getJobLocation())) {
+                comReceive.setJobLocation(intentVo.getJobLocation());//希望工作地区
+                comReceiveAssistBo.setSkill(intentVo.getProfessionSkill());//职业技能
+            } else {
+                comReceive.setJobLocation("");//希望工作地区
+            }
+        }
+
+        String workStr = perResume.getWorkInfo();
+        if (StringUtils.isNotBlank(workStr)) {
+            List<PerResumeBo.WorkInfoVo> workInfoVoList = new Gson().fromJson(workStr, new TypeToken<List<PerResumeBo.WorkInfoVo>>() {
+            }.getType());
+            if (CollectionUtils.isNotEmpty(workInfoVoList)) {
+                PerResumeBo.WorkInfoVo workInfoVo = workInfoVoList.get(0);
+                comReceiveAssistBo.setStart(workInfoVo.getBegin()); //最近一份工作开始时间
+                comReceiveAssistBo.setEnd(workInfoVo.getEnd()); //最近一份工作结束时间
+                comReceiveAssistBo.setComName(workInfoVo.getComName());//最近一份工作的单位
+                comReceiveAssistBo.setLastPosName(workInfoVo.getJobName());//最近一份工作的名称
+            }
+        }
+        comReceive.setMixInfo(new Gson().toJson(comReceiveAssistBo));//混合信息
+
+        comReceive.setSysRecommend(0);//1:后台推荐的简历
+        if (perResume.getResumeType() == CommonEnum.ResumeType.CARD.getValue()) { //设置应聘时的简历类别为名片
+            comReceive.setReceiveType(CommonEnum.ResumeType.CARD.getValue());
+        } else {
+            comReceive.setReceiveType(Constants.COM_CATCH_RESUME_FROM_PERSON); //类型（0=个人主动应聘，1=后台推荐，2=企业主动邀请，3=视频面试 4=名片应聘）
+        }
+        comReceiveEao.saveOrUpdate(comReceive);
+
+        //查找之前是否应聘过简历,应聘过就更新它的应聘次数，不新增记录.
+        /*ComReceive receiveOld = comReceiveDao.findComReceiveByNew(comPosition.getComId(), comPosition.getId(), perResume.getAccountId()) ;
+        if(receiveOld != null)  {
+        	BeanUtils.copyProperties(comReceive, receiveOld, new String[]{"id","createDate"});
+        	receiveOld.setApplyNumer((receiveOld.getApplyNumer()==null?1:receiveOld.getApplyNumer()) + 1);
+            comReceive.setUpdateDate(DateTime.now().toDate());
+            comReceiveDao.update(receiveOld);
+        }else{
+            comReceive.setCreateDate(DateTime.now().toDate());//创建时间[应聘时间]
+            comReceive.setUpdateDate(DateTime.now().toDate());//更新时间
+            comReceive.setApplyNumer(1);
+            comReceiveDao.save(comReceive);
+        }*/
+
+        if (CommonEnum.ResumeType.COMMON.getValue() == perResume.getResumeType()) { //TODO:暂时正式简历才做如下操作，名片取消写入
+
+            //应聘某个职位时，需要对该职位的收到简历数目增一，未读数目增一
+            if (comPosition.getResumeCount() == null) {
+                comPosition.setResumeCount(0);
+            }
+            if (comPosition.getResumeUnreadCount() == null) {
+                comPosition.setResumeUnreadCount(0);
+            }
+            comPosition.setResumeCount(comPosition.getResumeCount() + 1);
+            comPosition.setResumeUnreadCount(comPosition.getResumeUnreadCount() + 1);
+            comPositionEao.justUpdate(comPosition);
+        }
+    }
+
+    /**
+     * 获取指定用户的应聘数
+     *
+     * @param @param perUser    设定文件
+     * @return void    返回类型
+     * @throws
+     */
+    public Integer getApplyCount(Integer perUserId) {
+        Integer applyCount = 0;
+        String applyKey = Constants.REDIS_KEY_PER_APPLY_COUNT_OF_DAY + perUserId;
+        if (redisEao.isKeyExist(applyKey)) {
+            String applyValue = redisEao.readFromString(applyKey);
+            if (StringUtils.isNotBlank(applyValue)) {
+                applyCount = Integer.parseInt(applyValue);
+            }
+        }
+        return applyCount;
+    }
+
+    /**
+     * 写入应聘总数到redis
+     *
+     * @param @param perUser
+     * @param @param comPosition    设定文件
+     * @return void    返回类型
+     * @throws
+     */
+    public void writeApplyCountToRedis(Integer perUserId) {
+        String applyKey = Constants.REDIS_KEY_PER_APPLY_COUNT_OF_DAY + perUserId;
+        if (!redisEao.isKeyExist(applyKey)) {
+            redisEao.writeToString(applyKey, "1");
+            //设置有效期为1天
+            redisEao.setKeyExpire(applyKey, 24 * 60 * 60);
+        } else {
+            //获取剩余时间
+            Integer applyCount = 0;
+            Long keyExpireTime = redisEao.getKeyExpireTime(applyKey);
+            String applyInfo = redisEao.readFromString(applyKey);
+            if (StringUtils.isNotBlank(applyInfo)) {
+                applyCount = Integer.parseInt(applyInfo);
+            }
+            redisEao.writeToString(applyKey, String.valueOf(applyCount + 1));
+            //因重新变更值后redis会清除过期时间，固重新设置过期时间
+            redisEao.setKeyExpire(applyKey, keyExpireTime);
+        }
+    }
+
+    @Override
+    protected void initBaseHibernateEao() {
+        this.baseHibernateEao = perPosApplyEao;
+    }
+
+    public PerPosApply findByPosIdAndPerUserId(Integer posId, Integer perUserId){
+        return perPosApplyEao.findByPosIdAndPerUserId(posId,perUserId);
+    }
+
+    /**
+     * 找到求职都最近应聘的一条记录
+     * @param perUserId
+     * @return
+     */
+    public PerPosApply findLastApplyLog(Integer perUserId) {
+        return perPosApplyEao.findLastApplyLog(perUserId);
+    }
+    /**
+     *
+     * @Title: getCandidatePosCount
+     * @Description: 3个月内应聘同一家公司最多只能应聘该公司的3个职位
+     * @param @param comId
+     * @param @param perId
+     * @param @return    设定文件
+     * @return int    返回类型
+     * @throws
+     */
+    public int getCandidatePosCount(Integer comId, Integer perId) {
+        Date date = DateTime.now().minusMonths(3).toDate();
+        List<ComReceive> receiveList = comReceiveEao.findComReceive(comId, perId, date);
+
+        return receiveList == null ? 0: receiveList.size();
+    }
+
+    /**
+     * 应聘次数 = 统计记录数+ApplyNumber - 1
+     * @param posId
+     * @param perUserId
+     * @return
+     */
+    public Integer count30DaysApplyTimes(Integer posId, Integer perUserId) {
+        return comReceiveEao.count30DaysApplyTimes(posId, perUserId);
+    }
+}

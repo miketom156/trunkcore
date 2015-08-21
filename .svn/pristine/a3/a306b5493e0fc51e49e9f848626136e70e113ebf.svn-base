@@ -1,0 +1,239 @@
+package com.job5156.core.bo.form.per;
+
+import com.google.gson.Gson;
+import com.job5156.core.common.option.OptionMap;
+import com.job5156.webapp.model.per.job.PerViewLog;
+import org.apache.commons.lang.StringUtils;
+import org.springframework.beans.BeanUtils;
+
+import java.util.Date;
+
+/**
+ * <p></p>
+ * Date:2015/6/12 10:20
+ *
+ * @author hjs
+ * @version 1.0
+ */
+public class PerViewLogBo {
+    private Integer id;
+    private Integer comId;
+    private Integer perUserId;//个人账号ID
+    private Integer lookNum;//查看次数
+    private Date creTime;//创建记录时间（查看简历时间）
+    private Date editTime;// 修改时间
+    private Integer lookStatus;// 查看状态 未查看0 已查看-1
+    private Integer delStatus;// 删除状态 {-1 已删除}
+    private Integer mark;// 旗子标记
+    private String remark;// 备注内容
+    private String comName; // 公司名称
+    private String comInfo; // 公司简介
+
+    private MixInfoVo mixInfoVo;
+    private Integer comFlag;
+
+
+    public PerViewLogBo(PerViewLog perViewLog) {
+        if(perViewLog != null) {
+            BeanUtils.copyProperties(perViewLog, this);
+            if(StringUtils.isNotBlank(perViewLog.getMixInfo())){
+                this.setMixInfoVo(new Gson().fromJson(perViewLog.getMixInfo(), MixInfoVo.class));
+            } else {
+                this.setMixInfoVo(new MixInfoVo());
+            }
+        }
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public Integer getComId() {
+        return comId;
+    }
+
+    public void setComId(Integer comId) {
+        this.comId = comId;
+    }
+
+    public Integer getPerUserId() {
+        return perUserId;
+    }
+
+    public void setPerUserId(Integer perUserId) {
+        this.perUserId = perUserId;
+    }
+
+    public Integer getLookNum() {
+        return lookNum;
+    }
+
+    public void setLookNum(Integer lookNum) {
+        this.lookNum = lookNum;
+    }
+
+    public Date getCreTime() {
+        return creTime;
+    }
+
+    public void setCreTime(Date creTime) {
+        this.creTime = creTime;
+    }
+
+    public Date getEditTime() {
+        return editTime;
+    }
+
+    public void setEditTime(Date editTime) {
+        this.editTime = editTime;
+    }
+
+    public Integer getLookStatus() {
+        return lookStatus;
+    }
+
+    public void setLookStatus(Integer lookStatus) {
+        this.lookStatus = lookStatus;
+    }
+
+    public Integer getDelStatus() {
+        return delStatus;
+    }
+
+    public void setDelStatus(Integer delStatus) {
+        this.delStatus = delStatus;
+    }
+
+    public Integer getMark() {
+        return mark;
+    }
+
+    public void setMark(Integer mark) {
+        this.mark = mark;
+    }
+
+    public String getRemark() {
+        return remark;
+    }
+
+    public void setRemark(String remark) {
+        this.remark = remark;
+    }
+
+    public String getComName() {
+        return comName;
+    }
+
+    public void setComName(String comName) {
+        this.comName = comName;
+    }
+
+    public String getComInfo() {
+        return comInfo;
+    }
+
+    public void setComInfo(String comInfo) {
+        this.comInfo = comInfo;
+    }
+
+    public MixInfoVo getMixInfoVo() {
+        return mixInfoVo;
+    }
+
+    public void setMixInfoVo(MixInfoVo mixInfoVo) {
+        this.mixInfoVo = mixInfoVo;
+    }
+
+    public Integer getComFlag() {
+        return comFlag;
+    }
+
+    public void setComFlag(Integer comFlag) {
+        this.comFlag = comFlag;
+    }
+
+    public class MixInfoVo {
+        private String comName;
+        private Integer location;
+        private Integer industry;
+        private Integer property;
+        private Integer employeeNumber;
+
+        public String getComName() {
+            return comName;
+        }
+
+        public void setComName(String comName) {
+            this.comName = comName;
+        }
+
+        public Integer getLocation() {
+            return location;
+        }
+
+        public void setLocation(Integer location) {
+            this.location = location;
+        }
+
+        public Integer getIndustry() {
+            return industry;
+        }
+
+        public void setIndustry(Integer industry) {
+            this.industry = industry;
+        }
+
+        public Integer getProperty() {
+            return property;
+        }
+
+        public void setProperty(Integer property) {
+            this.property = property;
+        }
+
+        public Integer getEmployeeNumber() {
+            return employeeNumber;
+        }
+
+        public void setEmployeeNumber(Integer employeeNumber) {
+            this.employeeNumber = employeeNumber;
+        }
+
+        public String getLocationStr(){
+            String str = "";
+            if(getLocation() != null) {
+                return OptionMap.getFullAddr(getLocation());
+            }
+            return str;
+        }
+
+        public String getIndustryStr(){
+            String str = "";
+            if(getIndustry() != null) {
+                str = OptionMap.getValue(OptionMap.OptionType.OPT_INDUSTRY, getIndustry());
+            }
+            return str;
+        }
+
+        public String getPropertyStr(){
+            String str = "";
+            if(getProperty() != null) {
+                str = OptionMap.getValue(OptionMap.OptionType.OPT_COM_PROPERTY, getProperty());
+            }
+            return str;
+        }
+
+        public String getEmployeeNumberStr(){
+            String str = "";
+            if(getEmployeeNumber() != null) {
+                str = OptionMap.getValue(OptionMap.OptionType.OPT_COM_EMPLOYEE, getEmployeeNumber());
+            }
+            return str;
+        }
+    }
+
+}

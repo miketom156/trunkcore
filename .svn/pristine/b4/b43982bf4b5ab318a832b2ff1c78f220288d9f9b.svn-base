@@ -1,0 +1,67 @@
+package com.job5156.core.entity.com.analyze;
+
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
+import org.hibernate.annotations.SelectBeforeUpdate;
+
+import javax.persistence.*;
+import java.io.Serializable;
+import java.text.NumberFormat;
+import java.util.Date;
+
+/**
+ * @author pzm
+ * @ClassName: PosCountStatis
+ * @Description: 职位数量统计（会记录历史统计结果）
+ */
+@Entity
+@DynamicUpdate
+@DynamicInsert
+@SelectBeforeUpdate
+public class PosCountStatis implements Serializable {
+    private static final long serialVersionUID = 1L;
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Integer id;
+    private String countType;                      //统计项
+    private Float countResult;                    //统计结果
+    private Date countDate;                       //统计日期
+
+    @Transient
+    public static final String COUNT_TYPE_USE_TAOLABEL_POS = "使用淘标签的职位数";
+    @Transient
+    public static final String COUNT_TYPE_POS = "有效职位数";
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public String getCountType() {
+        return countType;
+    }
+
+    public void setCountType(String countType) {
+        this.countType = countType;
+    }
+
+    public Float getCountResult() {
+        return countResult;
+    }
+
+    public void setCountResult(Float countResult) {
+        this.countResult = countResult;
+    }
+
+    public Date getCountDate() {
+        return countDate;
+    }
+
+    public void setCountDate(Date countDate) {
+        this.countDate = countDate;
+    }
+}

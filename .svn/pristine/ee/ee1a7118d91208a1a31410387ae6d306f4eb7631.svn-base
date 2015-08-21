@@ -1,0 +1,116 @@
+package com.job5156.core.eao.com.talebase;
+
+import com.job5156.core.eao.base.BaseHibernateEao;
+import com.job5156.webapp.model.com.talebase.TalebaseComTestReport;
+import org.hibernate.Query;
+import org.hibernate.SQLQuery;
+import org.hibernate.SessionFactory;
+import org.springframework.stereotype.Repository;
+
+import javax.annotation.Resource;
+import java.util.Date;
+import java.util.List;
+
+/**
+ * 测评报告Dao
+ * 
+ * @author 夏安定
+ * 
+ */
+@Repository
+public class TaleBaseComTestReportEao extends BaseHibernateEao<TalebaseComTestReport, Integer> {
+
+	@Override
+	@Resource(name = "sessionFactory")
+	public void setSessionFactory(SessionFactory sessionFactory) {
+		this.sessionFactory = sessionFactory;
+	}
+
+	/**
+	 * 个人中心邀请面试页面中需要组装的数据
+	 * @param perId
+	 * @return
+	 */
+	public List findByList(Integer perId) {
+		StringBuilder sql = new StringBuilder();
+		sql.append("SELECT ci.id `comId`,ci.com_name,cp.id `posId`,cp.pos_name,ctp.product_name,ctr.complete_num,");
+		sql.append("ctr.invite_date,ctr.end_date,ctr.complete_date,ctr.id,ctr.product_id FROM talebase_com_test_report AS ctr ");
+		sql.append("JOIN com_info AS ci ON ctr.com_id=ci.id JOIN com_position AS cp ON ctr.pos_id=cp.id ");
+		sql.append("JOIN talebase_com_test_product AS ctp ON ctr.product_id=ctp.product_id ");
+		sql.append("WHERE ctr.per_id=? AND ctr.state=0");
+		SQLQuery query = getSession().createSQLQuery(sql.toString());
+		query.setInteger(0, perId);
+		return query.list();
+	}
+	
+	/**
+	 * 个人中心人才测评企业邀请测评列表需要组装的数据
+	 * @param pk
+	 * @return
+	 */
+	public List findByComTestList(Integer pk){
+		StringBuilder sql = new StringBuilder();
+		sql.append("SELECT ci.id `comId`,ci.com_name,cp.id `posId`,cp.pos_name,ctp.product_name,ctp.quiz_count,ctr.complete_num,");
+		sql.append("ctr.invite_date,ctr.end_date,ctr.complete_date,ctr.id,ctr.product_id,ctr.state FROM talebase_com_test_report AS ctr ");
+		sql.append("JOIN com_info AS ci ON ctr.com_id=ci.id JOIN com_position AS cp ON ctr.pos_id=cp.id ");
+		sql.append("JOIN talebase_com_test_product AS ctp ON ctr.product_id=ctp.product_id ");
+		sql.append("WHERE ctr.id=? ");
+		SQLQuery query = getSession().createSQLQuery(sql.toString());
+		query.setInteger(0, pk);
+		return query.list();
+	}
+	
+	/**
+	 * 企业测评管理人才测评测评报告列表数据组装
+	 * @param pk
+	 * @return
+	 */
+	public List findByComTestReportList(Integer pk){
+		StringBuilder sql = new StringBuilder();
+		sql.append("SELECT pu.account,pu.user_name,pu.gender,pu.birthday,pu.res_id,ctp.product_name,ctp.quiz_count,ctr.id,");
+		sql.append("ctr.complete_num,ctr.complete_date,ctr.score FROM talebase_com_test_report AS ctr ");
+		sql.append("JOIN per_user AS pu ON ctr.per_id=pu.id JOIN talebase_com_test_product AS ctp ON ctr.product_id=ctp.product_id ");
+		sql.append("WHERE ctr.id=? ");
+		SQLQuery query = getSession().createSQLQuery(sql.toString());
+		query.setInteger(0, pk);
+		return query.list();
+	}
+	
+	/**
+	 * 根据条件查询TaleBaseComTestReport
+	 * 
+	 * @param id
+	 * @param companyId
+	 * @param userExamId
+	 * @return
+	 */
+	public TalebaseComTestReport findByTaleBaseComTestReport(Integer id,String tokenId,Integer companyId,Integer userExamId){
+		StringBuilder hql = new StringBuilder();
+		hql.append(" FROM TalebaseComTestReport AS ctr ");
+		hql.append("WHERE ctr.id=? AND ctr.tokenId=? AND ctr.comId=? AND ctr.userExamId=?");
+		return unique(hql.toString(),id,tokenId,companyId,userExamId);
+	}
+	
+	public List findByTaleBaseComTestReportList(String hql,Date startDate,Date endDate){
+		Query query = getSession().createQuery(hql);
+		query.setParameter("startDate", startDate);
+		query.setParameter("endDate", endDate);
+		return query.list();
+	}
+	
+	/**
+	 * 页面初始时查看是否有最新记录
+	 * 
+	 * @param perId
+	 * @param date
+	 * @return
+	 */
+	public int getTalebaseComTestReportNewDynamic(Integer perId){
+		StringBuilder hql = new StringBuilder("SELECT COUNT(*) FROM talebase_com_test_report ");
+		hql.append("WHERE state = 0 AND (is_read is null OR is_read = 0) ");
+		if(perId > 0){
+			hql.append("AND per_id = "+perId+" ");
+		}
+		return Integer.valueOf(getSession().createSQLQuery(hql.toString()).uniqueResult().toString());
+	}
+}

@@ -1,0 +1,128 @@
+package com.job5156.core.srv.per;
+
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
+import com.google.gson.Gson;
+import com.job5156.core.bo.form.per.PerViewLogBo;
+import com.job5156.core.common.pagination.Page;
+import com.job5156.core.common.pagination.PageUtil;
+import com.job5156.core.eao.com.ComInfoEao;
+import com.job5156.core.eao.com.ComPositionEao;
+import com.job5156.core.eao.per.PerViewLogEao;
+import com.job5156.webapp.model.com.ComInfo;
+import com.job5156.webapp.model.per.job.PerInviteLog;
+import com.job5156.webapp.model.per.job.PerViewLog;
+import com.job5156.core.srv.base.BaseSrv;
+import org.apache.commons.lang.ObjectUtils;
+import org.apache.commons.lang.StringUtils;
+import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import javax.annotation.Resource;
+import java.util.List;
+import java.util.Map;
+
+/**
+ * <p></p>
+ * Date:2015/6/12 09:40
+ *
+ * @author hjs
+ * @version 1.0
+ */
+
+@Service
+@Transactional(value="transactionManager")
+public class PerViewLogSrv extends BaseSrv<PerViewLog, Integer> {
+
+    @Resource
+    private PerViewLogEao perViewLogEao;
+    @Resource
+    private ComInfoEao comInfoEao;
+
+    @Override
+    protected void initBaseHibernateEao() {
+        this.baseHibernateEao = perViewLogEao;
+    }
+
+    /**
+     * For 动态
+     * @param perUserId
+     * @return
+     */
+    public List<PerViewLog> findPerViewLogList(Integer perUserId) {
+        return perViewLogEao.findPerViewLogList(perUserId);
+    }
+
+    /**
+     *
+     * @param perViewLog
+     */
+    public void fillViewMixInfo(PerViewLog perViewLog) {
+        if(perViewLog != null && StringUtils.isBlank(perViewLog.getMixInfo())) {
+            Integer comId = perViewLog.getComId();
+            Map<String, Object> map = Maps.newHashMap();
+            try {
+                ComInfo comInfo = comInfoEao.get(comId);
+                if(StringUtils.isBlank(comInfo.getComName())){
+                    perViewLog = perViewLogEao.get(perViewLog.getId());
+                    perViewLog.setMixInfo("{}");
+                    perViewLogEao.update(perViewLog);
+                }else {
+                    map.put("comName", comInfo.getComName());
+                    map.put("industry", comInfo.getIndustry());
+                    map.put("property", comInfo.getProperty());
+                    map.put("location", comInfo.getLocation());
+                    map.put("employeeNumber", comInfo.getEmployeeNumber());
+                    String mixInfo = new Gson().toJson(map);
+                    String comName = ObjectUtils.toString(comInfo.getComName(), "");
+                    perViewLog = perViewLogEao.get(perViewLog.getId());
+                    perViewLog.setMixInfo(mixInfo);
+                    perViewLog.setComName(comName);
+                    perViewLogEao.update(perViewLog);
+                }
+            } catch (EmptyResultDataAccessException ex) {
+                perViewLog = perViewLogEao.get(perViewLog.getId());
+                perViewLog.setMixInfo("{}");
+                perViewLogEao.update(perViewLog);
+            }
+        }
+    }
+
+    /**
+     * 谁查看我的简历
+     * @param pn 页码
+     * @param pageSize 每页的数目
+     * @param command PerViewLog
+     * @return Page《PerViewLog》
+     */
+    public Page<PerViewLog> query(int pn, int pageSize, PerViewLog command) {
+        return PageUtil.getPage(perViewLogEao.countQuery(command), pn, perViewLogEao.query(pn, pageSize, command), pageSize);
+    }
+
+
+    /**
+     * 查询多少家企业查看该用户userId简历
+     */
+    public List<PerViewLog> findViewComNumList(Integer userId){
+        return perViewLogEao.findComNumById(userId);
+    }
+
+
+    /**
+     * 谁看过我的简历信息添加到PerViewLogBoList
+     * @param logs
+     * @return
+     */
+    public List<PerViewLogBo> toViewVo(List<PerViewLog> logs){
+        List<PerViewLogBo> perViewLogVoList =  Lists.newArrayList();
+        for (PerViewLog perViewLog : logs) {
+            this.fillViewMixInfo(perViewLog);
+            if(StringUtils.isNotBlank(perViewLog.getMixInfo()) && !StringUtils.equals("{}",perViewLog.getMixInfo())) {
+                perViewLogVoList.add(new PerViewLogBo(perViewLog));
+            }
+        }
+        return perViewLogVoList;
+    }
+
+}

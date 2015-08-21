@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>JAVA</ID>
+  <OriginalElement />
+  <nodes>
+    <node x="359.0" y="663.0">uml.per.PVPersonRegister</node>
+    <node x="786.0" y="663.0">uml.per.BizRetBo</node>
+    <node x="227.0" y="1158.0">uml.per.PerUser</node>
+    <node x="660.0" y="382.0">uml.per.WechatRegisterFormBo</node>
+    <node x="48.0" y="961.0">uml.per.PerRegisterMailBo</node>
+    <node x="410.0" y="394.0">uml.per.AppRegisterFormBo</node>
+    <node x="0.0" y="298.0">uml.per.TouchRegisterFormBo</node>
+    <node x="0.0" y="1158.0">uml.per.BizRetCode</node>
+    <node x="384.0" y="0.0">uml.per.RegisterBo</node>
+    <node x="0.0" y="663.0">uml.per.MailBo</node>
+  </nodes>
+  <notes />
+  <edges>
+    <edge source="uml.per.TouchRegisterFormBo" target="uml.per.RegisterBo">
+      <point x="0.0" y="-160.0" />
+      <point x="195.0" y="273.0" />
+      <point x="431.0" y="273.0" />
+      <point x="-94.0" y="124.0" />
+    </edge>
+    <edge source="uml.per.AppRegisterFormBo" target="uml.per.RegisterBo">
+      <point x="0.0" y="-64.0" />
+      <point x="0.0" y="124.0" />
+    </edge>
+    <edge source="uml.per.WechatRegisterFormBo" target="uml.per.RegisterBo">
+      <point x="0.0" y="-76.0" />
+      <point x="785.0" y="273.0" />
+      <point x="619.0" y="273.0" />
+      <point x="94.0" y="124.0" />
+    </edge>
+    <edge source="uml.per.PerRegisterMailBo" target="uml.per.MailBo">
+      <point x="0.0" y="-76.0" />
+      <point x="0.0" y="124.0" />
+    </edge>
+  </edges>
+  <settings layout="Hierarchic Group" zoom="0.5121028744326778" x="724.4948301329393" y="651.0" />
+  <SelectedNodes />
+  <Categories>
+    <Category>Properties</Category>
+  </Categories>
+  <SCOPE>All</SCOPE>
+  <VISIBILITY>private</VISIBILITY>
+</Diagram>
+

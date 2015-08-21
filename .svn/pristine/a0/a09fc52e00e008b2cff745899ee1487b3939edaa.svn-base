@@ -1,0 +1,338 @@
+package com.job5156.core.common.helper.searcher;
+
+import com.google.common.collect.Lists;
+import com.job5156.core.common.option.OptionMap;
+import com.job5156.core.entity.searcher.PosSearchFilter;
+import com.job5156.core.entity.searcher.ResumeSearchFilter;
+import com.job5156.core.entity.searcher.SearchFilterDetail;
+import com.job5156.core.entity.searcher.SearchResult;
+import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.math.NumberUtils;
+import org.springframework.stereotype.Component;
+
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Map;
+
+/**
+ * <p></p>
+ * Date:2015/6/15 10:20
+ *
+ * @author hjs
+ * @version 1.0
+ */
+@Component
+public class SearchResultHelper {
+    public PosSearchFilter assemblePosSearchFilter(SearchResult sr) {
+        PosSearchFilter filter = new PosSearchFilter();
+
+        Map<String, SearchResult.ChoiceType> choices = sr.getChoices();
+
+        //工作经验
+        if(choices.containsKey("workedYear") && choices.get("workedYear") != null
+                && CollectionUtils.isNotEmpty(choices.get("workedYear").getChoicelist())
+                && CollectionUtils.size(choices.get("workedYear").getChoicelist()) > 1){ //只有大于一个筛选结果的时候才有意义
+            List<SearchFilterDetail> workYearFilter = Lists.newArrayList();
+            for(SearchResult.Choice choice : choices.get("workedYear").getChoicelist()) {
+                SearchFilterDetail detail = new SearchFilterDetail();
+                Integer typeId = NumberUtils.toInt(choice.getVal(), 0);
+                detail.setId(typeId);
+                if(typeId == 99) {
+                    detail.setName("不限");
+                } else {
+                    detail.setName(OptionMap.getValue(OptionMap.OptionType.OPT_PER_WORKYEAR, typeId));
+                }
+                detail.setCount(choice.getHits());
+                detail.setRealCount(choice.getRealHits());
+                if(StringUtils.isNotBlank(detail.getName())){
+                    workYearFilter.add(detail);
+                }
+            }
+            filter.setWorkYearFilter(workYearFilter);
+        }
+
+        //学历要求
+        if(choices.get("degreeId") != null && choices.get("degreeId") != null
+                && CollectionUtils.isNotEmpty(choices.get("degreeId").getChoicelist())
+                && CollectionUtils.size(choices.get("degreeId").getChoicelist()) > 1){ //只有大于一个筛选结果的时候才有意义
+            List<SearchFilterDetail> degreeFilter = Lists.newArrayList();
+            for(SearchResult.Choice choice : choices.get("degreeId").getChoicelist()) {
+                SearchFilterDetail detail = new SearchFilterDetail();
+                Integer typeId = NumberUtils.toInt(choice.getVal(), 0);
+                detail.setId(typeId);
+                if(typeId == 0) {
+                    detail.setName("不限");
+                } else {
+                    detail.setName(OptionMap.getValue(OptionMap.OptionType.OPT_PER_DEGREE, typeId));
+                }
+                detail.setCount(choice.getHits());
+                detail.setRealCount(choice.getRealHits());
+                if(StringUtils.isNotBlank(detail.getName())){
+                    degreeFilter.add(detail);
+                }
+            }
+            filter.setDegreeFilter(degreeFilter);
+        }
+
+        //薪资要求
+        if(choices.get("salary") != null && choices.get("salary") != null
+                && CollectionUtils.isNotEmpty(choices.get("salary").getChoicelist())
+                && CollectionUtils.size(choices.get("salary").getChoicelist()) > 1){ //只有大于一个筛选结果的时候才有意义
+            List<SearchFilterDetail> salaryFilter = Lists.newArrayList();
+            for(SearchResult.Choice choice : choices.get("salary").getChoicelist()) {
+                SearchFilterDetail detail = new SearchFilterDetail();
+                Integer typeId = NumberUtils.toInt(choice.getVal(), 0);
+
+                //处理两个薪资面议的问题
+                boolean duplicateFlag = false;
+                for (int i = 0, salaryFilterSize = salaryFilter.size(); i < salaryFilterSize; i++) {
+                    if (salaryFilter.get(i).getId().equals(typeId)) {
+                        Integer count = salaryFilter.get(i).getCount() + choice.getHits();
+                        salaryFilter.get(i).setCount(count > 1000 ? 1000 : count);
+                        duplicateFlag = true;
+                        break;
+                    }
+                }
+                if(!duplicateFlag) {
+                    detail.setId(typeId);
+                    detail.setName(OptionMap.getValue(OptionMap.OptionType.OPT_SALARY, typeId));
+                    detail.setCount(choice.getHits());
+                    detail.setRealCount(choice.getRealHits());
+                    if(StringUtils.isNotBlank(detail.getName())){
+                        salaryFilter.add(detail);
+                    }
+                }
+
+            }
+            filter.setSalaryFilter(salaryFilter);
+        }
+
+        //性别要求
+        if(choices.get("gender") != null && choices.get("gender") != null
+                && CollectionUtils.isNotEmpty(choices.get("gender").getChoicelist())
+                && CollectionUtils.size(choices.get("gender").getChoicelist()) > 1){ //只有大于一个筛选结果的时候才有意义
+            List<SearchFilterDetail> genderFilter = Lists.newArrayList();
+            for(SearchResult.Choice choice : choices.get("gender").getChoicelist()) {
+                SearchFilterDetail detail = new SearchFilterDetail();
+                Integer typeId = NumberUtils.toInt(choice.getVal(), 0);
+                detail.setId(typeId);
+                detail.setName(OptionMap.getValue(OptionMap.OptionType.OPT_GENDER, typeId));
+                detail.setCount(choice.getHits());
+                detail.setRealCount(choice.getRealHits());
+                if(StringUtils.isNotBlank(detail.getName())){
+                    genderFilter.add(detail);
+                }
+            }
+            filter.setGenderFilter(genderFilter);
+        }
+
+        //更新时间
+        if(choices.get("updateDate") != null && choices.get("updateDate") != null
+                && CollectionUtils.isNotEmpty(choices.get("updateDate").getChoicelist())
+                && CollectionUtils.size(choices.get("updateDate").getChoicelist()) > 1){ //只有大于一个筛选结果的时候才有意义
+            List<SearchFilterDetail> updateInFilter = Lists.newArrayList();
+            for(SearchResult.Choice choice : choices.get("updateDate").getChoicelist()) {
+                SearchFilterDetail detail = new SearchFilterDetail();
+                Integer typeId = NumberUtils.toInt(choice.getVal(), 0);
+                detail.setId(typeId);
+                String name = "";
+                switch(typeId) {
+                    case 1:
+                        name = "一天内";
+                        break;
+                    case 2:
+                        name = "两天内";
+                        break;
+                    case 7:
+                        name = "一周内";
+                        break;
+                    case 15:
+                        name = "两周内";
+                        break;
+                    case 30:
+                        name = "一个月内";
+                        break;
+                    case 90:
+                        name = "三个月内";
+                        break;
+                    default:
+                        break;
+                }
+                detail.setName(name);
+                detail.setCount(choice.getHits());
+                detail.setRealCount(choice.getRealHits());
+                if(StringUtils.isNotBlank(detail.getName())){
+                    updateInFilter.add(detail);
+                }
+            }
+            filter.setUpdateInFilter(updateInFilter);
+        }
+
+        return filter;
+    }
+
+    public ResumeSearchFilter assembleResumeSearchFilter(SearchResult sr) {
+        ResumeSearchFilter filter = new ResumeSearchFilter();
+
+        Map<String, SearchResult.ChoiceType> choices = sr.getChoices();
+
+        //工作经验
+        if(choices.containsKey("workedYear") && choices.get("workedYear") != null
+                && CollectionUtils.isNotEmpty(choices.get("workedYear").getChoicelist())
+                && CollectionUtils.size(choices.get("workedYear").getChoicelist()) > 1){ //只有大于一个筛选结果的时候才有意义
+            List<SearchFilterDetail> workYearFilter = Lists.newArrayList();
+            for(SearchResult.Choice choice : choices.get("workedYear").getChoicelist()) {
+                SearchFilterDetail detail = new SearchFilterDetail();
+                Integer typeId = NumberUtils.toInt(choice.getVal(), 0);
+                detail.setId(typeId);
+                if(typeId == 99) {
+                    detail.setName("不限");
+                } else {
+                    detail.setName(OptionMap.getValue(OptionMap.OptionType.OPT_PER_WORKYEAR, typeId));
+                }
+                detail.setCount(choice.getHits());
+                detail.setRealCount(choice.getRealHits());
+                if(StringUtils.isNotBlank(detail.getName())){
+                    workYearFilter.add(detail);
+                }
+            }
+            filter.setWorkYearFilter(workYearFilter);
+        }
+
+        //学历要求
+        if(choices.get("degree") != null && choices.get("degree") != null
+                && CollectionUtils.isNotEmpty(choices.get("degree").getChoicelist())
+                && CollectionUtils.size(choices.get("degree").getChoicelist()) > 1){ //只有大于一个筛选结果的时候才有意义
+            List<SearchFilterDetail> degreeFilter = Lists.newArrayList();
+            for(SearchResult.Choice choice : choices.get("degree").getChoicelist()) {
+                SearchFilterDetail detail = new SearchFilterDetail();
+                Integer typeId = NumberUtils.toInt(choice.getVal(), 0);
+                //只显示存在学历分类的数据
+                if(typeId > 0){
+                    detail.setId(typeId);
+                    detail.setName(OptionMap.getValue(OptionMap.OptionType.OPT_PER_DEGREE, typeId));
+                    detail.setCount(choice.getHits());
+                    detail.setRealCount(choice.getRealHits());
+                }
+                if(StringUtils.isNotBlank(detail.getName())){
+                    degreeFilter.add(detail);
+                }
+            }
+            filter.setDegreeFilter(degreeFilter);
+        }
+
+        //性别要求
+        if(choices.get("gender") != null && choices.get("gender") != null
+                && CollectionUtils.isNotEmpty(choices.get("gender").getChoicelist())
+                && CollectionUtils.size(choices.get("gender").getChoicelist()) > 1){ //只有大于一个筛选结果的时候才有意义
+            List<SearchFilterDetail> genderFilter = Lists.newArrayList();
+            for(SearchResult.Choice choice : choices.get("gender").getChoicelist()) {
+                SearchFilterDetail detail = new SearchFilterDetail();
+                Integer typeId = NumberUtils.toInt(choice.getVal(), 0);
+                if(typeId > 0){
+                    detail.setId(typeId);
+                    detail.setName(OptionMap.getValue(OptionMap.OptionType.OPT_GENDER, typeId));
+                    detail.setCount(choice.getHits());
+                    detail.setRealCount(choice.getRealHits());
+                }
+                if(StringUtils.isNotBlank(detail.getName())){
+                    genderFilter.add(detail);
+                }
+            }
+            filter.setGenderFilter(genderFilter);
+        }
+
+        //薪资要求
+        if(choices.get("expectSalary") != null && choices.get("expectSalary") != null
+                && CollectionUtils.isNotEmpty(choices.get("expectSalary").getChoicelist())
+                && CollectionUtils.size(choices.get("expectSalary").getChoicelist()) > 1){ //只有大于一个筛选结果的时候才有意义
+            List<SearchFilterDetail> salaryFilter = Lists.newArrayList();
+            for(SearchResult.Choice choice : choices.get("expectSalary").getChoicelist()) {
+                SearchFilterDetail detail = new SearchFilterDetail();
+                Integer typeId = NumberUtils.toInt(choice.getVal(), 0);
+
+                //处理两个薪资面议的问题
+                boolean duplicateFlag = false;
+                for (int i = 0, salaryFilterSize = salaryFilter.size(); i < salaryFilterSize; i++) {
+                    if (salaryFilter.get(i).getId().equals(typeId)) {
+                        Integer count = salaryFilter.get(i).getCount() + choice.getHits();
+                        salaryFilter.get(i).setCount(count > 1000 ? 1000 : count);
+                        duplicateFlag = true;
+                        break;
+                    }
+                }
+                if(!duplicateFlag) {
+                    detail.setId(typeId);
+                    detail.setName(OptionMap.getValue(OptionMap.OptionType.OPT_SALARY, typeId));
+                    detail.setCount(choice.getHits());
+                    detail.setRealCount(choice.getRealHits());
+                    if(StringUtils.isNotBlank(detail.getName())){
+                        salaryFilter.add(detail);
+                    }
+                }
+            }
+            filter.setSalaryFilter(salaryFilter);
+        }
+
+        //更新时间
+        if(choices.get("freshDate") != null && choices.get("freshDate") != null
+                && CollectionUtils.isNotEmpty(choices.get("freshDate").getChoicelist())
+                && CollectionUtils.size(choices.get("freshDate").getChoicelist()) > 1){ //只有大于一个筛选结果的时候才有意义
+            List<SearchFilterDetail> updateInFilter = Lists.newArrayList();
+            for(SearchResult.Choice choice : choices.get("freshDate").getChoicelist()) {
+                SearchFilterDetail detail = new SearchFilterDetail();
+                Integer typeId = NumberUtils.toInt(choice.getVal(), 0);
+                detail.setId(typeId);
+                String name = "";
+                switch(typeId) {
+                    case 1:
+                        name = "一天内";
+                        break;
+                    case 2:
+                        name = "两天内";
+                        break;
+                    case 7:
+                        name = "一周内";
+                        break;
+                    case 14:
+                        name = "两周内";
+                        break;
+                    case 30:
+                        name = "一个月内";
+                        break;
+                    case 90:
+                        name = "三个月内";
+                        break;
+                    case 180:
+                        name = "半年内";
+                        break;
+                    case 365:
+                        name = "一年内";
+                        break;
+                    default:
+                        break;
+                }
+                detail.setName(name);
+                detail.setCount(choice.getHits());
+                detail.setRealCount(choice.getRealHits());
+                if(StringUtils.isNotBlank(detail.getName())){
+                    updateInFilter.add(detail);
+                }
+            }
+            if(CollectionUtils.isNotEmpty(updateInFilter)){
+                Collections.sort(updateInFilter, new Comparator<SearchFilterDetail>() {
+                    @Override
+                    public int compare(SearchFilterDetail o1, SearchFilterDetail o2) {
+                        return o1.getId() - o2.getId();
+                    }
+
+                });
+            }
+            filter.setUpdateInFilter(updateInFilter);
+        }
+        return filter;
+    }
+
+}

@@ -1,0 +1,47 @@
+package com.job5156.core.srv.sys.subsite;
+
+import com.job5156.core.common.pagination.PageV3;
+import com.job5156.core.eao.base.PropertyFilter;
+import com.job5156.core.eao.sys.subsite.SysWebSiteEao;
+import com.job5156.webapp.model.sys.subsite.SysWebSite;
+import com.job5156.core.srv.base.BaseSrv;
+import org.apache.commons.lang.StringUtils;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import javax.annotation.Resource;
+import java.util.List;
+
+@Service
+@Transactional(value = "transactionManager")
+public class SysWebSiteSrv extends BaseSrv<SysWebSite, Integer> {
+
+	@Resource
+	private SysWebSiteEao sysWebSiteEao;
+
+    public List<SysWebSite> queryEffectWebSiteListByTypeList(
+            List<Integer> siteTypeList) {
+		return sysWebSiteEao.queryEffectSiteListByTypeList(siteTypeList);
+	}
+
+    public PageV3<SysWebSite> query(PageV3<SysWebSite> page, List<PropertyFilter> filterList) {
+        try {
+            //设置默认排序
+            if (StringUtils.isBlank(page.getOrder())) {
+                page.setOrder("desc");
+                page.setOrderBy("operateDate");
+            }
+            PageV3<SysWebSite> sysWebSitePageV3 = sysWebSiteEao.findPage(page, filterList);
+            return sysWebSitePageV3 ;
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            return null;
+        }
+
+
+    }
+
+    protected void initBaseHibernateEao() {
+        super.baseHibernateEao = sysWebSiteEao;
+    }
+}

@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>JAVA</ID>
+  <OriginalElement />
+  <nodes>
+    <node x="-13.0" y="492.0">uml.per.reg.PVPersonRegisterEao</node>
+    <node x="415.0" y="-28.0">uml.per.reg.MailSrv</node>
+    <node x="329.0" y="479.5">uml.per.reg.PVPersonRegisterSrv</node>
+    <node x="-39.0" y="-24.0">uml.per.reg.RedisEao</node>
+    <node x="7.0" y="187.5">uml.per.reg.RedisSrv</node>
+    <node x="831.0" y="187.5">uml.per.reg.PerUserSrv</node>
+    <node x="321.0" y="103.5">uml.per.reg.PerUserBiz</node>
+    <node x="785.0" y="360.0">uml.per.reg.PerUserEao</node>
+  </nodes>
+  <notes />
+  <edges>
+    <edge source="uml.per.reg.PerUserBiz" target="uml.per.reg.MailSrv">
+      <point x="0.0" y="-136.5" />
+      <point x="0.0" y="28.0" />
+    </edge>
+    <edge source="uml.per.reg.PVPersonRegisterSrv" target="uml.per.reg.PVPersonRegisterEao">
+      <point x="-191.0" y="0.0" />
+      <point x="133.0" y="0.0" />
+    </edge>
+    <edge source="uml.per.reg.PerUserBiz" target="uml.per.reg.PVPersonRegisterSrv">
+      <point x="0.0" y="136.5" />
+      <point x="0.0" y="-40.5" />
+    </edge>
+    <edge source="uml.per.reg.PerUserSrv" target="uml.per.reg.PerUserEao">
+      <point x="0.0" y="52.5" />
+      <point x="0.0" y="-40.0" />
+    </edge>
+    <edge source="uml.per.reg.PerUserBiz" target="uml.per.reg.PerUserSrv">
+      <point x="199.0" y="0.0" />
+      <point x="-129.0" y="0.0" />
+    </edge>
+    <edge source="uml.per.reg.PerUserBiz" target="uml.per.reg.RedisSrv">
+      <point x="-199.0" y="0.0" />
+      <point x="113.0" y="0.0" />
+    </edge>
+    <edge source="uml.per.reg.RedisSrv" target="uml.per.reg.RedisEao">
+      <point x="0.0" y="-52.5" />
+      <point x="0.0" y="64.0" />
+    </edge>
+  </edges>
+  <settings layout="Hierarchic Group" zoom="1.0" x="591.5" y="442.5" />
+  <SelectedNodes />
+  <Categories>
+    <Category>Fields</Category>
+    <Category>Methods</Category>
+  </Categories>
+  <SCOPE>All</SCOPE>
+  <VISIBILITY>private</VISIBILITY>
+</Diagram>
+

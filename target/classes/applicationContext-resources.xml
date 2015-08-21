@@ -1,0 +1,301 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="
+		http://www.springframework.org/schema/beans
+		http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+		http://www.springframework.org/schema/context
+		http://www.springframework.org/schema/context/spring-context-3.2.xsd">
+
+    <context:property-placeholder location=
+                                          "classpath:payment.properties,
+                                            classpath:video.properties,
+                                            classpath:api.properties,
+                                            classpath:social.properties,
+                                            classpath:profiles/dev/jdbc.properties,
+                                            classpath:profiles/dev/redis.properties,
+                                            classpath:profiles/dev/cookie.properties,
+                                            classpath:profiles/dev/mail.properties,
+                                            classpath:profiles/dev/path.properties,
+                                            classpath:profiles/dev/sms.properties,
+                                            classpath:profiles/dev/search.properties,
+                                            classpath:profiles/dev/domain.properties"/>
+
+    <bean id="dataSource" class="com.jolbox.bonecp.BoneCPDataSource" destroy-method="close">
+        <property name="driverClass" value="${jdbc.driverClassName}"/>
+        <property name="jdbcUrl" value="${jdbc.url}"/>
+        <property name="username" value="${jdbc.username}"/>
+        <property name="password" value="${jdbc.password}"/>
+        <property name="idleConnectionTestPeriodInMinutes" value="60"/>
+        <property name="idleMaxAgeInMinutes" value="240"/>
+        <property name="maxConnectionsPerPartition" value="${jdbc.max.connections.per.partition}"/>
+        <property name="minConnectionsPerPartition" value="${jdbc.min.connections.per.partition}"/>
+        <property name="partitionCount" value="${jdbc.partition.count}"/>
+        <property name="acquireIncrement" value="5"/>
+        <property name="statementsCacheSize" value="100"/>
+    </bean>
+<!--
+    <bean id="dataSource" class="com.jolbox.bonecp.BoneCPDataSource" destroy-method="close">
+        <property name="driverClass" value="com.mysql.jdbc.Driver"/>
+        <property name="jdbcUrl" value="jdbc:mysql://192.168.2.237/5156base"/>
+        <property name="username" value="M5156BSQL"/>
+        <property name="password" value="&amp;,R}sH_F{g5!$w](+V8')-8gJ"/>
+        <property name="idleConnectionTestPeriodInMinutes" value="60"/>
+        <property name="idleMaxAgeInMinutes" value="240"/>
+        <property name="maxConnectionsPerPartition" value="5"/>
+        <property name="minConnectionsPerPartition" value="2"/>
+        <property name="partitionCount" value="2"/>
+        <property name="acquireIncrement" value="5"/>
+        <property name="statementsCacheSize" value="100"/>
+    </bean>
+-->
+
+    <bean id="dataSourceAction" class="com.jolbox.bonecp.BoneCPDataSource" destroy-method="close">
+        <property name="driverClass" value="${jdbc.action.driverClassName}"/>
+        <property name="jdbcUrl" value="${jdbc.action.url}"/>
+        <property name="username" value="${jdbc.action.username}"/>
+        <property name="password" value="${jdbc.action.password}"/>
+        <property name="idleConnectionTestPeriodInMinutes" value="60"/>
+        <property name="idleMaxAgeInMinutes" value="240"/>
+        <property name="maxConnectionsPerPartition" value="${jdbc.action.max.connections.per.partition}"/>
+        <property name="minConnectionsPerPartition" value="${jdbc.action.min.connections.per.partition}"/>
+        <property name="partitionCount" value="${jdbc.action.partition.count}"/>
+        <property name="acquireIncrement" value="5"/>
+        <property name="statementsCacheSize" value="100"/>
+    </bean>
+
+    <bean id="dataSourceActionSlave" class="com.jolbox.bonecp.BoneCPDataSource" destroy-method="close">
+        <property name="driverClass" value="${jdbc.actionSlave.driverClassName}"/>
+        <property name="jdbcUrl" value="${jdbc.actionSlave.url}"/>
+        <property name="username" value="${jdbc.actionSlave.username}"/>
+        <property name="password" value="${jdbc.actionSlave.password}"/>
+        <property name="idleConnectionTestPeriodInMinutes" value="60"/>
+        <property name="idleMaxAgeInMinutes" value="240"/>
+        <property name="maxConnectionsPerPartition" value="${jdbc.actionSlave.max.connections.per.partition}"/>
+        <property name="minConnectionsPerPartition" value="${jdbc.actionSlave.min.connections.per.partition}"/>
+        <property name="partitionCount" value="${jdbc.actionSlave.partition.count}"/>
+        <property name="acquireIncrement" value="5"/>
+        <property name="statementsCacheSize" value="100"/>
+    </bean>
+
+    <bean id="dataSourceIrc" class="com.jolbox.bonecp.BoneCPDataSource" destroy-method="close">
+        <property name="driverClass" value="${jdbc.irc.driverClassName}"/>
+        <property name="jdbcUrl" value="${jdbc.irc.url}"/>
+        <property name="username" value="${jdbc.irc.username}"/>
+        <property name="password" value="${jdbc.irc.password}"/>
+        <property name="idleConnectionTestPeriodInMinutes" value="60"/>
+        <property name="idleMaxAgeInMinutes" value="240"/>
+        <property name="maxConnectionsPerPartition" value="${jdbc.irc.max.connections.per.partition}"/>
+        <property name="minConnectionsPerPartition" value="${jdbc.irc.min.connections.per.partition}"/>
+        <property name="partitionCount" value="${jdbc.irc.partition.count}"/>
+        <property name="acquireIncrement" value="5"/>
+        <property name="statementsCacheSize" value="100"/>
+    </bean>
+
+    <bean id="dataSourceQuery" class="com.jolbox.bonecp.BoneCPDataSource" destroy-method="close">
+        <property name="driverClass" value="${jdbc.query.driverClassName}"/>
+        <property name="jdbcUrl" value="${jdbc.query.url}"/>
+        <property name="username" value="${jdbc.query.username}"/>
+        <property name="password" value="${jdbc.query.password}"/>
+        <property name="idleConnectionTestPeriodInMinutes" value="60"/>
+        <property name="idleMaxAgeInMinutes" value="240"/>
+        <property name="maxConnectionsPerPartition" value="${jdbc.query.max.connections.per.partition}"/>
+        <property name="minConnectionsPerPartition" value="${jdbc.query.min.connections.per.partition}"/>
+        <property name="partitionCount" value="${jdbc.query.partition.count}"/>
+        <property name="acquireIncrement" value="5"/>
+        <property name="statementsCacheSize" value="100"/>
+    </bean>
+
+    <bean id="dataSourceQuery2" class="com.jolbox.bonecp.BoneCPDataSource" destroy-method="close">
+        <property name="driverClass" value="${jdbc.query2.driverClassName}"/>
+        <property name="jdbcUrl" value="${jdbc.query2.url}"/>
+        <property name="username" value="${jdbc.query2.username}"/>
+        <property name="password" value="${jdbc.query2.password}"/>
+        <property name="idleConnectionTestPeriodInMinutes" value="60"/>
+        <property name="idleMaxAgeInMinutes" value="240"/>
+        <property name="maxConnectionsPerPartition" value="${jdbc.query2.max.connections.per.partition}"/>
+        <property name="minConnectionsPerPartition" value="${jdbc.query2.min.connections.per.partition}"/>
+        <property name="partitionCount" value="${jdbc.query2.partition.count}"/>
+        <property name="acquireIncrement" value="5"/>
+        <property name="statementsCacheSize" value="100"/>
+    </bean>
+
+    <bean id="dataSourceQuery3" class="com.jolbox.bonecp.BoneCPDataSource" destroy-method="close">
+        <property name="driverClass" value="${jdbc.query3.driverClassName}"/>
+        <property name="jdbcUrl" value="${jdbc.query3.url}"/>
+        <property name="username" value="${jdbc.query3.username}"/>
+        <property name="password" value="${jdbc.query3.password}"/>
+        <property name="idleConnectionTestPeriodInMinutes" value="60"/>
+        <property name="idleMaxAgeInMinutes" value="240"/>
+        <property name="maxConnectionsPerPartition" value="${jdbc.query3.max.connections.per.partition}"/>
+        <property name="minConnectionsPerPartition" value="${jdbc.query3.min.connections.per.partition}"/>
+        <property name="partitionCount" value="${jdbc.query3.partition.count}"/>
+        <property name="acquireIncrement" value="5"/>
+        <property name="statementsCacheSize" value="100"/>
+    </bean>
+
+    <bean id="dataSourceMobile" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
+        <property name="driverClassName" value="${sms.sender.db.driverClassName}"/>
+        <property name="url" value="${sms.sender.db.url}"/>
+        <property name="username" value="${sms.sender.db.username}"/>
+        <property name="password" value="${sms.sender.db.password}"/>
+        <property name="maxActive" value="10"/>
+        <property name="minIdle" value="2"/>
+        <property name="maxIdle" value="3"/>
+        <property name="maxWait" value="60000"/>
+        <property name="removeAbandoned" value="true"/>
+        <property name="removeAbandonedTimeout" value="120"/>
+        <property name="minEvictableIdleTimeMillis" value="180000"/>
+        <property name="timeBetweenEvictionRunsMillis" value="300000"/>
+        <property name="testOnBorrow" value="true"/>
+        <property name="testWhileIdle" value="true"/>
+        <property name="testOnReturn" value="true"/>
+        <property name="validationQuery">
+        	<value>SELECT 1</value>
+        </property>
+    </bean>
+    
+    <bean id="dataSourceMobileAdv" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
+    	<property name="driverClassName" value="${sms.sender.adv.db.driverClassName}"/>
+        <property name="url" value="${sms.sender.adv.db.url}"/>
+        <property name="username" value="${sms.sender.adv.db.username}"/>
+        <property name="password" value="${sms.sender.adv.db.password}"/>
+        <property name="maxActive" value="10"/>
+        <property name="minIdle" value="2"/>
+        <property name="maxIdle" value="3"/>
+        <property name="maxWait" value="60000"/>
+        <property name="removeAbandoned" value="true"/>
+        <property name="removeAbandonedTimeout" value="120"/>
+        <property name="minEvictableIdleTimeMillis" value="180000"/>
+        <property name="timeBetweenEvictionRunsMillis" value="300000"/>
+        <property name="testOnBorrow" value="true"/>
+        <property name="testWhileIdle" value="true"/>
+        <property name="testOnReturn" value="true"/>
+        <property name="validationQuery">
+        	<value>SELECT 1</value>
+        </property>
+    </bean>
+
+    <bean id="jedisShardInfoMaster1" class="redis.clients.jedis.JedisShardInfo">
+    	<constructor-arg index="0" type="java.lang.String" value="${redis.master1.host}"/>
+    	<constructor-arg index="1" type="int" value="${redis.master1.port}"/>
+		<property name="password" value="#{ ${redis.master1.pass} }"/>
+		<property name="timeout" value="100000"/>
+    </bean>
+
+    <bean id="jedisShardInfoMaster2" class="redis.clients.jedis.JedisShardInfo">
+        <constructor-arg index="0" type="java.lang.String" value="${redis.master2.host}"/>
+        <constructor-arg index="1" type="int" value="${redis.master2.port}"/>
+        <property name="password" value="#{ ${redis.master2.pass} }"/>
+        <property name="timeout" value="100000"/>
+    </bean>
+
+    <bean id="dataSourceCms" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
+        <property name="driverClassName" value="${jdbc.cms.driverClassName}"/>
+        <property name="url" value="${jdbc.cms.url}"/>
+        <property name="username" value="${jdbc.cms.username}"/>
+        <property name="password" value="${jdbc.cms.password}"/>
+        <property name="maxActive" value="10"/>
+        <property name="maxIdle" value="2"/>
+        <property name="maxWait" value="60000"/>
+        <property name="removeAbandoned" value="true"/>
+        <property name="removeAbandonedTimeout" value="120"/>
+        <property name="testOnBorrow" value="true"/>
+        <property name="validationQuery">
+        	<value>SELECT 1</value>
+        </property>
+    </bean>
+    
+    <bean id="dataSourceSystemQuery" class="com.jolbox.bonecp.BoneCPDataSource" destroy-method="close">
+        <property name="driverClass" value="${jdbc.system.driverClassName}"/>
+        <property name="jdbcUrl" value="${jdbc.system.url}"/>
+        <property name="username" value="${jdbc.system.username}"/>
+        <property name="password" value="${jdbc.system.password}"/>
+        <property name="idleConnectionTestPeriodInMinutes" value="60"/>
+        <property name="idleMaxAgeInMinutes" value="240"/>
+        <property name="maxConnectionsPerPartition" value="${jdbc.system.max.connections.per.partition}"/>
+        <property name="minConnectionsPerPartition" value="${jdbc.system.min.connections.per.partition}"/>
+        <property name="partitionCount" value="${jdbc.system.partition.count}"/>
+        <property name="acquireIncrement" value="5"/>
+        <property name="statementsCacheSize" value="100"/>
+    </bean>
+
+    <bean id="dataSourceCount" class="com.jolbox.bonecp.BoneCPDataSource" destroy-method="close">
+        <property name="driverClass" value="${jdbc.count.driverClassName}"/>
+        <property name="jdbcUrl" value="${jdbc.count.url}"/>
+        <property name="username" value="${jdbc.count.username}"/>
+        <property name="password" value="${jdbc.count.password}"/>
+        <property name="idleConnectionTestPeriodInMinutes" value="60"/>
+        <property name="idleMaxAgeInMinutes" value="240"/>
+        <property name="maxConnectionsPerPartition" value="${jdbc.count.max.connections.per.partition}"/>
+        <property name="minConnectionsPerPartition" value="${jdbc.count.min.connections.per.partition}"/>
+        <property name="partitionCount" value="${jdbc.count.partition.count}"/>
+        <property name="acquireIncrement" value="5"/>
+        <property name="statementsCacheSize" value="100"/>
+    </bean>
+
+    <bean id="dataSourceJob5156" class="com.jolbox.bonecp.BoneCPDataSource" destroy-method="close">
+        <property name="driverClass" value="${jdbc.job5156.driverClassName}"/>
+        <property name="jdbcUrl" value="${jdbc.job5156.url}"/>
+        <property name="username" value="${jdbc.job5156.username}"/>
+        <property name="password" value="${jdbc.job5156.password}"/>
+        <property name="idleConnectionTestPeriodInMinutes" value="60"/>
+        <property name="idleMaxAgeInMinutes" value="240"/>
+        <property name="maxConnectionsPerPartition" value="${jdbc.job5156.max.connections.per.partition}"/>
+        <property name="minConnectionsPerPartition" value="${jdbc.job5156.min.connections.per.partition}"/>
+        <property name="partitionCount" value="${jdbc.job5156.partition.count}"/>
+        <property name="acquireIncrement" value="5"/>
+        <property name="statementsCacheSize" value="100"/>
+    </bean>
+
+    <bean id="dataSourceJobEmail" class="com.jolbox.bonecp.BoneCPDataSource" destroy-method="close">
+        <property name="driverClass" value="${jdbc.jobemail.driverClassName}"/>
+        <property name="jdbcUrl" value="${jdbc.jobemail.url}"/>
+        <property name="username" value="${jdbc.jobemail.username}"/>
+        <property name="password" value="${jdbc.jobemail.password}"/>
+        <property name="idleConnectionTestPeriodInMinutes" value="60"/>
+        <property name="idleMaxAgeInMinutes" value="240"/>
+        <property name="maxConnectionsPerPartition" value="${jdbc.jobemail.max.connections.per.partition}"/>
+        <property name="minConnectionsPerPartition" value="${jdbc.jobemail.min.connections.per.partition}"/>
+        <property name="partitionCount" value="${jdbc.jobemail.partition.count}"/>
+        <property name="acquireIncrement" value="5"/>
+        <property name="statementsCacheSize" value="100"/>
+    </bean>
+	
+	<bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
+		<property name="host" value="${mail.host}" />
+		<property name="username" value="${mail.username}" />
+		<property name="password" value="${mail.password}" />
+		<property name="javaMailProperties">
+			<props>
+				<prop key="mail.smtp.auth" >${mail.smtp.auth}</prop>
+			</props>
+		</property>
+	</bean>
+	
+	<bean id="mailExchangeSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
+		<property name="host" value="${mail.exchange.host}" />
+		<!--<property name="username" value="${mail.exchange.username}" />-->
+		<!--<property name="password" value="${mail.exchange.password}" />-->
+		<property name="javaMailProperties">
+			<props>
+                <!--<prop key="mail.smtp.auth" >${mail.exchange.smtp.auth}</prop>-->
+			</props>
+		</property>
+	</bean>
+
+    <bean id="globalSiteType" name="globalSiteType" class="java.lang.String">
+        <constructor-arg value="chitone"/>
+    </bean>
+    <bean id="domainMain" name="domainMain" class="java.lang.String">
+        <constructor-arg value="${domain.main}"/>
+    </bean>
+    <bean id="domainImg" name="domainImg" class="java.lang.String">
+        <constructor-arg value="${domain.img}"/>
+    </bean>
+    <bean id="jsCompress" name="jsCompress" class="java.lang.String">
+        <constructor-arg value="false"/>
+    </bean>
+
+</beans>

@@ -1,0 +1,438 @@
+package com.job5156.core.srv;
+
+import com.google.common.collect.Lists;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+import com.job5156.core.bo.PosBriefSimpleBo;
+import com.job5156.core.bo.form.searcher.SearchKeyMap;
+import com.job5156.core.bo.form.searcher.SearchPosFormBo;
+import com.job5156.core.bo.form.searcher.SearchPosResultBo;
+import com.job5156.core.bo.mapping.PerResumeBo;
+import com.job5156.core.common.Constants;
+import com.job5156.core.common.helper.CookieHelper;
+import com.job5156.core.common.helper.DomainHelper;
+import com.job5156.core.common.helper.searcher.PerSearcherHelper;
+import com.job5156.core.common.pagination.Page;
+import com.job5156.core.common.pagination.PageUtil;
+import com.job5156.core.common.util.PosNameFilterUtil;
+import com.job5156.core.common.util.RegExUtil;
+import com.job5156.core.eao.RedisEao;
+import com.job5156.core.eao.com.ComPositionEao;
+import com.job5156.core.eao.per.*;
+import com.job5156.core.entity.com.ComPosition;
+import com.job5156.core.entity.per.PerResume;
+import com.job5156.core.entity.per.PerSearcher;
+import com.job5156.core.entity.per.PerUser;
+import com.job5156.core.entity.per.job.PerPosApply;
+import com.job5156.core.entity.per.job.PerPosFavorite;
+import com.job5156.core.entity.searcher.PosBrief;
+import com.job5156.core.srv.per.PerSearcherSrv;
+import com.job5156.core.srv.search.SearchPosSrv;
+import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.collections.MapUtils;
+import org.apache.commons.lang.ArrayUtils;
+import org.apache.commons.lang.ObjectUtils;
+import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.math.NumberUtils;
+import org.apache.log4j.Logger;
+import org.json.JSONArray;
+import org.json.JSONObject;
+import org.springframework.stereotype.Service;
+import org.springframework.web.util.WebUtils;
+
+import javax.annotation.Resource;
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.util.*;
+
+/**
+ * <p></p>
+ * Date:Administrator 2015-6-19
+ *
+ * @author hjs
+ * @version 1.0
+ */
+@Service
+public class PosRecommendSrv {
+    @Resource
+    private RedisEao redisEao;
+    @Resource
+    private PerUserEao perUserEao;
+    @Resource
+    private PerResumeEao perResumeEao;
+    @Resource
+    private DomainHelper domainHelper;
+    @Resource
+    private SearchPosSrv searchPosSrv;
+    @Resource
+    private PerPosApplyEao perPosApplyEao;
+    @Resource
+    private ComPositionEao comPositionEao;
+    @Resource
+    private PerSearcherHelper perSearcherHelper;
+    @Resource
+    private PerSearcherEao perSearcherEao;
+    @Resource
+    private PerPosFavoriteEao perPosFavoriteEao;
+
+    /**
+     * 猜您喜欢
+     * 规则：http://192.168.8.27:3000/projects/pm/wiki/职位智能推荐规则
+     * 1.按求职意向搜索
+     * 2.职位搜索器
+     * 3.最近一条应聘记录
+     * 4.职位收藏
+     * 5.以上都找不到合适的职位，则按最近1次输入的搜索关键字去搜索
+     *
+     * @param site       站点（拼音:donguuan）index为首页
+     * @param keyword    搜索关键字
+     * @param perUserId  个人用户ID
+     * @param itemSize   返回的条数
+     * @return
+     */
+    public List<PosBriefSimpleBo> getGuestYouLikePosBriefList(String site,String keyword,Integer perUserId,String storeKey,Integer itemSize) {
+        return    getGuestYouLikePosBriefList( site, keyword, perUserId, storeKey, itemSize, true);
+    }
+    /**
+     * 猜您喜欢
+     * 规则：http://192.168.8.27:3000/projects/pm/wiki/职位智能推荐规则
+     * 1.按求职意向搜索
+     * 2.职位搜索器
+     * 3.最近一条应聘记录
+     * 4.职位收藏
+     * 5.以上都找不到合适的职位，则按最近1次输入的搜索关键字去搜索
+     *
+     * @param site       站点（拼音:donguuan）index为首页
+     * @param keyword    搜索关键字
+     * @param perUserId  个人用户ID
+     * @param isClear    不够指定的长度时，是否清空结果
+     * @param itemSize   返回的条数
+     * @return
+     */
+    public List<PosBriefSimpleBo> getGuestYouLikePosBriefList(String site,String keyword,Integer perUserId,String storeKey,Integer itemSize,boolean isClear) {
+
+        Gson gson = new Gson();
+        List<PosBriefSimpleBo> simpleVoList = Lists.newArrayList();
+        if (redisEao.isKeyExist(storeKey)) {
+            String posBriefListJson = redisEao.readFromString(storeKey);
+            simpleVoList = gson.fromJson(posBriefListJson, new TypeToken<List<PosBriefSimpleBo>>() {}.getType());
+        } else {
+            //SearchPosFormBo vo = new SearchPosFormBo();
+            boolean isLogin = perUserId > 0 ? true:false;
+            //按求职意向
+            simpleVoList = getPosListByIntentInfo(perUserId);
+            //按搜索器
+            if(simpleVoList.size()<itemSize) {
+                PosNameFilterUtil.addPosVoToListByDistinct(simpleVoList, getPosListBySearcher(perUserId));
+            }
+            //按应聘记录
+            if(simpleVoList.size()<itemSize) {
+                PosNameFilterUtil.addPosVoToListByDistinct(simpleVoList, getPosListByApplyLog(perUserId));
+            }
+            //按收藏夹
+            if(simpleVoList.size()<itemSize) {
+                PosNameFilterUtil.addPosVoToListByDistinct(simpleVoList, getPosListByFavorite(perUserId));
+            }
+            //按输入的关键字
+            if((!isLogin && StringUtils.isNotBlank(keyword)) || CollectionUtils.isEmpty(simpleVoList)) { //未登录，搜索关键字不为空时
+                simpleVoList = getPosListByKeyword(keyword,site,itemSize);
+        /*
+               if(simpleVoList.size() < itemSize){ //不足16条,则进行全职位搜索
+                    List<PosBriefSimpleBo> appendPosList = getPosListByKeyword("",site,itemSize);
+                    PosNameFilterUtil.addPosVoToListByDistinct(simpleVoList,appendPosList);
+                }
+                if(simpleVoList.size()>=itemSize) {
+                    simpleVoList = simpleVoList.subList(0, itemSize -1);
+                }
+                */
+            }
+            //小于设定的条目则不显示
+            if(isClear&&simpleVoList.size()<itemSize) {
+                simpleVoList = Lists.newArrayList();
+            }
+
+            //缓存到Redis中
+            if (CollectionUtils.isNotEmpty(simpleVoList)) {
+                redisEao.writeToString(storeKey, gson.toJson(simpleVoList));
+                redisEao.setKeyExpire(storeKey, Constants.REDIS_EXPIRE_TIME_GUEST_LIKE_POSITION_LIST); //缓存的生存期
+            }
+        }
+        return simpleVoList;
+    }
+
+    /**
+     * 按求职意向搜索职位
+     * @param perUserId
+     * @return
+     */
+    public List<PosBriefSimpleBo> getPosListByIntentInfo(Integer perUserId) {
+
+        List<PosBriefSimpleBo> simpleVoList = Lists.newArrayList();
+        SearchPosFormBo vo = new SearchPosFormBo();
+
+        if(perUserId != null && perUserId > 0){
+            PerUser perUser = perUserEao.get(perUserId);
+            if(perUser != null){
+                PerResume perResume = perUser.getDefaultPerResume();
+                if (perResume != null && StringUtils.isNotBlank(perResume.getIntentInfo()) && !StringUtils.equals("{}", perResume.getIntentInfo())) {
+                    PerResumeBo perResumeVo = perResumeEao.getResumeVo(perResume);
+                    PerResumeBo.IntentInfoVo intentInfoVo = perResumeVo.getIntentInfoVo();
+                    vo = new SearchPosFormBo();
+
+                    //由于搜索器不搜索职位类别中的文字，固优先采用选择的职位类别搜索 by 2015-04-05 xh
+                    if(StringUtils.isNotBlank(intentInfoVo.getJobCode())) {
+                        List<Integer> posTypeList = Lists.newArrayList();
+                        for (String code : intentInfoVo.getJobCode().split(",| ")) {
+                            if(NumberUtils.isNumber(code)) {
+                                posTypeList.add(Integer.parseInt(code));
+                            }
+                        }
+
+                        if(CollectionUtils.isNotEmpty(posTypeList)) {
+                            vo.setPosTypeList(posTypeList);
+                        }
+                    } else {
+                        if(StringUtils.isNotBlank(intentInfoVo.getJobName())) {
+                            String keyword = intentInfoVo.getJobName().replaceAll(" ", ";");
+                            keyword = keyword.replaceAll(",", ";");
+                            vo.setKeyword(keyword);
+                        }
+                    }
+
+
+                    //求职地区
+                    Map<String, Object> jsonMap = perResume.getMap();
+                    if(MapUtils.isNotEmpty(jsonMap)) {
+                        List<Object> locationCodeStr = Arrays.asList(jsonMap.get("expectLocation"));
+                        List<Integer> locationList = Lists.newArrayList();
+                        for (Object o : locationCodeStr) {
+                            locationList.add(NumberUtils.toInt(o + ""));
+                        }
+                        vo.setLocationList(locationList);
+                    }
+                }
+
+                if(StringUtils.isNotBlank(vo.getKeyword()) || CollectionUtils.isNotEmpty(vo.getPosTypeList())){
+                    if(StringUtils.isNotBlank(vo.getKeyword())) {
+                        vo.setKeywordType(1);//关键字匹配范围{0-所有，1-职位名称，2-企业名称}
+                        vo.setKeywordOr(1);
+                    }
+
+                    vo.setSortBy(Constants.SORT_BY_SALARY);
+                    vo.setPageSize(16);
+                    vo.setPageNo(1);
+
+                    simpleVoList = getPosBriefListBySearchVo(vo); //执行搜索
+                }
+            }
+        }
+        return simpleVoList;
+    }
+
+    /**
+     * 按搜索条件返回LIST
+     * @param vo 搜索条件VO
+     * @return
+     */
+    public List<PosBriefSimpleBo> getPosBriefListBySearchVo(SearchPosFormBo vo) {
+
+        List<PosBrief> posBriefList = Lists.newArrayList();
+        List<PosBriefSimpleBo> simpleVoList = Lists.newArrayList();
+        //Gson gson = new Gson();
+        int wantPageSize = vo.getPageSize();
+        int bigPageSize = 300;     //注意: 在searchParamComponent.assemblePosParam()默认除以5
+        vo.setPageSize(bigPageSize);
+        vo.setKeywordHighLightFlag(false);
+        vo.setKeywordOr(1);
+        vo.setKeywordType(1);
+        SearchPosResultBo searchPosResultVo = searchPosSrv.search(vo, null);
+        Page<PosBrief> page = PageUtil.getPage(searchPosResultVo.getSearchResult().getTotal(), vo.getPageNo(), searchPosResultVo.getList(), bigPageSize); //组装成Page
+
+        if (CollectionUtils.isNotEmpty(page.getItems())) { //seo封装等
+            posBriefList.addAll(page.getItems());
+            for (PosBrief posBrief : posBriefList) {
+                posBrief.setPosName(RegExUtil.getTextFromHtml(posBrief.getPosName())); //清理特殊字符及HTML
+                posBrief.setSeoDomain(domainHelper.seoDomainByLocation(NumberUtils.toInt(posBrief.getJobLocPc1() + "")));
+                posBrief.setSalary(posBrief.getSalary());
+                posBrief.setPosDesc(null);
+                posBrief.setComDesc(null);
+            }
+        }
+
+        //过滤不合规则的职位
+        /*PosNameFilterUtil.filterNotTrueMidSalaryPos(posBriefList, 8); //OptionMap.OPT_MAP_SALARY
+        if (vo.getSortBy() != Constants.SORT_BY_UPDATETIME) {
+            PosNameFilterUtil.filterDownSalaryPos(posBriefList);
+        }*/
+
+        posBriefList = posBriefList.subList(0, posBriefList.size() > wantPageSize ? wantPageSize : posBriefList.size());
+
+        //转为简单VO供显示
+        for (PosBrief posBrief : posBriefList) {
+            String posName = PosNameFilterUtil.getFirstName(posBrief.getPosName());
+            String comName = PosNameFilterUtil.getShortComName(posBrief.getComName());
+            posBrief.setPosName(posName);
+            posBrief.setComName(comName);
+            PosBriefSimpleBo simpleVo = new PosBriefSimpleBo(posBrief);
+            simpleVoList.add(simpleVo);
+        }
+
+        return simpleVoList;
+    }
+
+    /**
+     * 按输入的关键字搜索
+     * @param keyword
+     * @return
+     */
+    public List<PosBriefSimpleBo> getPosListByKeyword(String keyword,String site,Integer size) {
+
+        List<PosBriefSimpleBo> simpleVoList = Lists.newArrayList();
+        if(StringUtils.isNotBlank(keyword)){
+            SearchPosFormBo vo = new SearchPosFormBo();
+            vo.setKeyword(keyword);
+
+            vo.setSortBy(Constants.SORT_BY_SALARY);
+            vo.setKeywordType(1);//关键字匹配范围{0-所有，1-职位名称，2-企业名称}
+            vo.setPageSize(size);
+            vo.setPageNo(1);
+
+            if ((site!=null)&&(!StringUtils.equalsIgnoreCase(site, "index"))) { //分站点才设置地区
+                Logger.getLogger(PosRecommendSrv.class).error("the site is===>"+(site==null?" null ":site)+" !!!");
+                String [] areas= domainHelper.findMatchWebsiteSetting(site);
+                if(areas!=null&&areas.length>=3){
+                    Integer cityCode = NumberUtils.toInt(areas[2]);  //取得城市代码
+                    vo.setLocationList(Arrays.asList(cityCode));
+                }
+            }
+            //keyWord带有地区代码的情况 -- TOUCH
+            if (keyword.contains(SearchKeyMap.SEPARATORCHARS)) {
+                String[] keywordArr = StringUtils.split(keyword, SearchKeyMap.SEPARATORCHARS);
+                String area = ArrayUtils.isNotEmpty(keywordArr) ? keywordArr[0] : "";
+                keyword = (keywordArr!= null && keywordArr.length==2 )? keywordArr[1] :"";
+                vo.setKeyword(keyword);
+                if (NumberUtils.toInt(area,0) > 0) {
+                    vo.setLocationList(Lists.newArrayList(NumberUtils.toInt(area)));
+                }
+            }
+            simpleVoList = getPosBriefListBySearchVo(vo); //执行搜索
+        }
+        return simpleVoList;
+    }
+
+    /**
+     * 按职位搜索器的条件去搜索职位
+     * @param perUserId
+     * @return
+     */
+    public List<PosBriefSimpleBo> getPosListBySearcher(Integer perUserId) {
+
+        List<PosBriefSimpleBo> simpleVoList = Lists.newArrayList();
+        SearchPosFormBo vo = new SearchPosFormBo();
+        if(perUserId != null && perUserId > 0) {
+            List<PerSearcher> perSearcherList = perSearcherEao.findByPerUser(perUserId);
+            if (CollectionUtils.isNotEmpty(perSearcherList)) {
+                PerSearcher perSearcher = perSearcherList.get(perSearcherList.size()-1);//取最后一个搜索器
+                String content = perSearcherHelper.parsePerSearcherContent(perSearcher.getContent()); //搜索关键字等内容
+                Map<String, Object> searcherMap = new Gson().fromJson(content, new TypeToken<Map<String, Object>>() {}.getType());
+                //关键字
+                vo.setKeyword(ObjectUtils.toString(searcherMap.get("keyword")));
+                //地区
+                JSONObject jsonObject = new JSONObject(content);
+                JSONArray locationArr = jsonObject.isNull("locationList") ? null : jsonObject.getJSONArray("locationList");
+                List<Integer> locationList = Lists.newArrayList();
+                if (locationArr != null) {
+                    List<String> locStrList = Arrays.asList(locationArr.toString());
+                    for (String s : locStrList) {
+                        locationList.add(NumberUtils.toInt(s));
+                    }
+                    vo.setLocationList(locationList);
+                }
+                vo.setDegreeFrom(NumberUtils.toInt(searcherMap.get("degreeFrom")+""));
+                vo.setDegreeTo(NumberUtils.toInt(searcherMap.get("degreeTo")+""));
+                vo.setWorkyearFrom(NumberUtils.toInt(searcherMap.get("workyearFrom")+""));
+                vo.setWorkyearTo(NumberUtils.toInt(searcherMap.get("workyearTo")+""));
+                vo.setWorkyearUnlimit(Boolean.valueOf(searcherMap.get("workyearUnlimit")+""));
+
+                vo.setSortBy(Constants.SORT_BY_SALARY);
+                vo.setKeywordType(1);//关键字匹配范围{0-所有，1-职位名称，2-企业名称}
+                vo.setPageSize(16);
+                vo.setPageNo(1);
+
+                simpleVoList = getPosBriefListBySearchVo(vo); //执行搜索
+            }
+        }
+        return simpleVoList;
+    }
+
+    /**
+     * 按应聘记录去搜索职位
+     * @param perUserId
+     * @return
+     */
+    public List<PosBriefSimpleBo> getPosListByApplyLog(Integer perUserId) {
+
+        List<PosBriefSimpleBo> simpleVoList = Lists.newArrayList();
+        SearchPosFormBo vo = new SearchPosFormBo();
+        if(perUserId != null && perUserId > 0) {
+            PerPosApply posApply = perPosApplyEao.findLastApplyLog(perUserId);
+            if (posApply != null) {
+                ComPosition comPosition = comPositionEao.get(posApply.getPosId());
+                if(comPosition != null){
+                    String posName = PosNameFilterUtil.getFirstName(comPosition.getPosName());
+                    if(StringUtils.isNotBlank(posName)){
+                        posName = StringUtils.left(posName, 10);
+                        vo.setKeywordOr(1);
+                        vo.setKeyword(posName);
+                        vo.setSortBy(Constants.SORT_BY_SALARY);
+                        vo.setKeywordType(1);//关键字匹配范围{0-所有，1-职位名称，2-企业名称}
+                        vo.setPageSize(16);
+                        vo.setPageNo(1);
+
+                        simpleVoList = getPosBriefListBySearchVo(vo); //执行搜索
+                    }
+                }
+            }
+        }
+        return simpleVoList;
+    }
+
+    /**
+     * 按收藏夹条件搜索职位
+     * @param perUserId
+     * @return
+     */
+    public List<PosBriefSimpleBo> getPosListByFavorite(Integer perUserId) {
+
+        List<PosBriefSimpleBo> simpleVoList = Lists.newArrayList();
+        SearchPosFormBo vo = new SearchPosFormBo();
+        if(perUserId != null && perUserId > 0) {
+            List<PerPosFavorite> perPosFavoriteList = perPosFavoriteEao.findByUserId(perUserId);
+            if (CollectionUtils.isNotEmpty(perPosFavoriteList)) {
+                List<String> posNameList = Lists.newArrayList();
+                Collections.reverse(perPosFavoriteList);
+                for (PerPosFavorite perPosFavorite : perPosFavoriteList) {
+                    ComPosition comPosition = comPositionEao.get(perPosFavorite.getPosId());
+                    if (comPosition != null) {//取得posName并清理特别字符
+                        String posName = PosNameFilterUtil.getFirstName(comPosition.getPosName());
+                        posName = StringUtils.left(posName, 10);
+                        posNameList.add(posName);
+                    }
+                }
+
+                if (CollectionUtils.isNotEmpty(posNameList)) {
+                    vo.setKeywordOr(1);
+                    vo.setKeyword(StringUtils.join(posNameList, ";"));
+                    vo.setSortBy(Constants.SORT_BY_SALARY);
+                    vo.setKeywordType(1);//关键字匹配范围{0-所有，1-职位名称，2-企业名称}
+                    vo.setPageSize(16);
+                    vo.setPageNo(1);
+
+                    simpleVoList = getPosBriefListBySearchVo(vo); //执行搜索
+                }
+            }
+        }
+        return simpleVoList;
+    }
+}
